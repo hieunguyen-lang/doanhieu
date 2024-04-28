@@ -1,0 +1,84 @@
+{%  extends 'trangchu/base.html' %}
+{% load static  %}
+{%block title %}
+    <title>Lalendi</title>
+{%endblock title%}
+{% block maincontent %}
+<!--header-->
+<header >
+    <img style="width:100%; height:100%; object-fit:cover; " src="{% static "images/index.jpg" %}" alt="header background"> 
+     
+        
+        <div class="text-center text-white" style="position:relative; z-index:1">
+            <h1 class="display-4 fw-bolder">Shop in style</h1>
+            <!--filter-->
+
+            <div style=" display: flex; justify-content: center; height: 50dvh">
+                <div class="background_image" style="background-image:url(images/index_1.jpg)"></div>
+                <div class="home_container">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <div class="home_content ">
+                                    <div class="home_title">A Luxury Stay</div>
+                                    <div class="booking_form_container">
+                                        <form action="#" class="booking_form_hieu">
+                                            <div class="d-flex flex-xl-row flex-column align-items-start justify-content-start">
+                                                <div class="booking_input_container d-flex flex-lg-row flex-column align-items-start justify-content-start">
+                                                    <div><input type="text" class="datepicker booking_input booking_input_a booking_in" placeholder="Check in" required="required"></div>
+                                                    <div><input type="text" class="datepicker booking_input booking_input_a booking_out" placeholder="Check out" required="required"></div>
+                                                    <div><input type="number" class="booking_input booking_input_b" placeholder="Children" required="required"></div>
+                                                    <div><input type="number" class="booking_input booking_input_b" placeholder="Room" required="required"></div>
+                                                </div>
+                                                <div><button class="booking_button_hieu trans_200_hieu">Book Now</button></div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+
+<!--list-->
+<section class="py-5">
+    
+    <div class="container px-4 px-lg-5 mt-5">
+        
+        <div class="row row-cols-md-3 justify-content-center">
+            {% for phong in phongs %}
+            <div class="col mb-5">
+                <div class="card h-110">
+                    <!-- Product image-->
+                    <img class="card-img-top" src=" {{phong.HinhanhURL}} " />
+                    <!-- Product details-->
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <!-- Product name-->
+                            <h5 class="fw-bolder"> {{phong.Ten}} </h5>
+                            <h6 class="fw-bolder">Khu vực: {{phong.Diachi}} </h6>
+                            
+                        </div>
+                    </div>
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href=" {% url "xemphong" phong.id %} ">View options</a></div>
+                    </div>
+                </div>
+            </div>
+                
+            {% endfor %}
+            
+        </div>
+        
+    </div>
+    
+</section>
+{% endblock maincontent %}
+
+

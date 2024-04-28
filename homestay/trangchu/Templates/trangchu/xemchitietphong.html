@@ -1,0 +1,131 @@
+{%  extends 'trangchu/base.html' %}
+{% load static  %}
+{%block title %}
+<title>Thông tin chi tiết phòng</title>
+{%endblock title%}
+{% block maincontent %}
+<!--xemchitiet phong-->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+            <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{phong.HinhanhURL}}" alt="..." /></div>
+            <div class="col-md-6">
+                <div class="small mb-1">SKU: BST-498</div>
+                <h1 class="display-5 fw-bolder"> {{phong.Ten}} </h1>
+                <div class="fs-5 mb-5">
+                    <div>Mức giá cho 2 khách: </div>
+                    
+                     <ul>
+                        {%if phong.banggia_set.all%}
+                            {% for banggia in phong.banggia_set.all %}
+                            <li>4 tiếng: {{banggia.Gia4tieng}}đ </li>
+                            <li>20h-09h hôm sau: {{banggia.Gia20h_9h}}đ </li>
+                            <li>10h-19h cùng ngày: {{banggia.Gia10h_19h}}đ </li>
+                            <li>14h-12h hôm sau: {{banggia.Gia14h_12h}}đ </li>
+                            {% endfor %}
+                        {% endif %}
+                        {% if phong.Netflix  %}
+							    <li>Netflix: Có</li> 
+						    {% else %}
+							    <li>Netflix: Không</li> 
+						{% endif %}
+                        {% if phong.Beprieng  %}
+							    <li>Bếp riêng: Có</li> 
+						    {% else %}
+							    <li>Bếp riêng: Không</li> 
+						{% endif %}
+                        {% if phong.Bontam  %}
+							    <li>Bồn tắm: Có</li> 
+						    {% else %}
+							    <li>Bồn tắm: Không</li> 
+						{% endif %}
+
+                     </ul>
+                     
+                </div>
+                <p class="lead">Cần gì bạn cứ direct ad tư vấn ngay và luôn ạ ❤️</p>
+                <div class="d-flex">
+                    {% if phong.banggia_set.all %}
+                        
+                    <select id="select_id1" class="form-control text-center  form-outline-dark " style="max-width: 10rem; background-color: #FDF4E5">
+                        {% for banggia in phong.banggia_set.all %}
+                        <option value="{{banggia.Gia4tieng}}">10h-14h cùng ngày</option>
+                        <option value="{{banggia.Gia4tieng}}">15h-19h cùng ngày</option>
+                        <option value="{{banggia.Gia20h_9h}}">20h-9h hôm sau</option>
+                        <option value="{{banggia.Gia10h_19h}}">10h-19h cùng ngày</option>
+                        <option value="{{banggia.Gia14h_12h}}">14h-12h hôm sau</option>
+                        {% endfor %}
+                        </select>
+                        
+                     {% endif %}
+                    <button class="btn btn-outline-dark flex-shrink-0" type="button" value="{{phong.id}}" id="add_cart">
+                        <i class="bi-cart-fill me-1"></i>
+                        Add to cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Related items section-->
+    <section class="py-5 bg-light">
+        <div class="container px-4 px-lg-5 mt-5">
+            <h2 class="fw-bolder mb-4">Related products</h2>
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <!-- Product image-->
+                        <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder">Fancy Product</h5>
+                                <!-- Product price-->
+                                $40.00 - $80.00
+                            </div>
+                        </div>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+<script>
+    // kiểm tra xem nút add to cart có được click ko
+    $(document).on('click', '#add_cart', function(e){
+        e.preventDefault();
+        //lấy dữ liệu từ select
+         selectedOption = $('#select_id1').val();
+         selectedtext = $('#select_id1 option:selected').text();
+        // thêm gì đó vào back end mà ko cần load page
+        $.ajax({ 
+            type: 'POST',
+            url: {% url "cart_add" %},
+            data: {
+                phong_id: $('#add_cart').val(),
+                selected_option: selectedOption, //lấy giá trị select được chọn
+                selectedtext: selectedtext,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+            success: function(json){
+                //Hiển thị json trả về lên console
+                console.log(json)
+                document.getElementById("cart_quantity").textContent = json.qty;
+                
+                
+
+            },
+            error: function(xhr, errmsg, err){
+
+            }
+
+
+        });
+
+    })
+</script>
+{%endblock maincontent%}
