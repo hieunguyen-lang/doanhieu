@@ -45,7 +45,7 @@ def cart_select_update(request):
     if request.POST.get('action') == 'post':
         phong_id = int(request.POST.get('phong_id'))
         #get selected value ở data của js
-        selected_option= str(request.POST.get('selected_option'))
+        selected_option= int(request.POST.get('selected_option'))
         #get selected text
         selectedtext = request.POST.get('selectedtext')
         #tim  san pham theo id
