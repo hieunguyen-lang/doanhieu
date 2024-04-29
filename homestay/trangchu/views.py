@@ -6,7 +6,7 @@ from .cart import Cart
 
 # Create your views here.
 def home(request):
-    phongs = Phong.objects.order_by('Ten')
+    phongs = Phong.objects.order_by('id')
     context = {'phongs' :phongs}
     return render(request,'trangchu/home.html', context)
 def cart(request):
