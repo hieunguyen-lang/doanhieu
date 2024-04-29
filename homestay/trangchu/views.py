@@ -14,8 +14,9 @@ def cart(request):
     cart_items =cart.get_cart_items()
     selected_option = cart.get_giaphong()
     selected_text = cart.get_selecttext()
+    sum = cart.sum_gia()
     # trả về select giá phòng theo ca đã chọn
-    context = {'cart_items': cart_items, 'selected_option': selected_option, 'selected_text': selected_text}
+    context = {'cart_items': cart_items, 'selected_option': selected_option, 'selected_text': selected_text, 'sum':sum}
     return render(request,'trangchu/cart.html', context)
 def cart_add(request):
     #lay cart
@@ -24,7 +25,7 @@ def cart_add(request):
     if request.POST.get('action') == 'post':
         phong_id = int(request.POST.get('phong_id'))
         #get selected value ở data của js
-        selected_option= int(request.POST.get('selected_option'))
+        selected_option= request.POST.get('selected_option')
         #get selected text
         selectedtext = request.POST.get('selectedtext')
         #tim  san pham theo id
@@ -45,14 +46,22 @@ def cart_select_update(request):
     if request.POST.get('action') == 'post':
         phong_id = int(request.POST.get('phong_id'))
         #get selected value ở data của js
-        selected_option= int(request.POST.get('selected_option'))
+        selected_option= request.POST.get('selected_option')
         #get selected text
-        selectedtext = request.POST.get('selectedtext')
+        selectedtext = request.POST.get('selected_text')
         #tim  san pham theo id
         cart.update_select(phong_id=phong_id, selected_option=selected_option,selectedtext=selectedtext )
         response = JsonResponse({'select': selected_option, 'selecttext': selectedtext  })
         return response
-        #return redirect('cart')
+        #return render(request,'trangchu/cart.html')
+def cart_delete(request):
+    cart=Cart(request)
+    #lay phòng id
+    if request.POST.get('action') == 'post':
+        phong_id = int(request.POST.get('phong_id'))
+        cart.cart_delete(phongid=phong_id)
+        response =JsonResponse({'id': phong_id})
+        return response
 def xemphong(request,id):
     phong = get_object_or_404(Phong, id=id)
     context = {'phong':phong}

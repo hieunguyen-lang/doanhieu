@@ -41,7 +41,7 @@ class Cart():
         return selected_text
     def update_select(self, phong_id, selected_option, selectedtext):
         phong_id = str(phong_id)
-        selectedoption = str(selected_option)
+        selectedoption = selected_option
         selectedtext = selectedtext
         ourcart = self.cart
         ourcart[phong_id] = {
@@ -51,6 +51,22 @@ class Cart():
         }
         
         self.session.modified = True
+    def sum_gia(self):
+        sum=0
     
+        for item in self.cart.values():
+            sum += int(item['Gia'])
+        return sum 
+    def cart_delete(self, phongid):  
+        phong_id = str(phongid) 
+        if phong_id in self.cart:
+            del self.cart[phong_id]
+            self.session.modified = True
+
+
+     
+        
+
+
 
 
