@@ -2,16 +2,37 @@
     
     border: none;
     border-radius: 50%;
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
     font-size: 24px;
     cursor: pointer;
     outline: none;
 }
+.fab1 {
+    
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    cursor: pointer;
+    outline: none;
+}
+.fab2 {
+    
+    border: none;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    font-size: 24px;
+    cursor: pointer;
+    outline: none;
+}
+
 .fab-position {
    width: 70px;
-   height: 140px;
+   height: flex;
    position: fixed;
-    bottom: 100px;
-    left: 20px;
+    bottom: 20px;
+    left: 5px;
 }

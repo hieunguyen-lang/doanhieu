@@ -3,6 +3,20 @@
 {%block title %}
     <title>LalLALENDI - Giỏ Hàng </title>
 {%endblock title%}
+{% block activenavbar%}
+<li class="nav-item col-6 col-lg-auto"><a class="nav-link " aria-current="page" href="#">Trang chủ</a></li>
+                  <li class="nav-item col-6 col-lg-auto"><a class="nav-link" href="#!">About</a></li>
+                  <li class="nav-item col-6 col-lg-auto"><a class="nav-link " href="/blog" >Blog</a></li>
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<li><a class="dropdown-item" href="#!">Tất cả sản phẩm</a></li>
+						<li><hr class="dropdown-divider" /></li>
+						<li><a class="dropdown-item" href="#!">Toydi</a></li>
+						<li><a class="dropdown-item" href="#!">Rendi</a></li>
+					</ul>
+                  </li>
+{% endblock activenavbar%}
 {% block maincontent %}
 <!--- Include the above in your HEAD tag -->
 	
@@ -120,8 +134,8 @@
 			</div>
 			{% else  %}
 			<div style="display:flex; justify-content: center;">
-			<div style="background-color: #EEDDB4; height:50px ; width:400px">
-				<div style="text-align: center; padding:15px "><i class="bi bi-bag">  Chưa có phòng nào trong giỏ hàng</i> </div>
+			<div style="background-color: #EEDDB4; height:50px ; width:400px" class="rounded-pill ">
+				<div style="text-align: center; padding:15px "><i class="bi bi-bag ">  Chưa có phòng nào trong giỏ hàng</i> </div>
 			
 			</div>
 			</div>

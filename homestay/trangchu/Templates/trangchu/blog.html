@@ -3,7 +3,49 @@
 {% block title %}
 <title>Thông tin chi tiết phòng</title>
 {% endblock title %}
+ {% block  activenavbar  %}
+<li class="nav-item col-6 col-lg-auto"><a class="nav-link" aria-current="page" href="/home">Trang chủ</a></li>
+                  <li class="nav-item col-6 col-lg-auto"><a class="nav-link" href="#!">About</a></li>
+                  <li class="nav-item col-6 col-lg-auto"><a class="nav-link active" href="/blog" >Blog</a></li>
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">Tất cả sản phẩm</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#!">Toydi</a></li>
+                        <li><a class="dropdown-item" href="#!">Rendi</a></li>
+                    </ul>
+                  </li>
+{% endblock activenavbar%}
 {% block maincontent %}
-<img src="{% static 'images/logo.png' %}" alt="Logo">
-
+<a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+    Link with href
+</a>
+  <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+    Button with data-bs-target
+  </button>
+  
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div>
+        Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+      </div>
+      <div class="dropdown mt-3">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+          Dropdown button
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Action</a></li>
+          <li><a class="dropdown-item" href="#">Another action</a></li>
+          <li><a class="dropdown-item" href="#">Something else here</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="d-lg-none">hide on lg and wider screens</div>
+  <div class="d-none d-lg-block">hide on screens smaller than lg</div>
 {% endblock maincontent %}

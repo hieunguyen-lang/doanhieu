@@ -3,18 +3,56 @@
 {%block title %}
     <title>LALENDI STUDIO</title>
 {%endblock title%}
+{% block activenavbar%}
+<li class="nav-item col-6 col-lg-auto"><a class="nav-link active" aria-current="page" href="#">Trang chủ</a></li>
+                  <li class="nav-item col-6 col-lg-auto"><a class="nav-link" href="#!">About</a></li>
+                  <li class="nav-item col-6 col-lg-auto"><a class="nav-link " href="/blog" >Blog</a></li>
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <li><a class="dropdown-item" href="#!">Tất cả sản phẩm</a></li>
+                          <li><hr class="dropdown-divider" /></li>
+                          <li><a class="dropdown-item" href="#!">Toydi</a></li>
+                          <li><a class="dropdown-item" href="#!">Rendi</a></li>
+                      </ul>
+                  </li>
+{% endblock activenavbar%}
 {% block maincontent %}
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div>
+        Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+      </div>
+      <div class="dropdown mt-3">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+          Dropdown button
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Action</a></li>
+          <li><a class="dropdown-item" href="#">Another action</a></li>
+          <li><a class="dropdown-item" href="#">Something else here</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+<section class="py">
+    <img src="{% static "images/banner.JPG" %} " style=" width:100%"/>
+</section>
 <!--header-->
 <header style="font-family: Mulish, sans-serif;">
     
-    <div class="py-5" >
+    <div class="py-5 d-none d-lg-block" >
         <div class="container px-4 px-lg-5 mt-5 "  >  
-            <form id="form_filter">                      
+            <form id="form_filter" class="">                      
              <div class="row" >
-                <div class="col" style="width:30%">
+                <div class="col " style="width:30%">
                     <h5> Khu vực</h5>                                                                     
                      <select style="width:100%" class="form-control text-center  form-outline-dark">
-                        <option option:selected > Tất cả khu vực</option> 
+                        <option selected > Tất cả khu vực</option> 
                         <option> Hoàn Kiếm</option>
                         <option> Ba Đình</option>
                         <option> Tây Hồ</option>
