@@ -1,29 +1,63 @@
 {%  extends 'trangchu/base.html' %}
 {% load static  %}
 {%block title %}
-<title>Thông tin chi tiết phòng</title>
+<title>LALENDI STUDIO - Thông tin chi tiết phòng</title>
 {%endblock title%}
 {% block maincontent %}
 <!--xemchitiet phong-->
-<section class="py-5">
-    <div class="container px-4 px-lg-5 my-5">
-        <div class="row gx-4 gx-lg-5 align-items-center">
-            <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{phong.HinhanhURL}}" alt="..." /></div>
+<section class="py-5" style="background-color: #FDF4E5; border-top:2px solid #96823D; font-family: Mulish, sans-serif">
+    <div class="container px-4 px-lg-5 my-5" style="border-bottom:1px solid #96823D">
+        <div class="row gx-4 gx-lg-5 align-items-center" >
             <div class="col-md-6">
-                <div class="small mb-1">SKU: BST-498</div>
-                <h1 class="display-5 fw-bolder"> {{phong.Ten}} </h1>
+                <h1 class="display-5 fw-bolder"> {{phong.Ten}} </h1>           
+                 <a href="{{phong.HinhanhURL}}" data-fancybox="gallery" data-width="600" data-height="900">
+                <img style="border:2px solid #96823D;" class="card-img-top mb-5 mb-md-0" src="{{phong.HinhanhURL}}" alt="..." />
+
+                </a>
+            </div>
+            <div class="col-md-6">
+                
                 <div class="fs-5 mb-5">
-                    <div>Mức giá cho 2 khách: </div>
+                    <div class=" h2 text-md-center" > Bảng giá & khung giờ </div>
                     
-                     <ul>
+                     <div class="table-responsive ">
                         {%if phong.banggia_set.all%}
                             {% for banggia in phong.banggia_set.all %}
-                            <li>4 tiếng: {{banggia.Gia4tieng}}đ </li>
-                            <li>20h-09h hôm sau: {{banggia.Gia20h_9h}}đ </li>
-                            <li>10h-19h cùng ngày: {{banggia.Gia10h_19h}}đ </li>
-                            <li>14h-12h hôm sau: {{banggia.Gia14h_12h}}đ </li>
+                                <table style="background-color: #FDF4E5; width:100%; border-top:2px solid #96823D; border-bottom:2px solid #96823D; font-size: 16px;">
+                            
+                                 <thead >
+                                    
+                                    <tr style="border-bottom:2px solid #96823D;" >
+                                        <th style="width: 20%"> 10h-14h</th>
+                                        <th style="width: 20%"> 15h-19h </th>
+                                        <th style="width: 20%"> 20h-09h </th>
+                                        <th style="width: 20%"> 10h-19h </th>
+                                        <th style="width: 20%"> 14h-12h </th>
+                                     </tr>
+                                 </thead>
+                                
+                                 <tbody>
+                                    <tr style="color: #D03645">
+                                        <td style="width: 20%">{{banggia.Gia4tieng}}đ</td>
+                                        <td style="width: 20%">{{banggia.Gia4tieng}}đ</td>
+                                        <td style="width: 20%">{{banggia.Gia20h_9h}}đ</td>
+                                        <td style="width: 20%">{{banggia.Gia10h_19h}}đ</td>
+                                        <td style="width: 20%">{{banggia.Gia14h_12h}}đ</td>
+                                    </tr>
+
+                                 </tbody>
+                    
+                                </table>
+                           
                             {% endfor %}
-                        {% endif %}
+                    
+                            {% endif %}
+                        </div>
+                        <div>
+                        🚿 Tiện nghi: máy chiếu Netflix, phòng tắm khép kín, dầu gội sữa tắm, khăn tắm, bếp từ, nồi lẩu, bát đũa...
+                        🛵 Gửi xe máy, ô tô gần nhà
+                         <div>
+                        <ul>
                         {% if phong.Netflix  %}
 							    <li>Netflix: Có</li> 
 						    {% else %}
@@ -39,36 +73,80 @@
 						    {% else %}
 							    <li>Bồn tắm: Không</li> 
 						{% endif %}
-
-                     </ul>
+                                <li> Địa chỉ: <a href="https://maps.app.goo.gl/Lq4Mt5mNzqe3k9uy7" target="_blank" style="color: black"> 41 Phan Phù Tiên, Cát Linh, Đống Đa, Hà Nội </a> </li>
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14338.121400455482!2d105.82166041611664!3d21.02909001346341!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab9edb6b7693%3A0xdc77a4e6af03248d!2zNDEgUC4gUGhhbiBQaMO5IFRpw6puLCBDw6F0IExpbmgsIMSQ4buRbmcgxJBhLCBIw6AgTuG7mWk!5e0!3m2!1sen!2s!4v1714481738052!5m2!1sen!2s" width="400" height="200" style="border:2px solid #96823D;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </ul>
                      
                 </div>
                 <p class="lead">Cần gì bạn cứ direct ad tư vấn ngay và luôn ạ ❤️</p>
-                <div class="d-flex">
-                    {% if phong.banggia_set.all %}
-                        
-                    <select id="select_id1" class="form-control text-center  form-outline-dark " style="max-width: 10rem; background-color: #FDF4E5">
-                        {% for banggia in phong.banggia_set.all %}
-                        <option value="{{banggia.Gia4tieng}}">10h-14h cùng ngày</option>
-                        <option value="{{banggia.Gia4tieng}}">15h-19h cùng ngày</option>
-                        <option value="{{banggia.Gia20h_9h}}">20h-9h hôm sau</option>
-                        <option value="{{banggia.Gia10h_19h}}">10h-19h cùng ngày</option>
-                        <option value="{{banggia.Gia14h_12h}}">14h-12h hôm sau</option>
-                        {% endfor %}
-                        </select>
-                        
-                     {% endif %}
-                    <button class="btn btn-outline-dark flex-shrink-0" type="button" value="{{phong.id}}" id="add_cart">
-                        <i class="bi-cart-fill me-1"></i>
-                        Add to cart
-                    </button>
+                <div class="d-flex row">
+                    <div class="col">
+                        {% if phong.banggia_set.all %}
+                            
+                            <select id="select_id1" class="form-control text-center  form-outline-dark" style="max-width: 12rem; background-color: #FDF4E5">
+                                {% for banggia in phong.banggia_set.all %}
+                                    <option value="{{banggia.Gia4tieng}}">10h-14h cùng ngày</option>
+                                    <option value="{{banggia.Gia4tieng}}">15h-19h cùng ngày</option>
+                                    <option value="{{banggia.Gia20h_9h}}">20h-9h hôm sau</option>
+                                    <option value="{{banggia.Gia10h_19h}}">10h-19h cùng ngày</option>
+                                    <option value="{{banggia.Gia14h_12h}}">14h-12h hôm sau</option>
+                                {% endfor %}
+                            </select>
+                            
+                        {% endif %}
+                     </div>
+                     <div class="col">
+                        <button class="btn btn-outline-dark flex-shrink-0" type="button" value="{{phong.id}}" id="add_cart">
+                            <i class="bi-cart-fill me-1"></i>
+                            Add to cart
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Related items section-->
-    <section class="py-5 bg-light">
-        <div class="container px-4 px-lg-5 mt-5">
+   
+    <div class="container px-4 px-lg-5 my-5  fancy-gallery">
+        {% if phong.image_room_set.all %}
+            {% for image_room in phong.image_room_set.all%}
+        <div class="row">
+            <div class="col">
+                <a href="{{image_room.image_1.url}}" data-fancybox="gallery" data-width="600" data-height="900">
+                    <img style="width:200px ; height:250px"  src="{{image_room.image_1.url}}" alt="..." />
+                <a>
+                <a href="{{image_room.image_2.url}}" data-fancybox="gallery" data-width="600" data-height="900">
+                    <img style="width:200px ; height:250px" src="{{image_room.image_2.url}}" alt="..." />
+                </a>
+                <a href="{{image_room.image_3.url}}" data-fancybox="gallery" data-width="600" data-height="900">
+                    <img style="width:200px ; height:250px"  src="{{image_room.image_3.url}}" alt="..." />
+                <a>
+                <a href="{{image_room.image_4.url}}" data-fancybox="gallery" data-width="600" data-height="900">
+                    <img style="width:200px ; height:250px" src="{{image_room.image_4.url}}" alt="..." />
+                </a>
+          
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <a href="{{image_room.image_5.url}}" data-fancybox="gallery" data-width="600" data-height="900">
+                    <img style="width:200px ; height:250px"  src="{{image_room.image_5.url}}" alt="..." />
+                <a>
+                <a href="{{image_room.image_6.url}}" data-fancybox="gallery" data-width="600" data-height="900">
+                    <img style="width:200px ; height:250px" src="{{image_room.image_6.url}}" alt="..." />
+                </a>
+                <a href="{{image_room.image_7.url}}" data-fancybox="gallery" data-width="600" data-height="900">
+                    <img style="width:200px ; height:250px"  src="{{image_room.image_7.url}}" alt="..." />
+                <a>
+                <a href="{{image_room.image_8.url}}" data-fancybox="gallery" data-width="600" data-height="900">
+                    <img style="width:200px ; height:250px" src="{{image_room.image_8.url}}" alt="..." />
+                </a>
+            </div>
+        </div>
+            {% endfor%}
+        {% endif %} 
+    </div>
+         <!-- Related items section-->
+    <div class="container px-4 px-lg-5 mt-5">
             <h2 class="fw-bolder mb-4">Related products</h2>
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 <div class="col mb-5">
@@ -91,7 +169,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+    </div>
 </section>
 <script>
     // kiểm tra xem nút add to cart có được click ko
@@ -126,6 +204,15 @@
 
         });
 
-    })
+    });
+    
+    $(document).ready(function() {
+          $("[data+fancybox]").fancybox({
+            // Các tùy chọn của Fancybox nếu cần
+          });
+    });
+      
+      
 </script>
-{%endblock maincontent%}
+
+{% endblock maincontent %}

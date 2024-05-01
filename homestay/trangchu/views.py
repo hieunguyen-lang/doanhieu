@@ -6,7 +6,7 @@ from .cart import Cart
 
 # Create your views here.
 def home(request):
-    phongs = Phong.objects.order_by('id')
+    phongs = Phong.objects.order_by()
     context = {'phongs' :phongs}
     return render(request,'trangchu/home.html', context)
 def cart(request):
@@ -39,7 +39,7 @@ def cart_add(request):
         #get cart quantity
         cart_quantity= cart.__len__()
         response = JsonResponse({'qty': cart_quantity, 'select': selected_option, 'selecttext': selectedtext})
-
+        
         return response 
 def cart_select_update(request):
     cart=Cart(request)

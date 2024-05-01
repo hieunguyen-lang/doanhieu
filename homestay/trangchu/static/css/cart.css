@@ -227,3 +227,6 @@ select.form-control {
 .form-control-sm:not(textarea) {
     height: 36px;
 }
+.table-xemchitietphong {
+    background-color: #FDF4E5 !important;
+}

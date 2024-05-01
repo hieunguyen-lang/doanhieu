@@ -1,0 +1,17 @@
+.fab {
+    
+    border: none;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    font-size: 24px;
+    cursor: pointer;
+    outline: none;
+}
+.fab-position {
+   width: 70px;
+   height: 140px;
+   position: fixed;
+    bottom: 100px;
+    left: 20px;
+}

@@ -1,58 +1,66 @@
 {%  extends 'trangchu/base.html' %}
 {% load static  %}
 {%block title %}
-    <title>Lalendi</title>
+    <title>LALENDI STUDIO</title>
 {%endblock title%}
 {% block maincontent %}
 <!--header-->
-<header >
-    <img style="width:100%; height:100%; object-fit:cover; " src="{% static "images/index.jpg" %}" alt="header background"> 
-     
-        
-        <div class="text-center text-white" style="position:relative; z-index:1">
-            <h1 class="display-4 fw-bolder">Shop in style</h1>
-            <!--filter-->
+<header style="font-family: Mulish, sans-serif;">
+    
+    <div class="py-5" >
+        <div class="container px-4 px-lg-5 mt-5 "  >  
+            <form id="form_filter">                      
+             <div class="row" >
+                <div class="col" style="width:30%">
+                    <h5> Khu vực</h5>                                                                     
+                     <select style="width:100%" class="form-control text-center  form-outline-dark">
+                        <option option:selected > Tất cả khu vực</option> 
+                        <option> Hoàn Kiếm</option>
+                        <option> Ba Đình</option>
+                        <option> Tây Hồ</option>
+                        <option> Hai Bà Trưng</option>
+                        <option> Đống Đa</option>
+                        <option> T.Xuân- C.Giấy</option>                                    
+                                                
 
-            <div style=" display: flex; justify-content: center; height: 50dvh">
-                <div class="background_image" style="background-image:url(images/index_1.jpg)"></div>
-                <div class="home_container">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col">
-                                <div class="home_content ">
-                                    <div class="home_title">A Luxury Stay</div>
-                                    <div class="booking_form_container">
-                                        <form action="#" class="booking_form_hieu">
-                                            <div class="d-flex flex-xl-row flex-column align-items-start justify-content-start">
-                                                <div class="booking_input_container d-flex flex-lg-row flex-column align-items-start justify-content-start">
-                                                    <div><input type="text" class="datepicker booking_input booking_input_a booking_in" placeholder="Check in" required="required"></div>
-                                                    <div><input type="text" class="datepicker booking_input booking_input_a booking_out" placeholder="Check out" required="required"></div>
-                                                    <div><input type="number" class="booking_input booking_input_b" placeholder="Children" required="required"></div>
-                                                    <div><input type="number" class="booking_input booking_input_b" placeholder="Room" required="required"></div>
-                                                </div>
-                                                <div><button class="booking_button_hieu trans_200_hieu">Book Now</button></div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    </select>
+                                                       
+                </div>                                                  
+                <div class="col" style="width:30%">  
+                    <h5> Lọc theo giá</h5>    
+                    <select style="width:100%" class="form-control text-center  form-outline-dark">
+                            
+                        <option>Giá thấp nhất trước</option>
+                        <option>Giá cao nhất trước</option>
+                        
+
+                    </select>
+                </div>                               
+                <div class="col" style="width:30%">    
+                    <select style="width:100%" class="form-control text-center  form-outline-dark">
+                            
+                        <option selected value="Gia4tieng">Giá thấp đến cao</option>
+                        <option value="-Gia4tieng">Giá cao đến thấp</option>
+                        
+
+                    </select>
+                </div>                                 
+                <div class="col" style="width:30%">
+                    <button style="width:100%" class="booking_button_hieu trans_200_hieu">Book Now</button></div>
+                </div>                                                                       
+             </div> 
+            </form>
         </div>
-    </header>
-
-
-
+    </div>
+</header>
 <!--list-->
-<section class="py-5">
+<section class="py-5" style="background-color: #FDF4E5; border-top:2px solid #96823D; font-family: Mulish, sans-serif">
     
     <div class="container px-4 px-lg-5 mt-5">
         
-        <div class="row row-cols-md-3 justify-content-center">
+        <div class="row row-cols-md-3 justify-content-center" >
             {% for phong in phongs %}
-            <div class="col mb-5">
+            <div class="col mb-5" >
                 <div class="card h-110">
                     <!-- Product image-->
                     <img class="card-img-top" src=" {{phong.HinhanhURL}} " />
@@ -79,6 +87,40 @@
     </div>
     
 </section>
+<script>
+    $(document).on('change', '#form_filter', function(e){
+        e.preventDefault();
+        // lấy từ data-index trong  html ,kiểm tra ở trên đi
+        phongid = $(this).data('index');
+        selectedOption = $(this).val();
+        selectedtext = $(this).find('option:selected').text();
+        $.ajax({
+            type:'POST',
+            url: '{% url "cart_select_update" %}',
+            data: {
+                phong_id: phongid,
+                selected_option: selectedOption,
+                selected_text: selectedtext,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post',
+
+                
+            },
+            
+            success: function(json){
+                console.log(json)
+                //document.getElementById("cart_quantity").textContent=json.qty
+                location.reload();
+
+            },
+            error: function(xhr, errmsg, err){
+
+            }
+
+        });
+
+    })
+</script>
 {% endblock maincontent %}
 
 
