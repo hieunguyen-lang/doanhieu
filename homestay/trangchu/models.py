@@ -7,7 +7,6 @@ class Phong(models.Model):
     Netflix = models.BooleanField(choices=[(True, 'Yes'), (False, 'No')], default=True)
     Beprieng = models.BooleanField(choices=[(True, 'Yes'), (False, 'No')], default=True)
     Bontam = models.BooleanField(choices=[(True, 'Yes'), (False, 'No')], default=True)
-    Diachi = models.CharField(max_length=200, null=True)
     Hinhanh =models.ImageField(null=True, blank=True)
     Diachi_cuthe = models.CharField(max_length=300, blank=True, null=True)
 

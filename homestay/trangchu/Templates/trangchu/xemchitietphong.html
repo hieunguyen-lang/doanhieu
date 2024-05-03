@@ -7,7 +7,7 @@
 <li class="nav-item col-6 col-lg-auto"><a class="nav-link " aria-current="page" href="#">Trang chủ</a></li>
                   <li class="nav-item col-6 col-lg-auto"><a class="nav-link" href="#!">About</a></li>
                   <li class="nav-item col-6 col-lg-auto"><a class="nav-link " href="/blog" >Blog</a></li>
-                  <li class="nav-item dropdown">
+                  <li class="nav-item col-6 col-lg-auto">
                       <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
                       <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#!">Tất cả sản phẩm</a></li>
@@ -20,14 +20,11 @@
 {% block maincontent %}
 <!--xemchitiet phong-->
 <section class="py-5" style="background-color: #FDF4E5; border-top:2px solid #96823D; font-family: Mulish, sans-serif">
-    <div class="container px-4 px-lg-5 my-5" style="border-bottom:1px solid #96823D">
+    <div class="container px-4 px-lg-5 my-5" style="border-bottom:2px solid black">
         <div class="row gx-4 gx-lg-5 align-items-center" >
             <div class="col-md-6">
                 <h1 class="display-5 fw-bolder"> {{phong.Ten}} </h1>           
-                 <a href="{{phong.HinhanhURL}}" data-fancybox="gallery" data-width="600" data-height="900">
                 <img style="border:2px solid #96823D;" class="card-img-top mb-5 mb-md-0" src="{{phong.HinhanhURL}}" alt="..." />
-
-                </a>
             </div>
             <div class="col-md-6">
                 
@@ -119,46 +116,62 @@
             </div>
         </div>
     </div>
-   
-    <div class="container px-4 px-lg-5 my-5  fancy-gallery" >
-        {% if phong.image_room_set.all %}
-            {% for image_room in phong.image_room_set.all%}
-        <div class="row"  >
-            <div class="col">
-                <a href="{{image_room.image_1.url}}" data-fancybox="gallery" data-width="550" data-height="850">
-                    <img style="width:130px ; height:130px"  src="{{image_room.image_1.url}}" alt="..." />
-                <a>
-                <a href="{{image_room.image_2.url}}" data-fancybox="gallery" data-width="600" data-height="900">
-                    <img style="width:130px ; height:130px" src="{{image_room.image_2.url}}" alt="..." />
-                </a>
-                <a href="{{image_room.image_3.url}}" data-fancybox="gallery" data-width="600" data-height="900">
-                    <img style="width:130px ; height:130px"  src="{{image_room.image_3.url}}" alt="..." />
-                <a>
-                <a href="{{image_room.image_4.url}}" data-fancybox="gallery" data-width="600" data-height="900">
-                    <img style="width:130px ; height:130px" src="{{image_room.image_4.url}}" alt="..." />
-                </a>
-          
+    {% if phong.image_room_set.all %}
+        {% for image_room in phong.image_room_set.all%}
+    <div class=" container" style="width:600px; height:400px ; margin-left:15px;" >
+     
+            <div class="row row-xs-12  ">
+                <div class="col col-xs-6 image-container square_list_image" >
+                    <a href="{{image_room.image_1.url}}" data-fancybox="gallery" data-width="550" data-height="850"><img class="square-image" src="{{image_room.image_1.url}}" alt="..." /></a>
+                </div>
+                <div class="col col-xs-6 image-container square_list_image">
+                    <a href="{{image_room.image_2.url}}" data-fancybox="gallery" data-width="600" data-height="900">
+                        <img class="square-image" src="{{image_room.image_2.url}}" alt="..." />
+                    </a>
+                </div>
+                <div class="col col-xs-6 image-container square_list_image">
+                    <a href="{{image_room.image_3.url}}" data-fancybox="gallery" data-width="600" data-height="900">
+                        <img class="square-image"  src="{{image_room.image_3.url}}" alt="..." />
+                    </a>
+                </div>
+                <div class="col col-xs-6 image-container square_list_image">
+                    <a href="{{image_room.image_4.url}}" data-fancybox="gallery" data-width="600" data-height="900">
+                        <img class="square-image" src="{{image_room.image_4.url}}" alt="..." />
+                    </a>
+                </div>
+                
             </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <a href="{{image_room.image_5.url}}" data-fancybox="gallery" data-width="600" data-height="900">
-                    <img style="width:130px ; height:130px"  src="{{image_room.image_5.url}}" alt="..." />
-                <a>
-                <a href="{{image_room.image_6.url}}" data-fancybox="gallery" data-width="600" data-height="900">
-                    <img style="width:130px ; height:130px" src="{{image_room.image_6.url}}" alt="..." />
-                </a>
-                <a href="{{image_room.image_7.url}}" data-fancybox="gallery" data-width="600" data-height="900">
-                    <img style="width:130px ; height:130px"  src="{{image_room.image_7.url}}" alt="..." />
-                <a>
-                <a href="{{image_room.image_8.url}}" data-fancybox="gallery" data-width="600" data-height="900">
-                    <img style="width:130px ; height:130px" src="{{image_room.image_8.url}}" alt="..." />
-                </a>
-            </div>
-        </div>
-            {% endfor%}
-        {% endif %} 
+            <div class="row row-sm" style="margin-top:10px">
+                <div class="col col-xs-4 image-container square_list_image">
+                    <a href="{{image_room.image_5.url}}" data-fancybox="gallery" data-width="600" data-height="900">
+                        <img class="square-image" src="{{image_room.image_5.url}}" alt="..." />
+                    </a>
+                </div>
+                <div class="col col-xs-4 image-container square_list_image" >
+                    <a href="{{image_room.image_1.url}}" data-fancybox="gallery" data-width="550" data-height="850"><img class="square-image" src="{{image_room.image_1.url}}" alt="..." /></a>
+                </div>
+                <div class="col col-xs-4 image-container square_list_image">
+                    <a href="{{image_room.image_6.url}}" data-fancybox="gallery" data-width="600" data-height="900">
+                        <img class="square-image" src="{{image_room.image_6.url}}" alt="..." />
+                    </a>
+                </div>
+                <div class="col col-xs-4 image-container square_list_image">
+                    <a href="{{image_room.image_7.url}}" data-fancybox="gallery" data-width="600" data-height="900">
+                        <img class="square-image"  src="{{image_room.image_7.url}}" alt="..." />
+                    </a>
+                </div>
+                
+            </div>      
     </div>
+    <div class="container" style="width:400px; height:450px ; margin-left:15px; padding-top:15px">
+        <div class=" image-container">
+            <a href="{{image_room.image_8.url}}" data-fancybox="gallery" data-width="600" data-height="900">
+                <img class="square-image" src="{{image_room.image_8.url}}" alt="..." />
+            </a>
+        </div>
+    </div>
+        {% endfor%}
+    {% endif %} 
          <!-- Related items section-->
     <div class="container px-4 px-lg-5 mt-5">
             <h2 class="fw-bolder mb-4">Related products</h2>
@@ -195,7 +208,7 @@
         // thêm gì đó vào back end mà ko cần load page
         $.ajax({ 
             type: 'POST',
-            url: {% url "cart_add" %},
+            url: '{% url "cart_add" %}',
             data: {
                 phong_id: $('#add_cart').val(),
                 selected_option: selectedOption, //lấy giá trị select được chọn

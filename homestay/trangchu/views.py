@@ -9,6 +9,17 @@ def home(request):
     phongs = Phong.objects.order_by()
     context = {'phongs' :phongs}
     return render(request,'trangchu/home.html', context)
+def address_filter(request):
+    if request.POST.get('action') == 'post':
+        get_address = str(request.POST.get('get_diachi'))
+        phongs = Phong.objects.filter(Diachi=get_address)
+      # Định dạng dữ liệu trả về thành một danh sách các đối tượng
+        context ={'phongs':phongs}
+        return render(request,'trangchu/search.html', context)
+    else:
+                # Nếu không phải là AJAX request, trả về HttpResponse cho trang web
+        return render(request, 'trangchu/search.html')
+
 def cart(request):
     cart =Cart(request)
     cart_items =cart.get_cart_items()

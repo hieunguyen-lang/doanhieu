@@ -36,3 +36,21 @@
     bottom: 20px;
     left: 5px;
 }
+.color_theme{
+    background-color: #FDF4E5 !important
+}
+.image-container {
+    width: 100%; /* Chiều rộng và chiều cao mong muốn cho ảnh vuông */
+    height: 100%;
+    overflow: hidden; /* Ẩn phần của ảnh vượt ra khỏi phần tử cha */
+}
+
+.square-image {
+    width: 100%; /* Đảm bảo ảnh vượt ra khỏi phần tử cha */
+    height: 100%;
+    object-fit: cover; /* Cắt ảnh để vừa khớp với kích thước của phần tử cha mà không bị méo hình */
+}
+.square_list_image {
+    width: 85px;
+    height: 85px;
+}
