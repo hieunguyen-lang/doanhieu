@@ -38,7 +38,7 @@
 					
 						<tbody>
 							{% for phong in cart_items %}
-							{% if phong.banggia_set.all %}
+							
 								<tr style="border-bottom:1px solid #96823D">
 										<td>
 											<div class="product-item">
@@ -80,13 +80,13 @@
 												<option selected value="{{value.Gia}}"> {{value.Ca}} </option>
 													{% endif %}
 													{% endfor %}
-												{% for banggia in phong.banggia_set.all %}
-												<option value="{{banggia.Gia4tieng}}">10h-14h cùng ngày</option>
-												<option value="{{banggia.Gia4tieng}}">15h-19h cùng ngày</option>
-												<option value="{{banggia.Gia20h_9h}}">20h-9h hôm sau</option>
-												<option value="{{banggia.Gia10h_19h}}">10h-19h cùng ngày</option>
-												<option value="{{banggia.Gia14h_12h}}">14h-12h hôm sau</option>
-												{%endfor %}
+												
+												<option value="{{phong.Gia4tieng}}">10h-14h cùng ngày</option>
+												<option value="{{phong.Gia4tieng}}">15h-19h cùng ngày</option>
+												<option value="{{phong.Gia20h_9h}}">20h-9h hôm sau</option>
+												<option value="{{phong.Gia10h_19h}}">10h-19h cùng ngày</option>
+												<option value="{{phong.Gia14h_12h}}">14h-12h hôm sau</option>
+												
 												</select>
 											</div>
 										</td>
@@ -102,7 +102,7 @@
 										<td class="text-center">
 											<button id="deletebtn" data-index=" {{phong.id}} " class="btn btn-sm btn-outline-danger">Xoá phòng</button>
 										</td>
-										{% endif %}
+										
 										{% endfor %}
 								</tr>
 								

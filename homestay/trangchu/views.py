@@ -3,22 +3,34 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from .models import *
 from .cart import Cart
-
+from django.db.models import Q, Min
+# api
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from .serializer import *
 # Create your views here.
 def home(request):
-    phongs = Phong.objects.order_by()
+    phongs = Phong.objects.order_by('id')
     context = {'phongs' :phongs}
     return render(request,'trangchu/home.html', context)
-def address_filter(request):
-    if request.POST.get('action') == 'post':
-        get_address = str(request.POST.get('get_diachi'))
-        phongs = Phong.objects.filter(Diachi=get_address)
-      # Định dạng dữ liệu trả về thành một danh sách các đối tượng
-        context ={'phongs':phongs}
-        return render(request,'trangchu/search.html', context)
-    else:
-                # Nếu không phải là AJAX request, trả về HttpResponse cho trang web
-        return render(request, 'trangchu/search.html')
+#api 
+class roomapiview(APIView):
+
+     def get(self,request):
+        s = request.GET.get('s')
+        soft = request.GET.get('soft')
+        rooms = Phong.objects.all()
+        if s:
+            rooms = Phong.objects.filter(Q(Diachi__icontains=s) & Q(Netflix__icontains=s)) 
+        
+        if soft =='min':
+            rooms = rooms.annotate(min_gia=Min('banggias__Gia4tieng'))
+            rooms = Phong.objects.order_by('banggias.Gia4tieng')
+        serializer = RoomSerializer(rooms, many=True)
+        return Response(serializer.data)
+        
+
+    
 
 def cart(request):
     cart =Cart(request)

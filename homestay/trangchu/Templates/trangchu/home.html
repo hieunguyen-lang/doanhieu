@@ -148,31 +148,7 @@
     </div>
     
 </section>
-<script>
-    $(document).on('change', '#filter1', function(e){
-        e.preventDefault();
-        // lấy từ data-index trong  html ,kiểm tra ở trên đi
-       get_diachi = $('#filter1 option:selected').val() 
-       
-        $.ajax({
-            type:'POST',
-            url: '{% url "address_filter" %}',
-            data: {
-                get_diachi: get_diachi,
-                csrfmiddlewaretoken: '{{ csrf_token }}',
-                action: 'post',
-            },
-            success: function(json){
-                console.log(json)
 
-            },
-            error: function(xhr, errmsg, err){
-
-            }
-
-        });
-
-    })    
 </script>
 {% endblock maincontent %}
 

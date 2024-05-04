@@ -19,6 +19,7 @@
 {% endblock activenavbar%}
 {% block maincontent %}
 <!--xemchitiet phong-->
+
 <section class="py-5" style="background-color: #FDF4E5; border-top:2px solid #96823D; font-family: Mulish, sans-serif">
     <div class="container px-4 px-lg-5 my-5" style="border-bottom:2px solid black">
         <div class="row gx-4 gx-lg-5 align-items-center" >
@@ -32,8 +33,8 @@
                     <div class=" h2 text-md-center" > Bảng giá & khung giờ </div>
                     
                      <div class="table-responsive ">
-                        {%if phong.banggia_set.all%}
-                            {% for banggia in phong.banggia_set.all %}
+                        
+                           
                                 <table style="background-color: #FDF4E5; width:100%; border-top:2px solid #96823D; border-bottom:2px solid #96823D; font-size: 16px;">
                             
                                  <thead >
@@ -49,20 +50,18 @@
                                 
                                  <tbody>
                                     <tr style="color: #D03645">
-                                        <td style="width: 20%">{{banggia.Gia4tieng}}đ</td>
-                                        <td style="width: 20%">{{banggia.Gia4tieng}}đ</td>
-                                        <td style="width: 20%">{{banggia.Gia20h_9h}}đ</td>
-                                        <td style="width: 20%">{{banggia.Gia10h_19h}}đ</td>
-                                        <td style="width: 20%">{{banggia.Gia14h_12h}}đ</td>
+                                        <td style="width: 20%">{{phong.Gia4tieng}}đ</td>
+                                        <td style="width: 20%">{{phong.Gia4tieng}}đ</td>
+                                        <td style="width: 20%">{{phong.Gia20h_9h}}đ</td>
+                                        <td style="width: 20%">{{phong.Gia10h_19h}}đ</td>
+                                        <td style="width: 20%">{{phong.Gia14h_12h}}đ</td>
                                     </tr>
 
                                  </tbody>
                     
                                 </table>
                            
-                            {% endfor %}
-                    
-                            {% endif %}
+                            
                         </div>
                         <div>
                         🚿 Tiện nghi: máy chiếu Netflix, phòng tắm khép kín, dầu gội sữa tắm, khăn tắm, bếp từ, nồi lẩu, bát đũa...
@@ -92,19 +91,19 @@
                 <p class="lead">Cần gì bạn cứ direct ad tư vấn ngay và luôn ạ ❤️</p>
                 <div class="d-flex row">
                     <div class="col">
-                        {% if phong.banggia_set.all %}
+                       
                             
                             <select id="select_id1" class="form-control text-center  form-outline-dark" style="max-width: 12rem; background-color: #FDF4E5">
-                                {% for banggia in phong.banggia_set.all %}
-                                    <option value="{{banggia.Gia4tieng}}">10h-14h cùng ngày</option>
-                                    <option value="{{banggia.Gia4tieng}}">15h-19h cùng ngày</option>
-                                    <option value="{{banggia.Gia20h_9h}}">20h-9h hôm sau</option>
-                                    <option value="{{banggia.Gia10h_19h}}">10h-19h cùng ngày</option>
-                                    <option value="{{banggia.Gia14h_12h}}">14h-12h hôm sau</option>
-                                {% endfor %}
+                               
+                                    <option value="{{phong.Gia4tieng}}">10h-14h cùng ngày</option>
+                                    <option value="{{phong.Gia4tieng}}">15h-19h cùng ngày</option>
+                                    <option value="{{phong.Gia20h_9h}}">20h-9h hôm sau</option>
+                                    <option value="{{phong.Gia10h_19h}}">10h-19h cùng ngày</option>
+                                    <option value="{{phong.Gia14h_12h}}">14h-12h hôm sau</option>
+                                
                             </select>
                             
-                        {% endif %}
+                        
                      </div>
                      <div class="col">
                         <button class="btn btn-outline-dark flex-shrink-0" type="button" value="{{phong.id}}" id="add_cart">
@@ -198,6 +197,7 @@
             </div>
     </div>
 </section>
+
 <script>
     // kiểm tra xem nút add to cart có được click ko
     $(document).on('click', '#add_cart', function(e){
