@@ -7,3 +7,8 @@ class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Phong
         fields = '__all__'
+class RoomDetailSerializer(serializers.ModelSerializer):
+   
+    class Meta:
+        model = Phong
+        fields = '__all__'

@@ -7,7 +7,9 @@ from django.db.models import Q, Min
 # api
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
 from .serializer import *
+
 # Create your views here.
 def home(request):
     phongs = Phong.objects.order_by('id')
@@ -30,7 +32,14 @@ class roomapiview(APIView):
         return Response(serializer.data)
         
 
-    
+class roomdetailapi(APIView):
+    def get(self, request ):
+        s= request.GET.get('s')
+        roomdetail = Phong.objects.all()
+        if s:
+            roomdetail = Phong.objects.filter(id__icontains=s)
+            serializer = RoomDetailSerializer(roomdetail, many=True)
+            return Response(serializer.data)
 
 def cart(request):
     cart =Cart(request)

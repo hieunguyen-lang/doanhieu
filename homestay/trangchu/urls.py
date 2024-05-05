@@ -1,10 +1,11 @@
 from django.urls import path
 
 from .import views 
-from .views import roomapiview
+from .views import roomapiview, roomdetailapi
 urlpatterns =[
     path('home/',views.home),
     path('filter/', roomapiview.as_view() ),
+    path('roomdetail/', roomdetailapi.as_view() ),
     path('cart/',views.cart, name="cart"),
     path('add/', views.cart_add, name="cart_add"),
     path('update/', views.cart_select_update, name ="cart_select_update"),
