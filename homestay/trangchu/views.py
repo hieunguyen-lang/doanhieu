@@ -1,13 +1,15 @@
+from pickletools import read_uint1
+from pydoc import pager
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.http import JsonResponse
 from .models import *
 from .cart import Cart
-from django.db.models import Q, Min
+from django.db.models import Q
 # api
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+import math
 from .serializer import *
 
 # Create your views here.
@@ -20,26 +22,27 @@ class roomapiview(APIView):
 
      def get(self,request):
         s = request.GET.get('s')
-        soft = request.GET.get('soft')
+        sort = request.GET.get('sort')
         rooms = Phong.objects.all()
-        if s:
-            rooms = Phong.objects.filter(Q(Diachi__icontains=s) & Q(Netflix__icontains=s)) 
-        
-        if soft =='min':
-            rooms = rooms.annotate(min_gia=Min('banggias__Gia4tieng'))
-            rooms = Phong.objects.order_by('banggias.Gia4tieng')
-        serializer = RoomSerializer(rooms, many=True)
-        return Response(serializer.data)
-        
 
-class roomdetailapi(APIView):
-    def get(self, request ):
-        s= request.GET.get('s')
-        roomdetail = Phong.objects.all()
         if s:
-            roomdetail = Phong.objects.filter(id__icontains=s)
-            serializer = RoomDetailSerializer(roomdetail, many=True)
-            return Response(serializer.data)
+            rooms = Phong.objects.filter(Q(Diachi__icontains=s) | Q(id__icontains=s)) 
+        
+        if sort =='asc':
+            rooms = Phong.objects.order_by('Gia4tieng')
+        elif sort == 'desc':
+            rooms = Phong.objects.order_by('-Gia4tieng')
+        
+        total = rooms.count()
+        serializer = RoomSerializer(rooms, many=True)
+        return Response( {
+            'data':serializer.data,
+            'Tổng': total
+        })
+
+            
+        
+            
 
 def cart(request):
     cart =Cart(request)

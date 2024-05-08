@@ -2,7 +2,7 @@ import { BrowserRouter, NavLink, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Backend from "./pages/Backend";
 import Xemphong from "./pages/Xemphong";
-
+import './App.css'
 function App() {
   return (
     <BrowserRouter>
@@ -17,13 +17,13 @@ function App() {
               <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav flex-row flex-wrap bd-navbar-nav me-auto">
                   <li className="nav-item col-6 col-lg-auto">
-                    <NavLink to="/home" className="nav-link active">Trang chủ</NavLink>
+                    <NavLink to="/home" className="nav-link" activeClassName="active" >Trang chủ</NavLink>
                   </li>
                   <li class="nav-item col-6 col-lg-auto" >
-                  <NavLink to="/home" className="nav-link px-2 text-secondary">About</NavLink>
+                  <NavLink to="/home" className="nav-link px-2 text-secondary" activeClassName="active">About</NavLink>
                   </li>
                   <li class="nav-item col-6 col-lg-auto" >
-                    <NavLink to="/home" className="nav-link px-2 text-secondary">Blog</NavLink>
+                    <NavLink to="/home" className="nav-link px-2 text-secondary" activeClassName="active">Blog</NavLink>
                   </li>
                   <li className="nav-item  col-6 col-lg-auto">
                     
@@ -38,7 +38,7 @@ function App() {
                   </li>
                 </ul>
                 <form className="d-flex">
-                  <a className="btn btn-outline-dark" style={{color: 'white'}} type="submit" href="/#!">  
+                  <a className="btn btn-outline-dark" style={{color: 'white'}} type="submit" href="/cart">  
                       <i className="bi-cart-fill me-1" style={{color: 'white'}}></i>
                         Giỏ hàng
                       <span className="badge bg-dark text-white ms-1 rounded-pill" id="cart_quantity">0</span>
@@ -67,11 +67,31 @@ function App() {
           <div className='container' > 
            
               < Route path="/home" component={ Home} />
-              < Route path="/preview" component={ Xemphong }/>
-           
+              < Route path="/preview/:id" component={ Xemphong }/>
+              
           </div>
         </div>
+        
       </div>
+      
+      <div className=" fabPosition">
+    <div className="row">
+      <a style={{display: 'flex', justifyContent: 'center'}} href="https://www.instagram.com/lalendi.studio/" target="_blank">
+      <img src="http://127.0.0.1:8000/images/zalo.png" className="fab2" />
+      </a>
+    </div>
+    <div className="row ">
+      <a style={{display: 'flex', justifyContent: 'center'}} href="https://www.instagram.com/lalendi.studio/" target="_blank">
+      <img src="http://127.0.0.1:8000/images/logocontact.png" className="fab" />
+      </a>
+    </div>
+    <div className="row">
+      <a style={{display: 'flex', justifyContent: 'center'}} href="https://www.instagram.com/lalendi.studio/" target="_blank">
+      <img src="http://127.0.0.1:8000/images/mess.png" className="fab1" />
+      </a>
+    </div>
+      </div>
+    
       <div className="container">
         <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
           <div className="col-md-4 d-flex align-items-center">
