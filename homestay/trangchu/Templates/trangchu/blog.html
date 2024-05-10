@@ -3,55 +3,55 @@
 {% block title %}
 <title>Thông tin chi tiết phòng</title>
 {% endblock title %}
- {% block  activenavbar  %}
-<li class="nav-item col-6 col-lg-auto"><a class="nav-link" aria-current="page" href="/home">Trang chủ</a></li>
-                  <li class="nav-item col-6 col-lg-auto"><a class="nav-link" href="#!">About</a></li>
-                  <li class="nav-item col-6 col-lg-auto"><a class="nav-link active" href="/blog" >Blog</a></li>
-                  <li class="nav-item col-6 col-lg-auto">
-                      <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Tất cả sản phẩm</a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">Toydi</a></li>
-                        <li><a class="dropdown-item" href="#!">Rendi</a></li>
-                    </ul>
-                  </li>
-{% endblock activenavbar%}
+
 {% block maincontent %}
-<a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
-    Link with href
-</a>
-  <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-    Button with data-bs-target
-  </button>
-  
-  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+<main class="container">
+  <div class="p-4 p-md-5 mb-4 ">
+    <div>
+      <img style="width:100%; height:100%" class="" src="{% static "images/posttilte.jpg" %} "/>
     </div>
-    <div class="offcanvas-body">
-      <div>
-        Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
-      </div>
-      <div class="dropdown mt-3">
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-          Dropdown button
-        </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Action</a></li>
-          <li><a class="dropdown-item" href="#">Another action</a></li>
-          <li><a class="dropdown-item" href="#">Something else here</a></li>
-        </ul>
-      </div>
+    <div class="col-lg-6 px-0" style="padding-top:10px">
+
+      <h3 class="display-6 fst-italic">HƯỚNG DẪN ĐẶT PHÒNG</h3>
+      <p class="lead my-3">𝐇𝐮̛𝐨̛́𝐧𝐠 𝐝𝐚̂̃𝐧 đ𝐚̣̆𝐭 𝐩𝐡𝐨̀𝐧𝐠 𝐯𝐚̀ 𝐍𝐨̣̂𝐢 𝐐𝐮𝐲
+        cùng những thông tin cần thiết cho bạn trải nghiệm homestay tuyệt vời nhất.
+        
+        Bạn đừng ngại nhắn tin để nhận tư vấn, hỗ trợ thêm nhé!</p>
+      <p class="lead mb-0"><a href="#" class="text-body-emphasis fw-bold">ĐỌC TIẾP...</a></p>
     </div>
   </div>
-  <div class="d-lg-none">hide on lg and wider screens</div>
-  <div class="d-none d-lg-block">hide on screens smaller than lg</div>
-  <div class="container-sm">Content here...</div>
-<div class="container-md">Content here...</div>
-<div class="container-lg">Content here...</div>
-<div class="container-xl">Content here...</div>
-<div class="container-xxl">Content here...</div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+          <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                  <h3 class="mb-0">Mẫu & Bảng giá decor phòng</h3>
+                  <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+                  <a href="#" class="">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                  <img class="" width="180" height="220" src="{% static "images/thumb1.jpg" %}" />
+              </div>
+          </div>
+      </div>
+      <div class="col-md-6">
+          <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                  <h3 class="mb-0">Ưu đãi & Quà tặng</h3>
+                  <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+                  <a href="#" class="">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                  <img class="" width="180" height="220" src="{% static "images/thumb2.jpg" %}" />
+              </div>
+          </div>
+      </div>
+  </div>
+  </div>
+  
+</div>
+  
+
+</main>
 
 {% endblock maincontent %}

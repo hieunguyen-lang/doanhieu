@@ -1,25 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-const rooms = (props) => {
+import Xemphong from '../pages/Xemphong.js';
+const Rooms = (props) => {
    
     const sort = (sort) =>{
       props.setFilters({
         ...props.filters,
         sort
       });
-    }
+    };
     const address = (address) =>{
       props.setFilters({
         ...props.filters,
         address
       });
-    }
-    const roomid = (roomid) =>{
-      props.setFilters({
-        ...props.filters,
-        roomid
-      });
-    }
+    };
+    const [roomid, setRoomid] = useState([]);
+    const handleButtonClick = (value) => {
+      // Lấy giá trị của button khi click
+      setRoomid(value);
+      console.log(setRoomid)
+    };
     let button;
     button = (
       <div className="d-flex justify-content-center" style={{ backgroundColor: '#FDF4E5', fontFamily: 'Mulish, sans-serif' }}>
@@ -29,7 +30,7 @@ const rooms = (props) => {
     return (
       <> 
       
-        <div className='col-md-3 mb-4 input-group' style={{ height: '600px'}}>
+        <div className='col-md-3 mb-4 input-group' style={{ height: '300px'}}>
           <div>
             </div>
             <div className="col">  
@@ -71,7 +72,8 @@ const rooms = (props) => {
                         <h6>Địa chỉ {room.Diachi}</h6>
                         
                           <div className="text-center">
-                            <NavLink to={`/preview/${room.id}`} className="btn btn-outline-dark mt-auto" onClick={e=>roomid(e.target.getAttribute('data-roomid'))} data-roomid={room.id} >Xem phòng</NavLink>
+                            <a href={`http://localhost:8000/preview/${room.id}`} className="btn btn-outline-dark mt-auto" onClick={() => handleButtonClick(room.id)} >Xem phòng</a>
+                         
                           </div>                                 
                       </div>
                     </div>
@@ -79,11 +81,13 @@ const rooms = (props) => {
 
                 )
             })}   
+
       </div>
-      {button}
       
+      {button}
+      <Xemphong roomid={roomid} />
       </>
     );
 };
 
-export default rooms;
+export default Rooms;

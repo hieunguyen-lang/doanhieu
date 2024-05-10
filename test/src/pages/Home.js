@@ -8,6 +8,7 @@ const Home = () => {
       sort: '',
       address: ''
     });
+    
     useEffect(()=>{
         (
           async() => {
@@ -36,9 +37,12 @@ const Home = () => {
       }
       setFilterdrooms(rooms);
     }, [filters]);
-
+  
     return (
+      <div>
        <Rooms rooms={filterdrooms} filters={filters} setFilters={setFilters} />
+       
+       </div>
     );
 };
 

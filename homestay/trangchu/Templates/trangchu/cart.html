@@ -128,16 +128,16 @@
 							<div class="column"><a class="btn btn-outline-secondary" href="/home"><i class="icon-arrow-left"></i>&nbsp;Quay lại chọn phòng </a></div>
 							<div class="column">
 								<a id="cart_update" class="btn btn-primary" href="#"  data-toast-position="topRight" data-toast-icon="icon-circle-check" data-toast-title="Your cart" >Update Cart</a>
-								<a class="btn btn-success" href="#">Checkout</a></div>
+								<a class="btn btn-success" target="_blank " href="/checkout">Checkout</a></div>
 				</div>
 			
 			</div>
 			{% else  %}
 			<div style="display:flex; justify-content: center;">
-			<div style="background-color: #EEDDB4; height:50px ; width:400px" class="rounded-pill ">
-				<div style="text-align: center; padding:15px "><i class="bi bi-bag ">  Chưa có phòng nào trong giỏ hàng</i> </div>
-			
-			</div>
+				<div style="background-color: #EEDDB4; height:50px ; width:400px" class="rounded-pill ">
+					<div style="text-align: center; padding:15px "><i class="bi bi-bag ">  Chưa có phòng nào trong giỏ hàng</i> </div>
+				
+				</div>
 			</div>
 			<div class="column"><a class="btn btn-outline-secondary" href="/home"><i class="icon-arrow-left"></i>&nbsp;Quay lại chọn phòng </a></div>
 			{% endif %}

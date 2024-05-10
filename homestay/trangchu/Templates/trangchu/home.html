@@ -3,20 +3,6 @@
 {%block title %}
     <title>LALENDI STUDIO</title>
 {%endblock title%}
-{% block activenavbar%}
-<li class="nav-item col-6 col-lg-auto"><a class="nav-link active" aria-current="page" href="#">Trang chủ</a></li>
-                  <li class="nav-item col-6 col-lg-auto"><a class="nav-link" href="#!">About</a></li>
-                  <li class="nav-item col-6 col-lg-auto"><a class="nav-link " href="/blog" >Blog</a></li>
-                  <li class="nav-item  col-6 col-lg-auto">
-                      <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                          <li><a class="dropdown-item" href="#!">Tất cả sản phẩm</a></li>
-                          <li><hr class="dropdown-divider" /></li>
-                          <li><a class="dropdown-item" href="#!">Toydi</a></li>
-                          <li><a class="dropdown-item" href="#!">Rendi</a></li>
-                      </ul>
-                  </li>
-{% endblock activenavbar%}
 {% block maincontent %}
 <div class="offcanvas offcanvas-start " data-bs-scroll="true" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel" style="width: 300px; height: 600px; background-color:#FDF4E5;" >
     <div class="offcanvas-header ">
@@ -69,13 +55,30 @@
 <header style="font-family: Mulish, sans-serif;">
     
     <div class="py-5 	d-none d-lg-block" >
-        <div class="container px-4 px-lg-5 mt-5 "  >  
-            <form id="form_filter" class="">                      
+        <div class="container px-4 px-lg-5 mt-5 "  > 
+            <div class="row-md-12 text-center">
+                <h1> LỌC PHÒNG </h1 >
+            </div>
+            <div class="row">
+                <div class="col col-md-3"> Check in</div>
+                <div class="col col-md-3"> Check out</div>
+                <div class="col col-md-3"> Khu vực</div>
+                <div class="col col-md-3"> Giá</div>
+
+            </div>
+            <form id="form_filter" method="POST" action="{% url 'home' %}"> 
+                {%csrf_token%}                     
              <div class="row" >
-                <div class="col " style="width:30%">
-                    <h5> Khu vực</h5>                                                                     
-                     <select style="width:100%" class="form-control text-center  form-outline-dark" id="filter1">
-                        <option> Tất cả khu vực</option> 
+                <div class="col col-md-3 ">
+                    <input type="date" style="width:100%; height:100%" id="date">
+                </div>
+                <div class="col col-md-3"   >
+                    <input type="date" style="width:100%; height:100%" id="date">
+                </div>
+                <div class="col col-md-3 " style="width:30%">
+                                                                         
+                     <select style="width:100%" class="row form-control text-center  form-outline-dark" id="filter1" name="addressfilter">
+                        <option value=""> Tất cả khu vực</option> 
                         <option value="Hoàn Kiếm"> Hoàn Kiếm</option>
                         <option value="Ba Đình"> Ba Đình</option>
                         <option value="Tây Hồ"> Tây Hồ</option>
@@ -87,18 +90,10 @@
                     </select>
                                                        
                 </div>                                                  
-                <div class="col" style="width:30%">  
-                    <h5> Lọc theo giá</h5>    
-                    <select style="width:100%" class="form-control text-center  form-outline-dark">
-                            
-                        <option>Giá thấp nhất trước</option>
-                        <option>Giá cao nhất trước</option>
-                        
-
-                    </select>
-                </div>                               
-                <div class="col" style="width:30%">    
-                    <select style="width:100%" class="form-control text-center  form-outline-dark">
+                                     
+                <div class="col col-md-3" style="width:30%">
+                    
+                    <select style="width:100%" class="form-control text-center  form-outline-dark" name="pricesort">
                             
                         <option selected value="Gia4tieng">Giá thấp đến cao</option>
                         <option value="-Gia4tieng">Giá cao đến thấp</option>
@@ -106,22 +101,58 @@
 
                     </select>
                 </div>                                 
-                <div class="col" style="width:30%">
-                    <button style="width:100%" class="booking_button_hieu trans_200_hieu">Book Now</button></div>
-                </div>                                                                       
+                <div class="col col-md-4" style="width:30%">
+                   
+                    
+                </div>                                                                  
              </div> 
+             <div class="row-md-12 text-center">
+                <button type="submit" class="btn btn-secondary" class="width: 200px">Tìm phòng</button>
+            </div>
             </form>
+
         </div>
     </div>
 </header>
 <!--list-->
 <section id="list_room"class="py-5 color_theme" style=" border-top:2px solid #96823D; font-family: Mulish, sans-serif">
     
-    <div class="container px-4 px-lg-5 mt-5">
+    {% if filtervalue %}
         
-        <div class="row row-cols-md-3 justify-content-center" >
+        <div class="container px-4 px-lg-12 mt-5">
+            <div class=""> <h2>Khu vực:{{filtervalue}}</h2></div>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 justify-content-center" >
+                {% for roomfilter in roomfilter%}
+                <div class="col mb-5" >
+                    <div class="card h-110">
+                        <!-- Product image-->
+                        <img class="card-img-top" src=" {{roomfilter.HinhanhURL}} " />
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder"> {{roomfilter.Ten}} </h5>
+                                <h6 class="fw-bolder">Khu vực: {{roomfilter.Diachi}} </h6>
+                                
+                            </div>
+                        </div>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href=" {% url "xemphong" roomfilter.id %} ">Xem phòng</a></div>
+                        </div>
+                    </div>
+                </div> 
+                {% endfor %}
+            </div>     
+        </div>
+     {% else %}
+     
+    {% endif%}
+    <div class="container px-4 px-lg-12 mt-5">
+       
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 justify-content-center" >
             {% for phong in phongs %}
-            <div class="col col-xs-12 mb-5" >
+            <div class="col mb-5" >
                 <div class="card h-110">
                     <!-- Product image-->
                     <img class="card-img-top" src=" {{phong.HinhanhURL}} " />
@@ -136,19 +167,52 @@
                     </div>
                     <!-- Product actions-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href=" {% url "xemphong" phong.id %} ">View options</a></div>
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href=" {% url "xemphong" phong.id %} ">Xem phòng</a></div>
                     </div>
                 </div>
             </div>
                 
-            {% endfor %}
             
+            {% endfor %}
         </div>
-        
+       
     </div>
     
 </section>
+<script>
+    // kiểm tra xem nút add to cart có được click ko
+    $(document).on('click', '#add_cart', function(e){
+        e.preventDefault();
+        //lấy dữ liệu từ select
+         selectedOption = $('#select_id1').val();
+         selectedtext = $('#select_id1 option:selected').text();
+        // thêm gì đó vào back end mà ko cần load page
+        $.ajax({ 
+            type: 'POST',
+            url: '{% url "cart_add" %}',
+            data: {
+                phong_id: $('#add_cart').val(),
+                selected_option: selectedOption, //lấy giá trị select được chọn
+                selectedtext: selectedtext,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+            success: function(json){
+                //Hiển thị json trả về lên console
+                console.log(json)
+                document.getElementById("cart_quantity").textContent = json.qty;
+                
+                
 
+            },
+            error: function(xhr, errmsg, err){
+
+            }
+
+
+        });
+
+    });
 </script>
 {% endblock maincontent %}
 

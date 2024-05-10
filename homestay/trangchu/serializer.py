@@ -8,3 +8,8 @@ class RoomSerializer(serializers.ModelSerializer):
         model = Phong
         fields = '__all__'
 
+class RoomidSerializer(serializers.ModelSerializer):
+   
+    class Meta:
+        model = Phong
+        fields = '__all__'

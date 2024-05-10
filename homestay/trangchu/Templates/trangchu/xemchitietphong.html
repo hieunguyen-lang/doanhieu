@@ -64,8 +64,7 @@
                             
                         </div>
                         <div>
-                        🚿 Tiện nghi: máy chiếu Netflix, phòng tắm khép kín, dầu gội sữa tắm, khăn tắm, bếp từ, nồi lẩu, bát đũa...
-                        🛵 Gửi xe máy, ô tô gần nhà
+                            {{phong.description}}
                          <div>
                         <ul>
                         {% if phong.Netflix  %}
@@ -83,8 +82,8 @@
 						    {% else %}
 							    <li>Bồn tắm: Không</li> 
 						{% endif %}
-                                <li> Địa chỉ: <a href="https://maps.app.goo.gl/Lq4Mt5mNzqe3k9uy7" target="_blank" style="color: black"> 41 Phan Phù Tiên, Cát Linh, Đống Đa, Hà Nội </a> </li>
-                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14338.121400455482!2d105.82166041611664!3d21.02909001346341!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab9edb6b7693%3A0xdc77a4e6af03248d!2zNDEgUC4gUGhhbiBQaMO5IFRpw6puLCBDw6F0IExpbmgsIMSQ4buRbmcgxJBhLCBIw6AgTuG7mWk!5e0!3m2!1sen!2s!4v1714481738052!5m2!1sen!2s" width="400" height="200" style="border:2px solid #96823D;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                <li> Địa chỉ: <a href="{phong.map}" target="_blank" style="color: black"> 41 Phan Phù Tiên, Cát Linh, Đống Đa, Hà Nội </a> </li>
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14338.121400455482!2d105.82166041611664!3d21.02909001346341!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab9edb6b7693%3A0xdc77a4e6af03248d!2zNDEgUC4gUGhhbiBQaMO5IFRpw6puLCBDw6F0IExpbmgsIMSQ4buRbmcgxJBhLCBIw6AgTuG7mWk!5e0!3m2!1sen!2s!4v1714481738052!5m2!1sen!2s" width="300" height="200" style="border:2px solid #96823D;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </ul>
                      
                 </div>
@@ -160,42 +159,21 @@
                     </a>
                 </div>
                 
-            </div>      
+            </div> 
+                 
     </div>
-    <div class="container" style="width:400px; height:450px ; margin-left:15px; padding-top:15px">
-        <div class=" image-container">
-            <a href="{{image_room.image_8.url}}" data-fancybox="gallery" data-width="600" data-height="900">
-                <img class="square-image" src="{{image_room.image_8.url}}" alt="..." />
-            </a>
-        </div>
-    </div>
+    
         {% endfor%}
     {% endif %} 
          <!-- Related items section-->
-    <div class="container px-4 px-lg-5 mt-5">
-            <h2 class="fw-bolder mb-4">Related products</h2>
-            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Product image-->
-                        <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <h5 class="fw-bolder">Fancy Product</h5>
-                                <!-- Product price-->
-                                $40.00 - $80.00
-                            </div>
-                        </div>
-                        <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    </div>
+         
+            <blockquote class="tiktok-embed"  data-video-id="{{phong.tiktokvid}}" style="width: 350px; height:615px" > 
+                <section> 
+                    <a target="_blank" title="@lalendi.studio" href="https://www.tiktok.com/@lalendi.studio?refer=embed"></a> 
+                </section> 
+            </blockquote> 
+            <script async src="https://www.tiktok.com/embed.js"></script>
+      
 </section>
 
 <script>

@@ -3,20 +3,7 @@
 {%block title %}
     <title>LALENDI STUDIO</title>
 {%endblock title%}
-{% block activenavbar%}
-<li class="nav-item col-6 col-lg-auto"><a class="nav-link active" aria-current="page" href="#">Trang chủ</a></li>
-                  <li class="nav-item col-6 col-lg-auto"><a class="nav-link" href="#!">About</a></li>
-                  <li class="nav-item col-6 col-lg-auto"><a class="nav-link " href="/blog" >Blog</a></li>
-                  <li class="nav-item  col-6 col-lg-auto">
-                      <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                          <li><a class="dropdown-item" href="#!">Tất cả sản phẩm</a></li>
-                          <li><hr class="dropdown-divider" /></li>
-                          <li><a class="dropdown-item" href="#!">Toydi</a></li>
-                          <li><a class="dropdown-item" href="#!">Rendi</a></li>
-                      </ul>
-                  </li>
-{% endblock activenavbar%}
+
 {% block maincontent %}
 <div class="offcanvas offcanvas-start " data-bs-scroll="true" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel" style="width: 300px; height: 600px; background-color:#FDF4E5;" >
     <div class="offcanvas-header ">
@@ -75,7 +62,7 @@
                 <div class="col " style="width:30%">
                     <h5> Khu vực</h5>                                                                     
                      <select style="width:100%" class="form-control text-center  form-outline-dark" id="filter1">
-                        <option> Tất cả khu vực</option> 
+                        <option value=""> Tất cả khu vực</option> 
                         <option value="Hoàn Kiếm"> Hoàn Kiếm</option>
                         <option value="Ba Đình"> Ba Đình</option>
                         <option value="Tây Hồ"> Tây Hồ</option>
@@ -83,7 +70,6 @@
                         <option value="Đống Đa"> Đống Đa</option>
                         <option value="Thanh Xuân Cầu Giấy"> T.Xuân- C.Giấy</option>                                    
                                                 
-
                     </select>
                                                        
                 </div>                                                  
@@ -91,8 +77,8 @@
                     <h5> Lọc theo giá</h5>    
                     <select style="width:100%" class="form-control text-center  form-outline-dark">
                             
-                        <option>Giá thấp nhất trước</option>
-                        <option>Giá cao nhất trước</option>
+                        <option value="Gia4tieng">Giá thấp nhất trước</option>
+                        <option value="Hoàn Kiếm">Giá cao nhất trước</option>
                         
 
                     </select>

@@ -1,0 +1,4 @@
+.bold-underline {
+    font-weight: bold; /* Làm cho văn bản đậm */
+    text-decoration: underline; /* Thêm gạch dưới */
+}

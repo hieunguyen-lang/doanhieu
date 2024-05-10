@@ -17,13 +17,13 @@ function App() {
               <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav flex-row flex-wrap bd-navbar-nav me-auto">
                   <li className="nav-item col-6 col-lg-auto">
-                    <NavLink to="/home" className="nav-link" activeClassName="active" >Trang chủ</NavLink>
+                    <a href="http://localhost:8000/home" className="nav-link" activeClassName="active" >Trang chủ</a>
                   </li>
                   <li class="nav-item col-6 col-lg-auto" >
                   <NavLink to="/home" className="nav-link px-2 text-secondary" activeClassName="active">About</NavLink>
                   </li>
                   <li class="nav-item col-6 col-lg-auto" >
-                    <NavLink to="/home" className="nav-link px-2 text-secondary" activeClassName="active">Blog</NavLink>
+                  <a href="http://localhost:8000/blog" className="nav-link" activeClassName="active" >Blog</a>
                   </li>
                   <li className="nav-item  col-6 col-lg-auto">
                     
@@ -38,7 +38,7 @@ function App() {
                   </li>
                 </ul>
                 <form className="d-flex">
-                  <a className="btn btn-outline-dark" style={{color: 'white'}} type="submit" href="/cart">  
+                  <a className="btn btn-outline-dark" style={{color: 'white'}} type="submit" href="http://localhost:8000/cart/">  
                       <i className="bi-cart-fill me-1" style={{color: 'white'}}></i>
                         Giỏ hàng
                       <span className="badge bg-dark text-white ms-1 rounded-pill" id="cart_quantity">0</span>

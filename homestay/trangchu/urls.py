@@ -1,11 +1,14 @@
 from django.urls import path
 
 from .import views 
-from .views import roomapiview
+from .views import *
 urlpatterns =[
-    path('home/',views.home),
+    path('home/',views.home, name='home'),
+    path('search/', views.search, name='search'),
     path('filter', roomapiview.as_view() ),
+    path('filter/roomid', roomid.as_view() ),
     path('cart/',views.cart, name="cart"),
+    path('checkout/', views.checkout, name='checkout'),
     path('add/', views.cart_add, name="cart_add"),
     path('update/', views.cart_select_update, name ="cart_select_update"),
     path('delete/', views.cart_delete, name = "cart_delete" ),

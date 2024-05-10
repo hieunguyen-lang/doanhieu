@@ -1,5 +1,8 @@
+import decimal
+from email.mime import image
 from django.db import models
 from django.contrib.auth.models import User
+from django.forms import CharField, ImageField
 # Create your models here.
 class Phong(models.Model):
     Ten = models.CharField(max_length=200, null=True)
@@ -8,13 +11,15 @@ class Phong(models.Model):
     Beprieng = models.BooleanField(choices=[(True, 'Yes'), (False, 'No')], default=True)
     Bontam = models.BooleanField(choices=[(True, 'Yes'), (False, 'No')], default=True)
     Hinhanh =models.ImageField(null=True, blank=True)
-    Gia4tieng = models.IntegerField(null = True, blank=True)
-    Gia20h_9h = models.IntegerField( blank=True, null=True)
-    Gia10h_19h = models.IntegerField(blank=True, null=True)
-    Gia14h_12h = models.IntegerField(blank=True, null=True)
-
+    Gia4tieng = models.DecimalField(max_digits=10, decimal_places=3 ,null = True, blank=True)
+    Gia20h_9h = models.DecimalField(max_digits=10, decimal_places=3 ,null = True, blank=True)
+    Gia10h_19h = models.DecimalField(max_digits=10, decimal_places=3 ,null = True, blank=True)
+    Gia14h_12h = models.DecimalField(max_digits=10, decimal_places=3 ,null = True, blank=True)
+    description = models.TextField(max_length =1500, blank=True, null=True)
+    tiktokvid = models.CharField(max_length=200, null=True)
+    map = models.CharField(max_length=200, null=True)
     def __str__(self):
-        return self.Ten
+        return str(self.id)
     @property
     def HinhanhURL(self):
         try:
@@ -45,4 +50,24 @@ class image_room(models.Model):
         return url
 
 
+class posts(models.Model):
+    title_imgae = models.ImageField(blank=True, null=True)
+    title = models.ImageField(blank=True, null=True)
 
+class Order(models.Model):
+    full_name = models.CharField(max_length=250)
+    email = models.EmailField(max_length=250)
+    number = models.CharField(max_length=20, blank=True, null=True)
+    date_order = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+
+    def __str__(self):
+        return f'Order- {str(self.id)}'
+class Order_item(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, blank=True, null=True)
+    phong = models.ForeignKey(Phong, on_delete=models.CASCADE, blank=True, null=True)
+    checkin = models.DateTimeField(blank=True, null=True)
+    checkout = models.DateTimeField(blank=True, null=True)
+    price =models.DecimalField(max_digits=10, decimal_places=3)
+
+    def __str__(self):
+        return  f'Order items- {str(self.id)}'

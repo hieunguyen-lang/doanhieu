@@ -14,14 +14,31 @@ from .serializer import *
 
 # Create your views here.
 def home(request):
-    phongs = Phong.objects.order_by('id')
-    context = {'phongs' :phongs}
-    return render(request,'trangchu/home.html', context)
+    
+    if request.method == "POST":
+        filtervalue = request.POST.get('addressfilter', None)
+        pricesort = request.POST.get('pricesort', None)
+        roomfilter = Phong.objects.all()
+        if filtervalue:
+            roomfilter = Phong.objects.filter(Diachi__icontains=filtervalue)
+        if pricesort == 'Gia4tieng':
+            roomfilter = roomfilter.order_by('Gia4tieng')
+        elif pricesort == '-Gia4tieng':
+            roomfilter = roomfilter.order_by('-Gia4tieng')
+        context = {'roomfilter': roomfilter, 'filtervalue':filtervalue}        
+        return render(request,'trangchu/home.html', context)
+    else:
+        phongs = Phong.objects.order_by('id')
+        context = {'phongs' :phongs}
+        return render(request,'trangchu/home.html', context)
 #api 
+def search(request):
+    return render(request, "trangchu/search.html", {})
 class roomapiview(APIView):
 
      def get(self,request):
         s = request.GET.get('s')
+        
         sort = request.GET.get('sort')
         rooms = Phong.objects.all()
 
@@ -33,6 +50,7 @@ class roomapiview(APIView):
         elif sort == 'desc':
             rooms = Phong.objects.order_by('-Gia4tieng')
         
+
         total = rooms.count()
         serializer = RoomSerializer(rooms, many=True)
         return Response( {
@@ -40,10 +58,15 @@ class roomapiview(APIView):
             'Tổng': total
         })
 
-            
-        
-            
+class roomid(APIView):
+    def get(self, request):
+        id = request.GET.get('id')
+        if id:
+            rooms = Phong.objects.filter(id=id) 
 
+        serializer  =RoomidSerializer(rooms, many=True)
+        return Response(serializer.data)
+        
 def cart(request):
     cart =Cart(request)
     cart_items =cart.get_cart_items()
@@ -53,6 +76,8 @@ def cart(request):
     # trả về select giá phòng theo ca đã chọn
     context = {'cart_items': cart_items, 'selected_option': selected_option, 'selected_text': selected_text, 'sum':sum}
     return render(request,'trangchu/cart.html', context)
+def checkout(request):
+    return render(request,'trangchu/checkout.html' )
 def cart_add(request):
     #lay cart
     cart = Cart(request)
