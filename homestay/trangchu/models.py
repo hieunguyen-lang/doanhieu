@@ -11,10 +11,10 @@ class Phong(models.Model):
     Beprieng = models.BooleanField(choices=[(True, 'Yes'), (False, 'No')], default=True)
     Bontam = models.BooleanField(choices=[(True, 'Yes'), (False, 'No')], default=True)
     Hinhanh =models.ImageField(null=True, blank=True)
-    Gia4tieng = models.DecimalField(max_digits=10, decimal_places=3 ,null = True, blank=True)
-    Gia20h_9h = models.DecimalField(max_digits=10, decimal_places=3 ,null = True, blank=True)
-    Gia10h_19h = models.DecimalField(max_digits=10, decimal_places=3 ,null = True, blank=True)
-    Gia14h_12h = models.DecimalField(max_digits=10, decimal_places=3 ,null = True, blank=True)
+    Gia4tieng = models.IntegerField(null = True, blank=True)
+    Gia20h_9h = models.IntegerField(null = True, blank=True)
+    Gia10h_19h = models.IntegerField(null = True, blank=True)
+    Gia14h_12h = models.IntegerField(null = True, blank=True)
     description = models.TextField(max_length =1500, blank=True, null=True)
     tiktokvid = models.CharField(max_length=200, null=True)
     map = models.CharField(max_length=200, null=True)
@@ -67,7 +67,7 @@ class Order_item(models.Model):
     phong = models.ForeignKey(Phong, on_delete=models.CASCADE, blank=True, null=True)
     checkin = models.DateTimeField(blank=True, null=True)
     checkout = models.DateTimeField(blank=True, null=True)
-    price =models.DecimalField(max_digits=10, decimal_places=3)
+    price =models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return  f'Order items- {str(self.id)}'

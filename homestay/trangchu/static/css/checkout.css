@@ -2,3 +2,17 @@
     font-weight: bold; /* Làm cho văn bản đậm */
     text-decoration: underline; /* Thêm gạch dưới */
 }
+.light-underline {
+  
+    text-decoration: underline; /* Thêm gạch dưới */
+}
+.bold-text {
+    font-weight: bold;
+}
+.lext-text {
+    font-weight: light;
+}
+.round-border {
+    border: 2px solid #96823D; 
+    border-radius: 5px;
+}

@@ -4,42 +4,127 @@
     <title>Xác nhận và thanh toán </title>
 {%endblock title%}
 {% block maincontent %}
-    
-        <div class="row" style="margin-left: 80px; margin-right: 80px;">  
-            <div class="col-md-6"> 
-                <div class="row">
-                    <h3>Xác nhận và thanh toán </h3>
+    <div class="container row p-0 my-2 text-right">
+        <div class="col-1">
+            <span> Đặt </span>
+        </div>
+        <div class="col-2">
+            <span> Thanh toán </span>
+        </div>
+        <div class="col-3">
+            <span> Gửi phiếu xác nhận </span>
+        </div>
+    </div>
+        <div class="row p-0 px-4 px-lg-5 my-5" >  
+            <div class="col-md-6 text-left p-0 px-4 px-lg-5 "> 
+                <div class="row  ">
+                    <h2 class="p-0 px-4 px-lg-5">Xác nhận và thanh toán </h2>
                 </div>
-                <div class="row">
-                    <div class="row"> 
-                        <h5>Chuyến đi của bạn </h5>
+                <div class="row " style=" width: 100%; min-height:100px; border:1px solid #96823D ;border-radius:12px;  ">
+                    <div class="col-md-8" >
+                        <div class="row bold-text" style="padding-top:15px; padding-left:20px" >
+                            Giá tốt.
+                        </div>
+                        <div class="row responsive " style=" padding-left:20px" >
+                            Những ngày bạn chọn có giá thấp hơn $8 so với mức giá trung bình theo đêm trong 3 tháng qua.
+                        </div>
                     </div>
-                    <div class="row container">
-                        <div class="row">
-                            <div class="col-md-8">                              
-                                    <p>Ngày </p>
-                                    <label> Ngày 13 - Ngày 18 tháng 5 </label>                               
+                    <div class="col-md-4 text-right p-3">
+                        <i class="bi bi-tags-fill h1" style=" color:#ce3644"></i>
+                    </div>
+                </div>
+                <div class="row " style="margin-top:30px; margin-bottom:30px; border-bottom:1px solid #96823D; ">
+                    <div class="row " style="margin-bottom: 24px"> 
+                        <h4  class="p-0">Chuyến đi của bạn </h4>
+                    </div>
+                    <div class="row p-0">
+                        <div class="row ">
+                            <div class="col-md-8" style="margin-bottom:24px">                              
+                                    <div class=" mb-0 " style="font-weight: bold">Ngày </div>
+                                    <div class="mb-0 "> Ngày 13 - Ngày 18 tháng 5 </div>                               
                             </div> 
-                            <div class="col-md-4"> 
-                                <div class="bold-underline"> Chỉnh sửa </div>                              
+                            <div class="col-md-4 p-0"> 
+                                <p class="bold-underline text-right p-0" style=""> Chỉnh sửa </p>                              
                             </div> 
                             
                         </div>
-                        <div class="row" style="margin-top: 10px">
+                        <div class="row" style="margin-bottom:30px;">
                             <div class="col-md-8"> 
-                                <p>Khách </p>
-                                <label>1 khách</label>
+                                <p class="mb-0" style="font-weight: bold">Khách </p>
+                                <label class="mb-0">1 khách</label>
                             </div>   
-                            <div class="col-md-4"> 
-                                <p class="bold-underline"> Chỉnh sửa </p>
+                            <div class="col-md-4 p-0"> 
+                                <p class="bold-underline text-right"> Chỉnh sửa </p>
                             </div>    
                         </div>
                     </div>
                 </div>
+                <div class="row" style=" margin-top: 30px">
+                    <h4  class=" p-0">Thông tin liên hệ </h4>
+                </div>
+                <div class="row" style=" margin-top: 30px">
+                    <label class="row"> Họ và tên </label>    
+                    <input type="text" style="width:100%"  placeholder="Nguyễn Văn A"  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                 </div>
+                <div class="row"> 
+                    <div class="col-md-6 p-1" style=" margin-top: 10px">
+                        <div class="row p-0">
+                            <label > E-mail </label>    
+                        </div>
+                        <input type="text" style="width:100%" placeholder="abc@gmail.com" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                    </div>
+                    <div class="col-md-6 p-1 text-right" style=" margin-top: 10px">
+                        <div class="row p-0 text-left">
+                            <label > Số điện thoại </label>    
+                        </div>
+                        <input ms-code-phone-number="ca,gb,us" style="width:100%" maxlength="256" name="Phone" data-name="Phone" placeholder="091 234 56 78" type="text" id="Phone" required="" autocomplete="off" data-intl-tel-input-id="0">    
+                    </div>
+                </div>
+                <div class="row p-0" style="margin-top:3px; margin-bottom:20px">
+                    <small class="p-0"> Chúng tôi sẽ gọi điện hoặc nhắn tin cho bạn để xác nhận số điện thoại.</small>
+                </div>
+                <div class="row p-0">
+                    <button type="submit" style=" width: 100%; height:50px; border:1px solid #FDF4E5 ;border-radius:12px; color:white; background-color: #ce3644"> Tiếp tục </button>
+                </div>
             </div>
-            <div class="col-md-6"> 
-                <div class="row">
-                    <h3>Chuyến đi của bạn </h3>
+            <div class="col-md-6 text-left p-0 px-md-4 px-lg-5"> 
+                <div class="row " style="margin-bottom: 24px"> 
+                    <div class="container " style=" width: 80%; min-height:500px; border:1px solid #96823D ;border-radius:12px; margin-top:46.4px;   ">
+                        <div class="row p-0 my-5 px-4" style="border-bottom:1px solid #96823D">
+                            <div class="col-md-3  p-0" style="margin-bottom:20px">
+                                <img src="{% static "/images/no3.jpg" %}"  style=" width: 100px; height:120px; border-radius:10px" />
+                            </div>
+                            <div class="col-md-9 p-0  px-md-5 px-lg-0" style="">
+                                <div class="row bold-text  ">
+                                    <h5>Tên phòng trần duy hưng</h5>
+                                </div>
+                                <div class="row"> 
+                                    <small> Toàn bộ căn phòng dịch vụ </small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row  p-0" style=" margin-right:20px; margin-left:20px; margin-bottom:15px; margin-top:15px">
+                            <h4 class="p-0">Chi tiết giá </h4>
+                        </div>
+                        
+                        <div class="row  p-0 text-left" style=" margin-right:20px; margin-left:20px; margin-bottom:20px">
+                            <div class="col p-0" style="text-decoration: underline; font-size:18px "> 340000đ x 5 đêm  </div>
+                            <div class="col p-0 text-right" style=" font-size:18px "> 1500000đ  </div>
+                        </div>
+                        <div class="row  p-0 text-left" style=" margin-right:20px; margin-left:20px; margin-bottom:20px">
+                            <div class="col p-0" style="text-decoration: underline; font-size:18px "> Ưu đãi đặc biệt  </div>
+                            <div class="col p-0 text-right" style=" font-size:18px ;color: green; "> -0đ  </div>
+                        </div>
+                        <div class="row  p-0 text-left" style="border-top:1px solid #96823D; margin-right:20px; margin-left:20px; margin-bottom:20px">
+                            <div class="col p-0" style="margin-top:15px" >
+                                 <h5 class="p-0 bold-underline " style="font-size:20px ">Tổng </h5> 
+                            </div>
+                            <div class="col p-0 text-right" style="margin-top:15px">
+                                <h5 class="p-0" style="font-size:20px ">1500000đ </h5> 
+                           </div>
+                        </div>
+                       
+                    </div>
                 </div>
             </div>
         </div>

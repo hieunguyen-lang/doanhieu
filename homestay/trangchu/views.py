@@ -19,7 +19,9 @@ def home(request):
         filtervalue = request.POST.get('addressfilter', None)
         pricesort = request.POST.get('pricesort', None)
         roomfilter = Phong.objects.all()
-        if filtervalue:
+        if filtervalue =="all":
+            roomfilter = Phong.objects.all()
+        elif filtervalue:
             roomfilter = Phong.objects.filter(Diachi__icontains=filtervalue)
         if pricesort == 'Gia4tieng':
             roomfilter = roomfilter.order_by('Gia4tieng')

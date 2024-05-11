@@ -10,7 +10,7 @@
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="container " style="padding:15px">
-        <div class="form-check" style="border-top:1px solid black">
+        <div class="form-check" style="border-top:2px solid black">
             <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
             <label class="form-check-label" for="exampleRadios1">
               Hoàn Kiếm
@@ -54,93 +54,68 @@
 <!--header-->
 <header style="font-family: Mulish, sans-serif;">
     
-    <div class="py-5 	d-none d-lg-block" >
-        <div class="container px-4 px-lg-5 mt-5 "  > 
-            <div class="row-md-12 text-center">
-                <h1> LỌC PHÒNG </h1 >
-            </div>
-            <div class="row">
-                <div class="col col-md-3"> Check in</div>
-                <div class="col col-md-3"> Check out</div>
-                <div class="col col-md-3"> Khu vực</div>
-                <div class="col col-md-3"> Giá</div>
-
-            </div>
-            <form id="form_filter" method="POST" action="{% url 'home' %}"> 
-                {%csrf_token%}                     
-             <div class="row" >
-                <div class="col col-md-3 ">
-                    <input type="date" style="width:100%; height:100%" id="date">
+    <div class="py-5 "  >
+        <div class=" px-sm-4 px-lg-5 container py-1" style="border:1px solid #F5F5F5; border-radius:25px; box-shadow:0px 0px 10px 0px ;" >
+            <form id="form_filter" method="POST" action="{% url 'home' %}">  
+                {%csrf_token%} 
+                <div class="row px-md-0">
+                    <div class="col-md-3 col-sm-6 p-1" >                                                                 
+                            <select style="width:100%; height:100%; background-color:#FDF4E5; opacity:1; border: 1px solid black; border-radius:25px" class=" text-center p-0"  name="addressfilter">
+                            <option value="all"> Tất cả khu vực</option> 
+                            <option value="Hoàn Kiếm"> Hoàn Kiếm</option>
+                            <option value="Ba Đình"> Ba Đình</option>
+                            <option value="Tây Hồ"> Tây Hồ</option>
+                            <option value="Hai Bà Trưng"> Hai Bà Trưng</option>
+                            <option value="Đống Đa"> Đống Đa</option>
+                            <option value="Thanh Xuân Cầu Giấy"> T.Xuân- C.Giấy</option>                                    
+                        </select>                                                      
+                    </div>
+                    <div class="col-md-3 col-sm-6 p-1" > 
+                        <input type="date" class="text-center" style="width:100%; height:100%; background-color:#FDF4E5; border: 1px solid black; border-radius:25px; " id="date">
+                    </div>
+                    <div class="col-md-3 col-sm-6 p-1" > 
+                            <input type="date" class="text-center" style="width:100%; height:100%; background-color:#FDF4E5; opacity:1; border: 1px solid black; border-radius:25px; " id="date">
+                    </div>
+                    <div class="col-md-2 col-sm-6 p-1"> 
+                            <select style="width:100%; height:100%; background-color:#FDF4E5; border: 1px solid black; border-radius:25px" class="text-center p-0"  name="pricesort">
+                                <option style="opacity:1" selected value="Gia4tieng">Giá thấp đến cao</option>
+                                <option style="opacity:1" value="-Gia4tieng">Giá cao đến thấp</otion>
+                            </select>
+                    </div>
+                    <div class="col-md-1 col-sm-12 p-1">
+                        <button type="submit" class="btn btn-secondary " style="width: 100%; height:100%; border:1px solid #FDF4E5 ;border-radius:25px; color:white; background-color: #ce3644">
+                            <i class="bi bi-search"></i> 
+                        </button>
+                    </div>
                 </div>
-                <div class="col col-md-3"   >
-                    <input type="date" style="width:100%; height:100%" id="date">
-                </div>
-                <div class="col col-md-3 " style="width:30%">
-                                                                         
-                     <select style="width:100%" class="row form-control text-center  form-outline-dark" id="filter1" name="addressfilter">
-                        <option value=""> Tất cả khu vực</option> 
-                        <option value="Hoàn Kiếm"> Hoàn Kiếm</option>
-                        <option value="Ba Đình"> Ba Đình</option>
-                        <option value="Tây Hồ"> Tây Hồ</option>
-                        <option value="Hai Bà Trưng"> Hai Bà Trưng</option>
-                        <option value="Đống Đa"> Đống Đa</option>
-                        <option value="Thanh Xuân Cầu Giấy"> T.Xuân- C.Giấy</option>                                    
-                                                
-
-                    </select>
-                                                       
-                </div>                                                  
-                                     
-                <div class="col col-md-3" style="width:30%">
-                    
-                    <select style="width:100%" class="form-control text-center  form-outline-dark" name="pricesort">
-                            
-                        <option selected value="Gia4tieng">Giá thấp đến cao</option>
-                        <option value="-Gia4tieng">Giá cao đến thấp</option>
-                        
-
-                    </select>
-                </div>                                 
-                <div class="col col-md-4" style="width:30%">
-                   
-                    
-                </div>                                                                  
-             </div> 
-             <div class="row-md-12 text-center">
-                <button type="submit" class="btn btn-secondary" class="width: 200px">Tìm phòng</button>
-            </div>
             </form>
-
         </div>
     </div>
 </header>
+
 <!--list-->
-<section id="list_room"class="py-5 color_theme" style=" border-top:2px solid #96823D; font-family: Mulish, sans-serif">
+<section id="list_room"class="py-3 color_theme" style=" border-top:2px solid #96823D; font-family: Mulish, sans-serif">
     
     {% if filtervalue %}
         
-        <div class="container px-4 px-lg-12 mt-5">
-            <div class=""> <h2>Khu vực:{{filtervalue}}</h2></div>
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 justify-content-center" >
+        <div class="container mt-5 px-lg-12" >
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 " style=" border-radius:24px">
                 {% for roomfilter in roomfilter%}
                 <div class="col mb-5" >
-                    <div class="card h-110">
+                <a href=" {% url "xemphong" roomfilter.id %} " style="color: black;cursor: pointer;">
+                    <div class="">
                         <!-- Product image-->
-                        <img class="card-img-top" src=" {{roomfilter.HinhanhURL}} " />
+                        <img class="card-img-top " src=" {{roomfilter.HinhanhURL}}"  style=" border-radius:14px"/>
                         <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
+                        <div class="card-body p-0 my-2 text-left">
+                            <div class="text-left">
                                 <!-- Product name-->
-                                <h5 class="fw-bolder"> {{roomfilter.Ten}} </h5>
-                                <h6 class="fw-bolder">Khu vực: {{roomfilter.Diachi}} </h6>
-                                
+                                <h6 class="fw-bolder"> {{roomfilter.Ten}},{{roomfilter.Diachi}} </h6>
+                                <span style="font-weight:bold"> {{roomfilter.Gia4tieng}}đ</span><span>/đêm </span> 
                             </div>
                         </div>
-                        <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href=" {% url "xemphong" roomfilter.id %} ">Xem phòng</a></div>
-                        </div>
                     </div>
+                </a>
                 </div> 
                 {% endfor %}
             </div>     
@@ -148,32 +123,28 @@
      {% else %}
      
     {% endif%}
-    <div class="container px-4 px-lg-12 mt-5">
+    <div class="container  mt-5 px-lg-0">
        
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 justify-content-center" >
-            {% for phong in phongs %}
-            <div class="col mb-5" >
-                <div class="card h-110">
-                    <!-- Product image-->
-                    <img class="card-img-top" src=" {{phong.HinhanhURL}} " />
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Product name-->
-                            <h5 class="fw-bolder"> {{phong.Ten}} </h5>
-                            <h6 class="fw-bolder">Khu vực: {{phong.Diachi}} </h6>
-                            
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4  " style=" border-radius:24px">
+                {% for phong in phongs%}
+                <a href=" {% url "xemphong" phong.id %} " style="color: black;cursor: pointer;">
+                <div class="col mb-5" >
+                    <div class="">
+                        <!-- Product image-->
+                        <img class="card-img-top " src=" {{phong.HinhanhURL}}"  style=" border-radius:14px"/>
+                        <!-- Product details-->
+                        <div class="card-body p-0 my-2 text-left">
+                            <div class="">
+                                <!-- Product name-->
+                                <h6 class="fw-bolder"> {{phong.Ten}},{{phong.Diachi}} </h6>
+                                <span style="font-weight:bold"> {{phong.Gia4tieng}}đ</span><span>/đêm </span>
+                                   
+                            </div>
                         </div>
                     </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href=" {% url "xemphong" phong.id %} ">Xem phòng</a></div>
-                    </div>
-                </div>
-            </div>
-                
-            
-            {% endfor %}
+                </div> 
+                </a>
+                {% endfor %}
         </div>
        
     </div>
