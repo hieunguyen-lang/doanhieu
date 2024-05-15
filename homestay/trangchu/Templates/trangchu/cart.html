@@ -27,42 +27,44 @@
 						<thead >
 							<tr>
 								<th style="width:40%;"> Phòng </th>
-								<th class="text-center" style="width:20%;">Ca</th>
+								<th class="text-center" style="width:30%;">Thời gian đặt</th>
+								<th class="text-center" style="width:10%;">Tổng ngày</th>
 								<th class="text-center" style="width:20%;"> Giá tiền</th>
 								<th class="text-center" style="width:10%;">Discount</th>
 								<th class="text-center"	style="width:10%;">
-									
+								<th class="text-center"	style="width:10%;">
 								</th>
 							</tr>
 						</thead>
 					
 						<tbody>
-							{% for phong in cart_items %}
+							
+							{% for items in cart_items %}
 							
 								<tr style="border-bottom:1px solid #96823D">
 										<td>
 											<div class="product-item">
-												<a class="product-thumb" href="#"><img src=" {{phong.HinhanhURL}} " alt="room"></a>
+												<a class="product-thumb" href="{% url "xemphong" items.phong.id %}"><img src=" {{items.phong.HinhanhURL}} " alt="room"></a>
 												<div class="product-info">
 													<h4 class="product-title">
-														<a href="#">{{phong.Ten}}</a>
+														<a href="{% url "xemphong" items.phong.id %}">{{items.phong.Ten}}</a>
 													</h4>
 													<span>
-														{% if phong.Netflix  %}
+														{% if items.phong.Netflix  %}
 														<em>Netflix:</em> có
 														{% else %}
 														<em>Netflix:</em> không
 														{% endif %}
 													</span>
 													<span>
-														{% if phong.Bontam  %}
+														{% if items.phong.Bontam  %}
 														<em>Bồn tắm:</em> có
 														{% else %}
 														<em>Bồn tắm:</em> không
 														{% endif %}
 													</span>
 													<span>
-														{% if phong.Beprieng  %}
+														{% if items.phong.Beprieng  %}
 														<em>Bếp riêng:</em> có
 														{% else %}
 														<em>Bếp riêng:</em> không
@@ -73,40 +75,31 @@
 										</td>
 										
 										<td  >
-											<div class="count-input" style="width:200px;">
-												<select id="select{{phong.id}}" data-index="{{phong.id}}"  class="form-control text-center" style="width: 100%;">
-													{% for key, value in selected_option.items %}
-													{% if key == phong.id|slugify%}
-												<option selected value="{{value.Gia}}"> {{value.Ca}} </option>
-													{% endif %}
-													{% endfor %}
-												
-												<option value="{{phong.Gia4tieng}}">10h-14h cùng ngày</option>
-												<option value="{{phong.Gia4tieng}}">15h-19h cùng ngày</option>
-												<option value="{{phong.Gia20h_9h}}">20h-9h hôm sau</option>
-												<option value="{{phong.Gia10h_19h}}">10h-19h cùng ngày</option>
-												<option value="{{phong.Gia14h_12h}}">14h-12h hôm sau</option>
-												
-												</select>
+											<div class="text-center">
+												<span>{{items.checkin}} - {{items.checkout}}</span>
 											</div>
 										</td>
-										{% for key, value in selected_option.items %}
-										{% if key == phong.id|slugify%}
-										<td class="text-center text-lg text-medium"> {{value.Gia}} </td>
-										{% endif %}
-										{% endfor %}	
+										<td  >
+											<div class="text-center">
+												<span>{{items.lenday}} ngày </span>
+											</div>
+										</td>
+										<td class="text-center text-lg text-medium"> {{items.sumprice}}đ </td>
+								
 										
 										<td class="text-center text-lg text-medium">$18.00
 
 										</td>
 										<td class="text-center">
-											<button id="deletebtn" data-index=" {{phong.id}} " class="btn btn-sm btn-outline-danger">Xoá phòng</button>
+											<button id="deletebtn" data-index=" {{items.phong.id}} " class="btn btn-sm btn-outline-danger">Xoá phòng</button>
+										</td>
+										<td>
+											<a class="btn btn-success"  data-index=" {{items.phong.id}}" target="_blank " value="{{items.phong.id}}" href="{% url "checkout" items.phong.id %}">Checkout</a>
 										</td>
 										
-										{% endfor %}
 								</tr>
 								
-							
+								{% endfor %}
 						</tbody>
 						
 				</table>
@@ -128,7 +121,8 @@
 							<div class="column"><a class="btn btn-outline-secondary" href="/home"><i class="icon-arrow-left"></i>&nbsp;Quay lại chọn phòng </a></div>
 							<div class="column">
 								<a id="cart_update" class="btn btn-primary" href="#"  data-toast-position="topRight" data-toast-icon="icon-circle-check" data-toast-title="Your cart" >Update Cart</a>
-								<a class="btn btn-success" target="_blank " href="/checkout">Checkout</a></div>
+								
+							</div>
 				</div>
 			
 			</div>
@@ -203,6 +197,6 @@
 			});
 
 		})
-
+	
 	</script>
  {%endblock maincontent%}

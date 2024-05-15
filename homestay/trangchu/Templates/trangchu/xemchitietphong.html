@@ -3,210 +3,268 @@
 {%block title %}
 <title>LALENDI STUDIO - Thông tin chi tiết phòng</title>
 {%endblock title%}
-{% block activenavbar%}
-<li class="nav-item col-6 col-lg-auto"><a class="nav-link " aria-current="page" href="#">Trang chủ</a></li>
-                  <li class="nav-item col-6 col-lg-auto"><a class="nav-link" href="#!">About</a></li>
-                  <li class="nav-item col-6 col-lg-auto"><a class="nav-link " href="/blog" >Blog</a></li>
-                  <li class="nav-item col-6 col-lg-auto">
-                      <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Tất cả sản phẩm</a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">Toydi</a></li>
-                        <li><a class="dropdown-item" href="#!">Rendi</a></li>
-                    </ul>
-                  </li>
-{% endblock activenavbar%}
+
 {% block maincontent %}
 <!--xemchitiet phong-->
-
-<section class="py-5" style="background-color: #FDF4E5; border-top:2px solid #96823D; font-family: Mulish, sans-serif">
-    <div class="container px-4 px-lg-5 my-5" style="border-bottom:2px solid black">
-        <div class="row gx-4 gx-lg-5 align-items-center" >
-            <div class="col-md-6">
-                <h1 class="display-5 fw-bolder"> {{phong.Ten}} </h1>           
-                <img style="border:2px solid #96823D;" class="card-img-top mb-5 mb-md-0" src="{{phong.HinhanhURL}}" alt="..." />
-            </div>
-            <div class="col-md-6">
-                
-                <div class="fs-5 mb-5">
-                    <div class=" h2 text-md-center" > Bảng giá & khung giờ </div>
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+<section class="py-3" style="background-color: #FDF4E5; font-family: Mulish, sans-serif">
+    <div class="container px-2 px-lg-2 my-1">
+        <div class="row px-0"> 
+            <h3 class=" fw-bolder"> {{phong.Ten}} </h3> 
+        </div>
+        {% if phong.image_room_set.all %}
+            {% for image_room in phong.image_room_set.all%}
+        <div class="row p-0" style=""> 
+            <div class="col-sm-6 px-2" style="">
+                <div class="row px-2 " >
+                    <div class="col " style="height:249.5px">
+                        <div class="image-container" >                      
+                            <a href="{{image_room.image_1.url}}" data-fancybox="gallery" data-width="550" data-height="850"><img style="border-radius:15px" class="square-image" src="{{image_room.image_1.url}}" alt="..." /></a>
+                        </div>                       
+                    </div>
+                     <div class="col" style="height:249.5px">
+                        <div class="image-container ">                      
+                            <a href="{{image_room.image_2.url}}" data-fancybox="gallery" data-width="550" data-height="850"><img style="border-radius:15px" class="square-image" src="{{image_room.image_2.url}}" alt="..." /></a>
+                        </div>                       
+                    </div>
                     
-                     <div class="table-responsive ">
-                        
-                           
-                                <table style="background-color: #FDF4E5; width:100%; border-top:2px solid #96823D; border-bottom:2px solid #96823D; font-size: 16px;">
-                            
-                                 <thead >
-                                    
-                                    <tr style="border-bottom:2px solid #96823D;" >
-                                        <th style="width: 20%"> 10h-14h</th>
-                                        <th style="width: 20%"> 15h-19h </th>
-                                        <th style="width: 20%"> 20h-09h </th>
-                                        <th style="width: 20%"> 10h-19h </th>
-                                        <th style="width: 20%"> 14h-12h </th>
-                                     </tr>
-                                 </thead>
-                                
-                                 <tbody>
-                                    <tr style="color: #D03645">
-                                        <td style="width: 20%">{{phong.Gia4tieng}}đ</td>
-                                        <td style="width: 20%">{{phong.Gia4tieng}}đ</td>
-                                        <td style="width: 20%">{{phong.Gia20h_9h}}đ</td>
-                                        <td style="width: 20%">{{phong.Gia10h_19h}}đ</td>
-                                        <td style="width: 20%">{{phong.Gia14h_12h}}đ</td>
-                                    </tr>
-
-                                 </tbody>
-                    
-                                </table>
-                           
-                            
-                        </div>
-                        <div>
-                            {{phong.description}}
-                         <div>
-                        <ul>
-                        {% if phong.Netflix  %}
-							    <li>Netflix: Có</li> 
-						    {% else %}
-							    <li>Netflix: Không</li> 
-						{% endif %}
-                        {% if phong.Beprieng  %}
-							    <li>Bếp riêng: Có</li> 
-						    {% else %}
-							    <li>Bếp riêng: Không</li> 
-						{% endif %}
-                        {% if phong.Bontam  %}
-							    <li>Bồn tắm: Có</li> 
-						    {% else %}
-							    <li>Bồn tắm: Không</li> 
-						{% endif %}
-                                <li> Địa chỉ: <a href="{phong.map}" target="_blank" style="color: black"> 41 Phan Phù Tiên, Cát Linh, Đống Đa, Hà Nội </a> </li>
-                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14338.121400455482!2d105.82166041611664!3d21.02909001346341!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab9edb6b7693%3A0xdc77a4e6af03248d!2zNDEgUC4gUGhhbiBQaMO5IFRpw6puLCBDw6F0IExpbmgsIMSQ4buRbmcgxJBhLCBIw6AgTuG7mWk!5e0!3m2!1sen!2s!4v1714481738052!5m2!1sen!2s" width="300" height="200" style="border:2px solid #96823D;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                        </ul>
-                     
                 </div>
-                <p class="lead">Cần gì bạn cứ direct ad tư vấn ngay và luôn ạ ❤️</p>
-                <div class="d-flex row">
-                    <div class="col">
-                       
+                <div class="row p-2 " >
+                    <div class="col" style="height:249.5px">
+                        <div class="image-container ">                      
+                            <a href="{{image_room.image_3.url}}" data-fancybox="gallery" data-width="550" data-height="850"><img style="border-radius:15px" class="square-image" src="{{image_room.image_3.url}}" alt="..." /></a>
+                        </div>                       
+                    </div>
+                     <div class="col" style="height:249.5px">
+                        <div class="image-container ">                      
+                            <a href="{{image_room.image_4.url}}" data-fancybox="gallery" data-width="550" data-height="850"><img style="border-radius:15px" class="square-image" src="{{image_room.image_5.url}}" alt="..." /></a>
+                        </div>                       
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="col-sm-6 px-2">
+                <div class="row px-2 px-0" >
+                    <div class="col" style="height:249.5px">
+                        <div class="image-container" >                      
+                            <a href="{{image_room.image_5.url}}" data-fancybox="gallery" data-width="550" data-height="850"><img style="border-radius:15px" class="square-image" src="{{image_room.image_5.url}}" alt="..." /></a>
+                        </div>                       
+                    </div>
+                     <div class="col" style="height:249.5px">
+                        <div class="image-container ">                      
+                            <a href="{{image_room.image_6.url}}" data-fancybox="gallery" data-width="550" data-height="850"><img style="border-radius:15px" class="square-image" src="{{image_room.image_6.url}}" alt="..." /></a>
+                        </div>                       
+                    </div>
+                    
+                </div>
+                <div class="row p-2 px-0" >
+                    <div class="col" style="height:249.5px">
+                        <div class="image-container ">                      
+                            <a href="{{image_room.image_7.url}}" data-fancybox="gallery" data-width="550" data-height="850"><img style="border-radius:15px" class="square-image" src="{{image_room.image_7.url}}" alt="..." /></a>
+                        </div>                       
+                    </div>
+                     <div class="col" style="height:249.5px">
+                        <div class="image-container ">                      
+                            <a href="{{image_room.image_8.url}}" data-fancybox="gallery" data-width="550" data-height="850"><img style="border-radius:15px" class="square-image" src="{{image_room.image_8.url}}" alt="..." /></a>
+                        </div>                       
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </div>
+            {% endfor%}
+        {% endif %} 
+    </div>
+    <div class="container px-2 px-lg-2 py-3">
+        <div class="row ">
+            <div class="col-md-8">
+                <div class="row py-3" style="border-bottom: 1px solid #96823D;"> 
+                    <p>{{phong.description}}</p>
+                </div>
+                <div class="row py-3" > 
+                    <div class="col-md-1">
+                        <i class="bi bi-door-open" style="font-size:24px"></i>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row p-0" style="text-decoration: none; font-size:14px; font-weight: bold "> Tự nhận phòng  </div>
+                        <div class="row p-0 text-right" style=" font-size:12px "> Bạn có thể tự nhận phòng theo hướng dẫn   </div>
+                    </div>
+                </div>
+                <div class="row py-4"> 
+                    <div class="col-md-1">
+                        <i class="bi bi-calendar2" style="font-size:24px"></i>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row p-0" style="text-decoration: none; font-size:14px; font-weight: bold "> Huỷ miễn phí trong 24h  </div>
+                        <div class="row p-0 text-right" style=" font-size:12px "> Được hoàn tiền đầy đủ nếu bạn thay đổi kế hoạch.   </div>
+                    </div>
+                </div>
+                <div class="row py-4" style="border-top: 1px solid #96823D;"> 
+                    <h5>Nơi này có những gì cho bạn</h5>
+                </div>
+                <div class="row"> 
+                    <div class="col-md-1">
+                        <i class="bi bi-wifi" style="font-size:24px"></i>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row p-1" style="text-decoration: none; font-size:18px; font-weight: none "> Wi-fi </div>
+                    </div>
+                </div>
+                <div class="row"> 
+                    <div class="col-md-1">
+                        <i class="bi bi-tv" style="font-size:24px"></i>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row p-1" style="text-decoration: none; font-size:18px; font-weight: none "> TV với truyền hình cáp tiêu chuẩn </div>
+                    </div>
+                </div>
+                {% if phong.Netflix  %}
+                <div class="row"> 
+                    <div class="col-md-1">
+                        <i class="bi bi-film" style="font-size:24px"></i>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row p-1" style="text-decoration: none; font-size:18px; font-weight: none ">Netflix</div>
+                    </div>
+                </div>
+				{% endif %}
+                {% if phong.Bontam  %}
+                <div class="row"> 
+                    <div class="col-md-1">
+                        <i class="bi bi-droplet" style="font-size:24px"></i>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row p-1" style="text-decoration: none; font-size:18px; font-weight: none ">Bồn tắm</div>
+                    </div>
+                </div>
+				{% endif %}
+                {% if phong.Beprieng  %}
+                <div class="row" style="padding-bottom:2rem"> 
+                    <div class="col-md-1">
+                        <i class="bi bi-egg-fried" style="font-size:24px"></i>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row p-1" style="text-decoration: none; font-size:18px; font-weight: none ">Bếp riêng</div>
+                    </div>
+                </div>
+				{% endif %}
+                <div class="row py-4" style="border-top: 1px solid #96823D;">   
+                        <h5>Nơi bạn sẽ đến:{{phong.Diachi}}</h5> 
+                </div>
+                <div class="row "> 
+                    <a href="{phong.map}" target="_blank" style="color: black" class="p-0"><div class="row px-4 py-0" style="text-decoration: underline; font-size:18px; font-weight: none "> Bấm vào đây để xem địa chỉ</div></a>
+                </div>
+            </div>
+            <div class="col-md-4" >
+                <div class="container" style="border: 1px solid #96823D; border-radius:20px;box-shadow:0px 0px 10px -2px ;">
+                    <div class="row mt-4 px-4"> 
+                        <h5 class="col px-0" id="price" value="{{phong.Gia4tieng}}"> {{phong.Gia4tieng}}đ /đêm</h5>   
+                    </div>
+                    <div class="px-4 container" > 
+                        <div class="row " style="border:1px solid #96823D;border-radius:8px;">
+                            <div class="col-sm-6" style="border-right:1px solid #96823D" >
+                                <div class="row px-2 py-1" style="font-size:12px">Ngày nhận phòng</div>
+                                <div class="row ">
+                                    <input type="date" id="check_in" class="text-left px-2 " style="width:100%; height:100%; background-color:#FDF4E5; border:none " >
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row px-2 py-1" style="font-size:12px">Ngày trả phòng</div>
+                                <div class="row ">
+                                    <input type="date" id="check_out" class="text-left px-2 " style="width:100%; height:100%; background-color:#FDF4E5; border:none " >
+                                </div>
+                            </div>
+                            <div class="col py-2" style="border-top:1px solid #96823D">
+                                <div class="row px-2" style="font-size:14px">Chỗ ở này cho phép tối đa 2 khách, không tính em bé. Không được phép mang theo thú cưng.
+                                </div>
+                                <div class="row px-2" style="font-size:14px" id="checkin_element">check_in </div>
+                                <div class="row px-2" style="font-size:14px" id="checkout_element">check_out</div>
+                            </div>
                             
-                            <select id="select_id1" class="form-control text-center  form-outline-dark" style="max-width: 12rem; background-color: #FDF4E5">
+                        </div> 
+                        <div class="row mt-4 p-0">
+                            <div class="col-sm-2 text-center p-0" >
+                                <button type="button" class="btn btn-success" value="{{phong.id}}" id="add_cart" style=" width: 100%; height:50px;border-radius:12px;border:none; background-color: #96823D">
+                                    <i class="bi bi-cart"></i>
                                
-                                    <option value="{{phong.Gia4tieng}}">10h-14h cùng ngày</option>
-                                    <option value="{{phong.Gia4tieng}}">15h-19h cùng ngày</option>
-                                    <option value="{{phong.Gia20h_9h}}">20h-9h hôm sau</option>
-                                    <option value="{{phong.Gia10h_19h}}">10h-19h cùng ngày</option>
-                                    <option value="{{phong.Gia14h_12h}}">14h-12h hôm sau</option>
-                                
-                            </select>
-                            
+                                </button>
+                            </div>
+                            <div class="col-sm-10 p-0">
+                                <button type="submit" class="btn btn-success" id="order_button" style=" width: 100%; height:50px; border:1px solid #FDF4E5 ;border-radius:12px; color:white; background-color: #ce3644"> Đặt phòng </button>
+                            </div>
+                        </div>
                         
-                     </div>
-                     <div class="col">
-                        <button class="btn btn-outline-dark flex-shrink-0" type="button" value="{{phong.id}}" id="add_cart">
-                            <i class="bi-cart-fill me-1"></i>
-                            Add to cart
-                        </button>
+                        <div class="row mt-2 text-center" style="font-size:12px">
+                            <p>Bạn vẫn chưa bị trừ tiền</p>
+                        </div>
+                        <div class="row  mt-1 text-left" >
+                            <div class="col p-0" style="text-decoration: underline; font-size:16px" id="len_element"> {{phong.Gia4tieng}} x 3 đêm  </div>
+                            <div class="col p-0 text-right" style=" font-size:16px" id="sum_element"> 0đ  </div>
+                        </div>
+                        <div class="row  mt-1 py-2 text-left" >
+                            <div class="col p-0" style="text-decoration: underline; font-size:16px "> Ưu đãi  </div>
+                            <div class="col p-0 text-right" style=" font-size:16px "> 0đ  </div>
+                        </div>
+                        <div class="row  mt-2 py-2 text-left" style="border-top:1px solid #96823D">
+                            <div class="col p-0" style="text-decoration: none; font-size:16px; font-weight: bold "> Tổng tiền  </div>
+                            <div class="col p-0 text-right" style=" font-size:16px " id="sum_element1"> 0đ  </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    {% if phong.image_room_set.all %}
-        {% for image_room in phong.image_room_set.all%}
-    <div class=" container" style="width:600px; height:400px ; margin-left:15px;" >
-     
-            <div class="row row-xs-12  ">
-                <div class="col col-xs-6 image-container square_list_image" >
-                    <a href="{{image_room.image_1.url}}" data-fancybox="gallery" data-width="550" data-height="850"><img class="square-image" src="{{image_room.image_1.url}}" alt="..." /></a>
-                </div>
-                <div class="col col-xs-6 image-container square_list_image">
-                    <a href="{{image_room.image_2.url}}" data-fancybox="gallery" data-width="600" data-height="900">
-                        <img class="square-image" src="{{image_room.image_2.url}}" alt="..." />
-                    </a>
-                </div>
-                <div class="col col-xs-6 image-container square_list_image">
-                    <a href="{{image_room.image_3.url}}" data-fancybox="gallery" data-width="600" data-height="900">
-                        <img class="square-image"  src="{{image_room.image_3.url}}" alt="..." />
-                    </a>
-                </div>
-                <div class="col col-xs-6 image-container square_list_image">
-                    <a href="{{image_room.image_4.url}}" data-fancybox="gallery" data-width="600" data-height="900">
-                        <img class="square-image" src="{{image_room.image_4.url}}" alt="..." />
-                    </a>
-                </div>
-                
-            </div>
-            <div class="row row-sm" style="margin-top:10px">
-                <div class="col col-xs-4 image-container square_list_image">
-                    <a href="{{image_room.image_5.url}}" data-fancybox="gallery" data-width="600" data-height="900">
-                        <img class="square-image" src="{{image_room.image_5.url}}" alt="..." />
-                    </a>
-                </div>
-                <div class="col col-xs-4 image-container square_list_image" >
-                    <a href="{{image_room.image_1.url}}" data-fancybox="gallery" data-width="550" data-height="850"><img class="square-image" src="{{image_room.image_1.url}}" alt="..." /></a>
-                </div>
-                <div class="col col-xs-4 image-container square_list_image">
-                    <a href="{{image_room.image_6.url}}" data-fancybox="gallery" data-width="600" data-height="900">
-                        <img class="square-image" src="{{image_room.image_6.url}}" alt="..." />
-                    </a>
-                </div>
-                <div class="col col-xs-4 image-container square_list_image">
-                    <a href="{{image_room.image_7.url}}" data-fancybox="gallery" data-width="600" data-height="900">
-                        <img class="square-image"  src="{{image_room.image_7.url}}" alt="..." />
-                    </a>
-                </div>
-                
-            </div> 
-                 
-    </div>
-    
-        {% endfor%}
-    {% endif %} 
-         <!-- Related items section-->
-         
-            <blockquote class="tiktok-embed"  data-video-id="{{phong.tiktokvid}}" style="width: 350px; height:615px" > 
-                <section> 
-                    <a target="_blank" title="@lalendi.studio" href="https://www.tiktok.com/@lalendi.studio?refer=embed"></a> 
-                </section> 
-            </blockquote> 
-            <script async src="https://www.tiktok.com/embed.js"></script>
-      
 </section>
 
+
+
 <script>
+
+   
+
     // kiểm tra xem nút add to cart có được click ko
-    $(document).on('click', '#add_cart', function(e){
+    $(document).on('click', '#add_cart,#order_button', function(e){
         e.preventDefault();
         //lấy dữ liệu từ select
-         selectedOption = $('#select_id1').val();
-         selectedtext = $('#select_id1 option:selected').text();
+         //selectedOption = $('#add_cart').val();
+        var checkin = new Date($('#checkin_element').text());
+        var checkout = new Date($('#checkout_element').text());
+        var formattedCheckin = checkin.toISOString().split('T')[0];
+        var formattedCheckout = checkout.toISOString().split('T')[0];
+        var lengthInDays = Math.round((checkout - checkin) / (1000 * 60 * 60 * 24));
+        var price = {{phong.Gia4tieng}};
+        var sumprice = price * lengthInDays;
         // thêm gì đó vào back end mà ko cần load page
         $.ajax({ 
             type: 'POST',
             url: '{% url "cart_add" %}',
             data: {
                 phong_id: $('#add_cart').val(),
-                selected_option: selectedOption, //lấy giá trị select được chọn
-                selectedtext: selectedtext,
+                checkin: formattedCheckin,
+                checkout: formattedCheckout,
+                price: price,
+                lenday: lengthInDays,
+                sumprice: sumprice,
+                //selected_option: selectedOption, //lấy giá trị select được chọn
                 csrfmiddlewaretoken: '{{ csrf_token }}',
                 action: 'post'
             },
             success: function(json){
                 //Hiển thị json trả về lên console
-                console.log(json)
-                document.getElementById("cart_quantity").textContent = json.qty;
-                
-                
-
+                //console.log(json)
+                document.getElementById("cart_quantity").textContent = json.qty
+                location.reload();
             },
             error: function(xhr, errmsg, err){
 
             }
-
-
         });
 
     });
@@ -216,8 +274,104 @@
             // Các tùy chọn của Fancybox nếu cần
           });
     });
-      
-      
+    
+    $(document).ready(function() {
+        var disabledDates = [
+            {% for date in dates %}
+                "{{ date }}",
+            {% endfor %}
+        ];
+    
+        var lastSelectedCheckout = null;
+        // Khởi tạo Flatpickr cho #check_in
+    flatpickr("#check_in", {
+        enableTime: true,
+        utc: true,
+        defaultDate: "today",
+        dateFormat: "d-m-Y",
+        minDate: "today",
+        disable: disabledDates,
+        onChange: function(selectedDates, dateStr, instance) {
+            var checkinDate = selectedDates[0]; // Lấy ngày nhập của #check_in
+            var checkoutInput = document.getElementById("check_out");
+            var checkoutDate = new Date(checkoutInput.value.split('-').reverse().join('-')); // Định dạng ngược lại để tạo đối tượng Date
+
+            // Cập nhật minDate cho #check_out
+            checkoutInput._flatpickr.set('minDate', dateStr);
+
+            // Nếu ngày checkout hiện tại nhỏ hơn hoặc bằng ngày checkin
+            // Kiểm tra nếu ngày checkout hiện tại là ngày trước đó đã được chọn
+            if (lastSelectedCheckout && lastSelectedCheckout <= checkinDate)
+                // Giữ nguyên ngày checkout hiện tại
+                instance.setDate(lastSelectedCheckout);
+            
+
+            // Thực hiện Ajax call để cập nhật giá trị
+            sendAjaxUpdate(checkinDate, checkoutInput._flatpickr.selectedDates[0]);
+        }
+    });
+
+    // Khởi tạo Flatpickr cho #check_out
+    flatpickr("#check_out", {
+        nableTime: true,
+        utc: true,
+        dateFormat: "d-m-Y",
+        defaultDate: "tomorrow",
+        minDate: "today",
+        disable: disabledDates,
+        onChange: function(selectedDates, dateStr, instance) {
+            var checkoutDate = selectedDates[0];
+            var checkinInput = document.getElementById("check_in");
+            var checkinDate = new Date(checkinInput.value.split('-').reverse().join('-'));
+
+            // Nếu ngày checkout nhỏ hơn hoặc bằng ngày checkin
+           
+
+            // Thực hiện Ajax call để cập nhật giá trị
+            sendAjaxUpdate(checkinDate, checkoutDate);
+        }
+    });
+
+    // Hàm gửi Ajax để cập nhật giá trị
+    function sendAjaxUpdate(checkin, checkout) {
+        var lengthInDays = Math.round((checkout - checkin) / (1000 * 60 * 60 * 24));
+        var price = {{ phong.Gia4tieng }};
+        var formattedCheckin = checkin.toISOString();
+        var formattedCheckout = checkout.toISOString();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "PreviewUpdate" %}',
+            data: {
+                checkin: checkin.toISOString().split('T')[0],
+                checkout: checkout.toISOString().split('T')[0],
+                lengthInDays: lengthInDays,
+                price: price,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+            success: function(json) {
+                // Hiển thị json trả về lên console
+                console.log(json);
+                var sum = json.sum;
+                var len = json.len;
+                var formattedCheckin = new Date(json.checkin).toLocaleDateString();
+                var formattedCheckout = new Date(json.checkout).toLocaleDateString();
+                // Hiển thị dữ liệu trên template
+                $('#sum_element').text(sum + 'đ');
+                $('#sum_element1').text(sum + 'đ');
+                $('#len_element').text('{{ phong.Gia4tieng }} / ' + len + ' đêm');
+                $('#checkin_element').text(checkin);
+                $('#checkout_element').text(checkout);
+
+            },
+            error: function(xhr, errmsg, err) {
+                console.error(errmsg);
+            }
+        });
+    }
+
+    });
+    
 </script>
 
 {% endblock maincontent %}

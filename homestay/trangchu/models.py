@@ -65,9 +65,17 @@ class Order(models.Model):
 class Order_item(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, blank=True, null=True)
     phong = models.ForeignKey(Phong, on_delete=models.CASCADE, blank=True, null=True)
-    checkin = models.DateTimeField(blank=True, null=True)
-    checkout = models.DateTimeField(blank=True, null=True)
+    checkin = models.DateField(blank=True, null=True)
+    checkout = models.DateField(blank=True, null=True)
     price =models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return  f'Order items- {str(self.id)}'
+    
+class customer_info(models.Model):
+    name = models.CharField(max_length=250, blank=True, null=True)
+    email = models.EmailField(max_length=250)
+    number = models.CharField(max_length=20, blank=True, null=True)
+
+    def  __str__(self):
+        return f'customer info- {str(self.id)}'

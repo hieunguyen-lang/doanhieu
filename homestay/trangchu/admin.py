@@ -6,4 +6,5 @@ admin.site.register(Phong)
 admin.site.register(Order_item)
 admin.site.register(image_room)
 admin.site.register(Order)
+admin.site.register(customer_info)
 

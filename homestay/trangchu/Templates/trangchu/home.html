@@ -1,7 +1,7 @@
 {%  extends 'trangchu/base.html' %}
 {% load static  %}
 {%block title %}
-    <title>LALENDI STUDIO</title>
+    <title >LALENDI STUDIO</title>
 {%endblock title%}
 {% block maincontent %}
 <div class="offcanvas offcanvas-start " data-bs-scroll="true" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel" style="width: 300px; height: 600px; background-color:#FDF4E5;" >
@@ -48,14 +48,16 @@
           </div>
     </div>
   </div>
+  <!-- 
 <section class="py">
     <img src="{% static "images/banner.JPG" %} " style=" width:100%"/>
 </section>
+-->
 <!--header-->
-<header style="font-family: Mulish, sans-serif;">
+<div style="font-family: Mulish, sans-serif;" class="sticky-top py-3">
     
     <div class="py-5 "  >
-        <div class=" px-sm-4 px-lg-5 container py-1" style="border:1px solid #F5F5F5; border-radius:25px; box-shadow:0px 0px 10px 0px ;" >
+        <div class=" px-sm-4 px-lg-5 container py-1 " style="border:1px solid #F5F5F5; border-radius:25px; box-shadow:0px 0px 10px 0px ;" >
             <form id="form_filter" method="POST" action="{% url 'home' %}">  
                 {%csrf_token%} 
                 <div class="row px-md-0">
@@ -71,10 +73,10 @@
                         </select>                                                      
                     </div>
                     <div class="col-md-3 col-sm-6 p-1" > 
-                        <input type="date" class="text-center" style="width:100%; height:100%; background-color:#FDF4E5; border: 1px solid black; border-radius:25px; " id="date">
+                        <input type="date" class="text-center datepicker" style="width:100%; height:100%; background-color:#FDF4E5; border: 1px solid black; border-radius:25px; " id="check_in" name="check_in">
                     </div>
                     <div class="col-md-3 col-sm-6 p-1" > 
-                            <input type="date" class="text-center" style="width:100%; height:100%; background-color:#FDF4E5; opacity:1; border: 1px solid black; border-radius:25px; " id="date">
+                            <input type="date" class="text-center datepicker" style="width:100%; height:100%; background-color:#FDF4E5; opacity:1; border: 1px solid black; border-radius:25px; " id="check_out" name="check_out">
                     </div>
                     <div class="col-md-2 col-sm-6 p-1"> 
                             <select style="width:100%; height:100%; background-color:#FDF4E5; border: 1px solid black; border-radius:25px" class="text-center p-0"  name="pricesort">
@@ -91,18 +93,18 @@
             </form>
         </div>
     </div>
-</header>
-
+</div>
+{{checkin}} {{checkout}}
 <!--list-->
 <section id="list_room"class="py-3 color_theme" style=" border-top:2px solid #96823D; font-family: Mulish, sans-serif">
     
-    {% if filtervalue %}
+    
         
         <div class="container mt-5 px-lg-12" >
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 " style=" border-radius:24px">
                 {% for roomfilter in roomfilter%}
                 <div class="col mb-5" >
-                <a href=" {% url "xemphong" roomfilter.id %} " style="color: black;cursor: pointer;">
+                <a href=" {% url "xemphong" roomfilter.id %} "  style="color: black;cursor: pointer;">
                     <div class="">
                         <!-- Product image-->
                         <img class="card-img-top " src=" {{roomfilter.HinhanhURL}}"  style=" border-radius:14px"/>
@@ -120,34 +122,9 @@
                 {% endfor %}
             </div>     
         </div>
-     {% else %}
+    
      
-    {% endif%}
-    <div class="container  mt-5 px-lg-0">
-       
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4  " style=" border-radius:24px">
-                {% for phong in phongs%}
-                <a href=" {% url "xemphong" phong.id %} " style="color: black;cursor: pointer;">
-                <div class="col mb-5" >
-                    <div class="">
-                        <!-- Product image-->
-                        <img class="card-img-top " src=" {{phong.HinhanhURL}}"  style=" border-radius:14px"/>
-                        <!-- Product details-->
-                        <div class="card-body p-0 my-2 text-left">
-                            <div class="">
-                                <!-- Product name-->
-                                <h6 class="fw-bolder"> {{phong.Ten}},{{phong.Diachi}} </h6>
-                                <span style="font-weight:bold"> {{phong.Gia4tieng}}đ</span><span>/đêm </span>
-                                   
-                            </div>
-                        </div>
-                    </div>
-                </div> 
-                </a>
-                {% endfor %}
-        </div>
-       
-    </div>
+    
     
 </section>
 <script>
@@ -182,6 +159,73 @@
 
 
         });
+
+    });
+
+
+ 
+    $(document).ready(function() {
+        // Khởi tạo Flatpickr cho #check_in
+    flatpickr("#check_in", {
+        defaultDate: "today",
+
+        dateFormat: "d-m-Y",
+        minDate: "today",      
+        onChange: function(selectedDates, dateStr, instance) {
+            var checkinDate = selectedDates[0]; // Lấy ngày nhập của #check_in
+            var checkoutInput = document.getElementById("check_out");
+            var checkoutDate = new Date(checkoutInput.value.split('-').reverse().join('-')); // Định dạng ngược lại để tạo đối tượng Date
+
+            // Cập nhật minDate cho #check_out
+            checkoutInput._flatpickr.set('minDate', dateStr);
+
+            // Nếu ngày checkout hiện tại nhỏ hơn hoặc bằng ngày checkin
+           
+
+            // Thực hiện Ajax call để cập nhật giá trị
+            sendAjaxUpdate(checkinDate, checkoutDate);
+        }
+    });
+
+    // Khởi tạo Flatpickr cho #check_out
+    flatpickr("#check_out", {
+        defaultDate: "tomorrow",
+
+        dateFormat: "d-m-Y",
+        minDate: "today",
+        onChange: function(selectedDates, dateStr, instance) {
+            var checkoutDate = selectedDates[0];
+            var checkinInput = document.getElementById("check_in");
+            var checkinDate = new Date(checkinInput.value.split('-').reverse().join('-'));
+
+            // Nếu ngày checkout nhỏ hơn hoặc bằng ngày checkin
+
+            // Thực hiện Ajax call để cập nhật giá trị
+            sendAjaxUpdate(checkinDate, checkoutDate);
+        }
+    });
+
+    // Hàm gửi Ajax để cập nhật giá trị
+    function sendAjaxUpdate(checkin, checkout) {
+        $.ajax({
+            type: 'POST',
+            url: '{% url "getdate" %}',
+            data: {
+                checkin: checkin.toISOString().split('T')[0],
+                checkout: checkout.toISOString().split('T')[0],
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+            success: function(json) {
+                // Hiển thị json trả về lên console
+                console.log(json);
+        
+            },
+            error: function(xhr, errmsg, err) {
+                console.error(errmsg);
+            }
+        });
+    }
 
     });
 </script>

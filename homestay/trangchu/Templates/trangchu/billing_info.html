@@ -1,0 +1,93 @@
+{%  extends 'trangchu/base.html' %}
+{% load static  %}
+{%block title %}
+    <title>Xác nhận và thanh toán </title>
+{%endblock title%}
+{% block maincontent %}
+    <div class="container row p-0 my-2 text-right">
+        <div class="col-1">
+            <span> Đặt </span>
+        </div>
+        <div class="col-2">
+            <span> Thanh toán </span>
+        </div>
+        <div class="col-3">
+            <span> Gửi phiếu xác nhận </span>
+        </div>
+    </div>
+        <div class="row  px-lg-4 my-5" >  
+            {% for item in cart_items%}
+            <div class="col-md-12 text-left  px-md-4 px-lg-5"> 
+                <div class="row " style="margin-bottom: 24px"> 
+                    <div class="container " style=" width: 40%; border:1px solid #96823D ;border-radius:12px; margin-top:46.4px;   ">
+                        <div class="row p-0 my-5 px-4" style="border-bottom:1px solid #96823D">
+                            <div class="col-md-3  p-0" style="margin-bottom:20px">
+                                <img src="{{item.phong.HinhanhURL}}"  style=" width: 100px; height:120px; border-radius:10px" />
+                            </div>
+                            <div class="col-md-9 p-0  px-md-5 px-lg-0" style="">
+                                <div class="row bold-text  ">
+                                    <h5>{{item.phong.Ten}}</h5>
+                                </div>
+                                <div class="row"> 
+                                    <small> Toàn bộ căn phòng dịch vụ </small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row  p-0" style=" margin-right:20px; margin-left:20px; margin-bottom:15px; margin-top:15px">
+                            <div class="col-sm-5 text-center" style=" border:1px solid #96823D ;border-radius:12px;"> 
+                                <p class="p-0">Nhận phòng</p>
+                                <div class="row text-center p-0"><p class="p-0">{{item.checkin}}<p></div>
+                                <small>Từ 14:00</small>
+                            </div>
+                            <div class="col-sm-2">------</div>
+                            <div class="col-sm-5 text-center" style=" border:1px solid #96823D ;border-radius:12px;"> 
+                                <p class="p-0">Trả phòng</p>
+                                <div class="row text-center p-0"><p class="p-0">{{item.checkout}}<p></div>
+                                <small>Trước 12:00</small>
+                            </div>
+                        </div>  
+                        <div class="row text-left py-0" style=" margin-right:20px; margin-left:20px; margin">
+                            <p class="p-0" style="font-weight: bold">Tên khách<p>
+                                                       
+                        </div>
+                        <div class="row text-left py-0" style=" margin-right:20px; margin-left:20px; margin">
+                           
+                            <p class="p-0" style="">{{name}}<p>                            
+                        </div>
+              
+                        <div class="row  p-0" style=" margin-right:20px; margin-left:20px; margin-bottom:15px; margin-top:15px">
+                            <h4 class="p-0">Chi tiết giá </h4>
+                        </div>
+                        
+                        <div class="row  p-0 text-left" style=" margin-right:20px; margin-left:20px; margin-bottom:20px">
+                            <div class="col p-0" style="text-decoration: underline; font-size:18px "> {{item.price}}đ x {{item.lenday}} đêm  </div>
+                            <div class="col p-0 text-right" style=" font-size:18px "> {{item.sumprice}}đ  </div>
+                        </div>
+                        <div class="row  p-0 text-left" style=" margin-right:20px; margin-left:20px; margin-bottom:20px">
+                            <div class="col p-0" style="text-decoration: underline; font-size:18px "> Ưu đãi đặc biệt  </div>
+                            <div class="col p-0 text-right" style=" font-size:18px ;color: green; "> -0đ  </div>
+                        </div>
+                        <div class="row  p-0 text-left" style="border-top:1px solid #96823D; margin-right:20px; margin-left:20px; margin-bottom:20px">
+                            <div class="col p-0" style="margin-top:15px" >
+                                 <h5 class="p-0 bold-underline " style="font-size:20px ">Tổng </h5> 
+                            </div>
+                            <div class="col p-0 text-right" style="margin-top:15px">
+                                <h5 class="p-0" style="font-size:20px ">{{item.sumprice}}đ </h5> 
+                           </div>
+                        </div>
+                        <div class="row  p-0 text-left" style="border-top:1px solid #96823D; margin-right:20px; margin-left:20px; margin-bottom:20px">
+                            <h5 class="px-0">Chi tiết người đặt phòng</h5>
+                            <small class="py-0 row" style="">{{name}}</small>
+                            <small class="py-0 row" style="">{{mail}}</small>
+                            <small class="py-0 row" style="">{{phone}}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+{% endblock maincontent%}
+
+

@@ -3,8 +3,10 @@ from pydoc import pager
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.contrib import messages
 from .models import *
 from .cart import Cart
+from datetime import timedelta, datetime
 from django.db.models import Q
 # api
 from rest_framework.response import Response
@@ -12,12 +14,18 @@ from rest_framework.views import APIView
 import math
 from .serializer import *
 
+        
 # Create your views here.
 def home(request):
     
     if request.method == "POST":
         filtervalue = request.POST.get('addressfilter', None)
         pricesort = request.POST.get('pricesort', None)
+        checkin = request.POST.get('check_in', None)
+        checkout = request.POST.get('check_out', None)
+        checkin_format = datetime.strptime(checkin, '%d-%m-%Y').strftime('%Y-%m-%d')
+        checkout_format = datetime.strptime(checkout, '%d-%m-%Y').strftime('%Y-%m-%d')
+        print(checkin_format)
         roomfilter = Phong.objects.all()
         if filtervalue =="all":
             roomfilter = Phong.objects.all()
@@ -27,11 +35,21 @@ def home(request):
             roomfilter = roomfilter.order_by('Gia4tieng')
         elif pricesort == '-Gia4tieng':
             roomfilter = roomfilter.order_by('-Gia4tieng')
-        context = {'roomfilter': roomfilter, 'filtervalue':filtervalue}        
+        if checkin and checkout:
+           
+            conflicting_orders = Order_item.objects.filter(
+                Q(checkin__lte=checkin_format, checkout__gte=checkin_format) |
+                Q(checkin__lte=checkout_format, checkout__gte=checkout_format) |
+                Q(checkin__gte=checkin_format, checkout__lte=checkout_format)
+            ).values_list('phong__id', flat=True)
+
+            # Loại bỏ các phòng đã được đặt khỏi danh sách tất cả các phòng
+            roomfilter = roomfilter.exclude(id__in=conflicting_orders)
+        context = {'roomfilter': roomfilter, 'filtervalue':filtervalue, 'checkin': checkin_format,'checkout': checkout_format}        
         return render(request,'trangchu/home.html', context)
     else:
-        phongs = Phong.objects.order_by('id')
-        context = {'phongs' :phongs}
+        roomfilter = Phong.objects.order_by('id')
+        context = {'roomfilter' :roomfilter}
         return render(request,'trangchu/home.html', context)
 #api 
 def search(request):
@@ -72,48 +90,76 @@ class roomid(APIView):
 def cart(request):
     cart =Cart(request)
     cart_items =cart.get_cart_items()
-    selected_option = cart.get_giaphong()
-    selected_text = cart.get_selecttext()
     sum = cart.sum_gia()
-    # trả về select giá phòng theo ca đã chọn
-    context = {'cart_items': cart_items, 'selected_option': selected_option, 'selected_text': selected_text, 'sum':sum}
+    
+    context = {'cart_items': cart_items,'sum':sum}
     return render(request,'trangchu/cart.html', context)
-def checkout(request):
-    return render(request,'trangchu/checkout.html' )
+def checkout(request, phong_id):
+    cart =Cart(request)
+    cart_items =cart.get_objects_by_id(phong_id)
+    # trả về select giá phòng theo ca đã chọn
+    context = {'item_by_id': cart_items,'sum':sum}
+    return render(request, 'trangchu/checkout.html', context)
+def billinginfo(request, id):
+    if request.POST:
+        cart =Cart(request)
+        cart_items =cart.get_objects_by_id(id)
+        # lấy thông tin khách hàng
+        customer_name = request.POST.get('customername')
+        customer_mail = request.POST.get('customermail')
+        customer_phone = request.POST.get('customerphone')
+        # lưu vào cơ sở dữ liệu
+        customer_info.objects.create(name=customer_name, email=customer_mail, number=customer_phone) #bảng thông tin người dùng
+        
+        order = Order.objects.create(full_name=customer_name, email=customer_mail, number=customer_phone)
+        order.save()
+        Order_id = order.pk
+        for item in cart_items:
+            phong_id= item['phong_id']
+            checkin = item['checkin']
+            checkout = item['checkout']
+            sumprice = item['sumprice']
+        create_order_item = Order_item.objects.create(order_id=Order_id, phong_id=phong_id, checkin=checkin, checkout=checkout, price=sumprice)
+        create_order_item.save()
+        # trả về select giá phòng theo ca đã chọn
+        context = {'cart_items': cart_items,'sum':sum, 'name':customer_name, 'mail':customer_mail, 'phone': customer_phone}
+        return render(request, 'trangchu/billing_info.html', context)
+    else:
+        messages.success(request, "Từ trồi truy cập")
+        return redirect('home')       
 def cart_add(request):
     #lay cart
     cart = Cart(request)
     #test POST
     if request.POST.get('action') == 'post':
         phong_id = int(request.POST.get('phong_id'))
-        #get selected value ở data của js
-        selected_option= request.POST.get('selected_option')
-        #get selected text
-        selectedtext = request.POST.get('selectedtext')
         #tim  san pham theo id
         phong = get_object_or_404(Phong,id=phong_id)
-        
+        checkin = request.POST.get('checkin')
+        checkout = request.POST.get('checkout')
+        price = request.POST.get('price')
+        lenday = request.POST.get('lenday')
+        sumprice = request.POST.get('sumprice')
         #save vao session
-        cart.add(phong=phong,selected_option=selected_option, selectedtext=selectedtext)
+        cart.add(phong=phong, checkin=checkin, checkout=checkout, price=price, lenday=lenday, sumprice=sumprice,)
         
         # return response
-       # response = JsonResponse({'Tên phòng ': phong.Ten })
+        #response = JsonResponse({'Tên phòng ': phong.Ten })
         #get cart quantity
         cart_quantity= cart.__len__()
-        response = JsonResponse({'qty': cart_quantity, 'select': selected_option, 'selecttext': selectedtext})
-        
-        return response 
+        response = JsonResponse({'qty': cart_quantity,'checkin': checkin})
+        messages.success(request,("Đã thêm vào giỏ hàng"))   
+        return response
 def cart_select_update(request):
     cart=Cart(request)
     if request.POST.get('action') == 'post':
         phong_id = int(request.POST.get('phong_id'))
         #get selected value ở data của js
-        selected_option= request.POST.get('selected_option')
-        #get selected text
-        selectedtext = request.POST.get('selected_text')
+        checkin = str(request.POST.get('check_in'))
+        checkout = str(request.POST.get('check_out'))
         #tim  san pham theo id
-        cart.update_select(phong_id=phong_id, selected_option=selected_option,selectedtext=selectedtext )
-        response = JsonResponse({'select': selected_option, 'selecttext': selectedtext  })
+        cart.update_select(phong_id=phong_id, checkin=checkin,checkout=checkout )
+        response = JsonResponse({'checkin': checkin, 'checkout': checkout  })
         return response
         #return render(request,'trangchu/cart.html')
 def cart_delete(request):
@@ -124,9 +170,35 @@ def cart_delete(request):
         cart.cart_delete(phongid=phong_id)
         response =JsonResponse({'id': phong_id})
         return response
+def get_dates_between(start_date, end_date):
+    dates = []
+    current_date = start_date
+    while current_date <= end_date:
+        dates.append(current_date)
+        current_date += timedelta(days=1)
+    return dates
 def xemphong(request,id):
+    dates=[]
     phong = get_object_or_404(Phong, id=id)
-    context = {'phong':phong}
+    order_item_by_phong= Order_item.objects.filter(phong=phong)
+    for item in order_item_by_phong:
+        checkin = item.checkin
+        checkout = item.checkout
+        dates_between = get_dates_between(checkin, checkout)
+        dates.extend(dates_between)
+    dates_str = [date.strftime('%d-%m-%Y') for date in dates]
+    
+    context = {'phong':phong,'dates':dates_str}
     return render(request,'trangchu/xemchitietphong.html', context)
 def blog(request):
     return render(request, 'trangchu/blog.html')
+def PreviewUpdate(request):
+    if request.POST.get('action') == 'post':
+        len = int(request.POST.get('lengthInDays'))
+        gia = int(request.POST.get('price'))
+        checkin =  request.POST.get('checkin')
+        checkout =  request.POST.get('checkout')
+        sum = len*gia
+        response = JsonResponse({'sum': sum, 'len':len, 'checkin': checkin, 'checkout': checkout,})
+        return response
+

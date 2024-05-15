@@ -51,8 +51,12 @@
     object-fit: cover; /* Cắt ảnh để vừa khớp với kích thước của phần tử cha mà không bị méo hình */
 }
 .square_list_image {
-    width: 85px;
-    height: 85px;
+    width: 260px;
+    height: 250px;
+}
+.big_square_list_image {
+    width: 550px;
+    height: 500px;
 }
 /* date picker button*/
 input[type="date"]::-webkit-calendar-picker-indicator {
@@ -66,4 +70,17 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     right: 0;
     top: 0;
     width: auto;
+}
+.elementhide {
+    display: block; /* Hiển thị mặc định */
+}
+
+.btn-datphong:hover {
+    --bs-btn-hover-color: var(--bs-white);
+    --bs-btn-hover-bg: rgba(229, 147, 33, 0.1); /* Đây là một ví dụ về cách sử dụng màu rgba để thêm một lớp opacity cho màu. */
+    --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+    --bs-btn-active-color: var(--bs-btn-hover-color);
+    --bs-btn-active-bg:rgba(229, 147, 33, 0.1);
+    --bs-btn-active-border-color: rgba(229, 147, 33, 0.1);
+    opacity:0.5;
 }

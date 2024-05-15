@@ -9,53 +9,97 @@ class Cart():
             cart= self.session['session_key']={}
         #make
         self.cart = cart
-    def add(self, phong, selected_option, selectedtext):
+    def add(self, phong, checkin, checkout, price, lenday, sumprice):
         phong_id = str(phong.id)
-        selected_option= int(selected_option)
-        selectedtext = selectedtext
+        
         if phong_id in self.cart:
             pass
         else:
             self.cart[phong_id] = {
+                'phong_id': phong.id,
                 'Ten': phong.Ten,
-                'Gia' : selected_option, 
-                'Ca': selectedtext,                                            
+                'checkin': checkin,
+                'checkout': checkout, 
+                'price': price,
+                'lenday': lenday,
+                'sumprice': sumprice,                                       
                                   }
             # Lưu selected_option vào session
-            
         self.session.modified = True
         #return cart length
+    def get_objects_by_id(self, id):
+        id_str = str(id)
+        item_by_id = []
+
+        if id_str in self.cart:
+            item_data = self.cart[id_str]
+            phong_id = item_data.get('phong_id')
+            phong = Phong.objects.get(id=phong_id)
+            checkin = item_data.get('checkin')
+            checkout = item_data.get('checkout')
+            price = item_data.get('price')
+            lenday = item_data.get('lenday')
+            sumprice = item_data.get('sumprice')
+
+            cart_item = {
+                'phong_id': phong_id,
+                'phong': {
+                    'id': phong.id,
+                    'Ten': phong.Ten,
+                    'Gia4tieng': phong.Gia4tieng,
+                    'HinhanhURL': phong.HinhanhURL,
+                },
+                'checkin': checkin,
+                'checkout': checkout,
+                'price': price,
+                'lenday': lenday,
+                'sumprice': sumprice,
+            }
+            item_by_id.append(cart_item)
+
+        return item_by_id
+        
     def __len__(self):
         return len(self.cart)
     def get_cart_items(self):
         
-        phong_ids = self.cart.keys()
-        phongs=Phong.objects.filter(id__in = phong_ids)
+        cart_items = []
+        for phong_id, item_data in self.cart.items():
+            phong = Phong.objects.get(id=phong_id)
+            phong_id = item_data.get('phong_id')
+            checkin = item_data.get('checkin')
+            checkout = item_data.get('checkout')
+            price = item_data.get('price')
+            lenday = item_data.get('lenday')
+            sumprice =  item_data.get('sumprice')
+            cart_item = {
+                'phong_id': phong_id,
+                'phong': phong,
+                'checkin': checkin,
+                'checkout': checkout,
+                'price': price,
+                'lenday': lenday,
+                'sumprice': sumprice,
+                
+            }
+            cart_items.append(cart_item)
+        return cart_items
 
-        return phongs
-    def get_giaphong(self):
-        selected_ops =self.cart
-        return selected_ops
-    def get_selecttext(self):
-        selected_text =self.cart
-        return selected_text
-    def update_select(self, phong_id, selected_option, selectedtext):
+    def update_select(self, phong_id, checkin, checkout):
         phong_id = str(phong_id)
-        selectedoption = selected_option
+         
         selectedtext = selectedtext
         ourcart = self.cart
         ourcart[phong_id] = {
             'Ten': ourcart[phong_id]['Ten'],    
-            'Gia' : selectedoption, 
-            'Ca': selectedtext, 
+          
         }
         
         self.session.modified = True
     def sum_gia(self):
         sum=0
-    
         for item in self.cart.values():
-            sum += int(item['Gia'])
+            sum += int(item['sumprice'])
         return sum 
     def cart_delete(self, phongid):  
         phong_id = str(phongid) 
