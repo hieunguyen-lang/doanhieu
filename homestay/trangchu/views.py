@@ -23,30 +23,36 @@ def home(request):
         pricesort = request.POST.get('pricesort', None)
         checkin = request.POST.get('check_in', None)
         checkout = request.POST.get('check_out', None)
-        checkin_format = datetime.strptime(checkin, '%d-%m-%Y').strftime('%Y-%m-%d')
-        checkout_format = datetime.strptime(checkout, '%d-%m-%Y').strftime('%Y-%m-%d')
-        print(checkin_format)
-        roomfilter = Phong.objects.all()
-        if filtervalue =="all":
+        if not checkin or not checkout:
+            # Nếu một trong hai trường không được nhập, hiển thị thông báo và không thực hiện gì cả
             roomfilter = Phong.objects.all()
-        elif filtervalue:
-            roomfilter = Phong.objects.filter(Diachi__icontains=filtervalue)
-        if pricesort == 'Gia4tieng':
-            roomfilter = roomfilter.order_by('Gia4tieng')
-        elif pricesort == '-Gia4tieng':
-            roomfilter = roomfilter.order_by('-Gia4tieng')
-        if checkin and checkout:
-           
-            conflicting_orders = Order_item.objects.filter(
-                Q(checkin__lte=checkin_format, checkout__gte=checkin_format) |
-                Q(checkin__lte=checkout_format, checkout__gte=checkout_format) |
-                Q(checkin__gte=checkin_format, checkout__lte=checkout_format)
-            ).values_list('phong__id', flat=True)
+            context = {'roomfilter': roomfilter}
+            return render(request,'trangchu/home.html', context)
+        else:
+            checkin_format = datetime.strptime(checkin, '%d-%m-%Y').strftime('%Y-%m-%d')
+            checkout_format = datetime.strptime(checkout, '%d-%m-%Y').strftime('%Y-%m-%d')
+            roomfilter = Phong.objects.all()
+            if filtervalue =="Tất cả khu vực":
+                roomfilter = Phong.objects.all()
+            elif filtervalue:
+                roomfilter = Phong.objects.filter(Diachi__icontains=filtervalue)
+            if pricesort == 'Gia4tieng':
+                roomfilter = roomfilter.order_by('Gia4tieng')
+            elif pricesort == '-Gia4tieng':
+                roomfilter = roomfilter.order_by('-Gia4tieng')
+            if checkin and checkout:
+                checkin_format = datetime.strptime(checkin, '%d-%m-%Y').strftime('%Y-%m-%d')
+                checkout_format = datetime.strptime(checkout, '%d-%m-%Y').strftime('%Y-%m-%d')
+                conflicting_orders = Order_item.objects.filter(
+                    Q(checkin__lte=checkin_format, checkout__gte=checkin_format) |
+                    Q(checkin__lte=checkout_format, checkout__gte=checkout_format) |
+                    Q(checkin__gte=checkin_format, checkout__lte=checkout_format)
+                ).values_list('phong__id', flat=True)
 
-            # Loại bỏ các phòng đã được đặt khỏi danh sách tất cả các phòng
-            roomfilter = roomfilter.exclude(id__in=conflicting_orders)
-        context = {'roomfilter': roomfilter, 'filtervalue':filtervalue, 'checkin': checkin_format,'checkout': checkout_format}        
-        return render(request,'trangchu/home.html', context)
+                # Loại bỏ các phòng đã được đặt khỏi danh sách tất cả các phòng
+                roomfilter = roomfilter.exclude(id__in=conflicting_orders)
+            context = {'roomfilter': roomfilter, 'filtervalue':filtervalue, 'checkin': checkin,'checkout': checkout}        
+            return render(request,'trangchu/home.html', context)
     else:
         roomfilter = Phong.objects.order_by('id')
         context = {'roomfilter' :roomfilter}
@@ -114,11 +120,16 @@ def billinginfo(request, id):
         order = Order.objects.create(full_name=customer_name, email=customer_mail, number=customer_phone)
         order.save()
         Order_id = order.pk
+    
+
+        # Tạo các đối tượng thời gian với thông tin múi giờ
+        
         for item in cart_items:
             phong_id= item['phong_id']
             checkin = item['checkin']
             checkout = item['checkout']
             sumprice = item['sumprice']
+        
         create_order_item = Order_item.objects.create(order_id=Order_id, phong_id=phong_id, checkin=checkin, checkout=checkout, price=sumprice)
         create_order_item.save()
         # trả về select giá phòng theo ca đã chọn

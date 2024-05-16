@@ -354,8 +354,8 @@
                 console.log(json);
                 var sum = json.sum;
                 var len = json.len;
-                var formattedCheckin = new Date(json.checkin).toLocaleDateString();
-                var formattedCheckout = new Date(json.checkout).toLocaleDateString();
+                var checkin = json.checkin;
+                var checkout = json.checkout;
                 // Hiển thị dữ liệu trên template
                 $('#sum_element').text(sum + 'đ');
                 $('#sum_element1').text(sum + 'đ');

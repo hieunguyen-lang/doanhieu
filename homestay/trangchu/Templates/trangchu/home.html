@@ -57,13 +57,16 @@
 <div style="font-family: Mulish, sans-serif;" class="sticky-top py-3">
     
     <div class="py-5 "  >
-        <div class=" px-sm-4 px-lg-5 container py-1 " style="border:1px solid #F5F5F5; border-radius:25px; box-shadow:0px 0px 10px 0px ;" >
+        <div class=" px-sm-4 px-lg-5 container py-1 " style="border:1px solid #F5F5F5; border-radius:25px; box-shadow:0px 0px 10px 0px ; height:68px" >
             <form id="form_filter" method="POST" action="{% url 'home' %}">  
                 {%csrf_token%} 
-                <div class="row px-md-0">
-                    <div class="col-md-3 col-sm-6 p-1" >                                                                 
-                            <select style="width:100%; height:100%; background-color:#FDF4E5; opacity:1; border: 1px solid black; border-radius:25px" class=" text-center p-0"  name="addressfilter">
-                            <option value="all"> Tất cả khu vực</option> 
+                <div class="row px-md-6">
+                    <div class="col-md-3 col-sm-6 p-0 " style="border-right: 1px solid black">  
+                        <div class="row p-0 text-center">
+                            <small class="p-0">Khu vực</small> 
+                        </div>                                                              
+                        <select style="width:100%; height:100%; background-color:#FDF4E5; opacity:1; border:none; border-radius:25px" class=" row text-center p-0 "  name="addressfilter">
+                            <option value="Tất cả khu vực"> Tất cả khu vực</option> 
                             <option value="Hoàn Kiếm"> Hoàn Kiếm</option>
                             <option value="Ba Đình"> Ba Đình</option>
                             <option value="Tây Hồ"> Tây Hồ</option>
@@ -72,20 +75,27 @@
                             <option value="Thanh Xuân Cầu Giấy"> T.Xuân- C.Giấy</option>                                    
                         </select>                                                      
                     </div>
-                    <div class="col-md-3 col-sm-6 p-1" > 
-                        <input type="date" class="text-center datepicker" style="width:100%; height:100%; background-color:#FDF4E5; border: 1px solid black; border-radius:25px; " id="check_in" name="check_in">
+                    <div class="col-md-3 col-sm-6 p-0" style="border-right: 1px solid black">
+                        <div class="row p-0 text-center">
+                            <small class="p-0">Check in</small> 
+                        </div> 
+                        
+                        <input type="date" class="text-center datepicker" style="width:100%; height:100%; background-color:#FDF4E5; border:none; border-radius:25px " id="check_in" name="check_in" required>
                     </div>
-                    <div class="col-md-3 col-sm-6 p-1" > 
-                            <input type="date" class="text-center datepicker" style="width:100%; height:100%; background-color:#FDF4E5; opacity:1; border: 1px solid black; border-radius:25px; " id="check_out" name="check_out">
+                    <div class="col-md-3 col-sm-6 p-0" style="border-right: 1px solid black"> 
+                        <div class="row p-0 text-center">
+                            <small class="p-0">Check out</small> 
+                        </div>
+                        <input type="date" class="text-center datepicker" style="width:100%; height:100%; background-color:#FDF4E5; opacity:1; border:none; border-radius:25px " id="check_out" name="check_out" required>
                     </div>
-                    <div class="col-md-2 col-sm-6 p-1"> 
-                            <select style="width:100%; height:100%; background-color:#FDF4E5; border: 1px solid black; border-radius:25px" class="text-center p-0"  name="pricesort">
+                    <div class="col-md-2 col-sm-6 p-0" > 
+                            <select style="width:100%; height:100%; background-color:#FDF4E5; border:none; border-radius:25px" class="text-center p-0"  name="pricesort">
                                 <option style="opacity:1" selected value="Gia4tieng">Giá thấp đến cao</option>
                                 <option style="opacity:1" value="-Gia4tieng">Giá cao đến thấp</otion>
                             </select>
                     </div>
-                    <div class="col-md-1 col-sm-12 p-1">
-                        <button type="submit" class="btn btn-secondary " style="width: 100%; height:100%; border:1px solid #FDF4E5 ;border-radius:25px; color:white; background-color: #ce3644">
+                    <div class="col-md-1 col-sm-12 p-0">
+                        <button type="submit" class="btn btn-secondary " style="width: 100%; height:100%; border:none; border-radius:25px; color:white; background-color: #ce3644">
                             <i class="bi bi-search"></i> 
                         </button>
                     </div>
@@ -94,10 +104,20 @@
         </div>
     </div>
 </div>
-{{checkin}} {{checkout}}
+
 <!--list-->
+
 <section id="list_room"class="py-3 color_theme" style=" border-top:2px solid #96823D; font-family: Mulish, sans-serif">
-    
+    {% if checkout %}
+    <div class="container mt-5 px-lg-12" >
+        <div class="row">
+            <div class="col-sm-4" style="width:10%"><i class="bi bi-geo-alt-fill"> {{filtervalue}} </i> </div>
+            <div class="col-sm-6" style="width:20%"><i class="bi bi-calendar-check">  {{checkin}}-{{checkout}}</i>  </div>
+           
+
+        </div>
+    </div>
+    {% endif %}
     
         
         <div class="container mt-5 px-lg-12" >
@@ -121,12 +141,24 @@
                 </div> 
                 {% endfor %}
             </div>     
-        </div>
-    
-     
-    
-    
+        </div>  
 </section>
+
+<section id="list_room"class="py-3 color_theme" style=" height:550px; border-top:2px solid #96823D; font-family: Mulish, sans-serif">
+    <div class="container mt-5 px-lg-12" >
+        <div class="row text-center">
+            <div style="background-color: #EEDDB4; height:50px ; width:400px" class="rounded-pill ">
+                <div style="text-align: center; padding:15px "><i class="bi bi-bag ">Bạn chưa nhập ngày check out</i> </div>
+            
+            </div>
+           
+
+        </div>
+    </div>
+</section>
+
+
+
 <script>
     // kiểm tra xem nút add to cart có được click ko
     $(document).on('click', '#add_cart', function(e){
