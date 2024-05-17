@@ -7,12 +7,18 @@
 {% block maincontent %}
 <!--xemchitiet phong-->
 {% if messages %}
-    <div class="messages">
+<div class="alert alert-success d-flex align-items-center" role="alert">
+    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+    <div class="message">
         {% for message in messages %}
-            <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            <p{% if message.tags %} class="{{ message.tags }} p-0"{% endif %}>{{ message }}</p>
         {% endfor %}
     </div>
+  </div>
+    </div>
 {% endif %}
+
+{{checkin_gmt7}}
 <section class="py-3" style="background-color: #FDF4E5; font-family: Mulish, sans-serif">
     <div class="container px-2 px-lg-2 my-1">
         <div class="row px-0"> 
@@ -163,11 +169,13 @@
                 </div>
             </div>
             <div class="col-md-4" >
+                <form>
                 <div class="container" style="border: 1px solid #96823D; border-radius:20px;box-shadow:0px 0px 10px -2px ;">
                     <div class="row mt-4 px-4"> 
                         <h5 class="col px-0" id="price" value="{{phong.Gia4tieng}}"> {{phong.Gia4tieng}}đ /đêm</h5>   
                     </div>
                     <div class="px-4 container" > 
+                      
                         <div class="row " style="border:1px solid #96823D;border-radius:8px;">
                             <div class="col-sm-6" style="border-right:1px solid #96823D" >
                                 <div class="row px-2 py-1" style="font-size:12px">Ngày nhận phòng</div>
@@ -184,23 +192,23 @@
                             <div class="col py-2" style="border-top:1px solid #96823D">
                                 <div class="row px-2" style="font-size:14px">Chỗ ở này cho phép tối đa 2 khách, không tính em bé. Không được phép mang theo thú cưng.
                                 </div>
-                                <div class="row px-2" style="font-size:14px" id="checkin_element">check_in </div>
-                                <div class="row px-2" style="font-size:14px" id="checkout_element">check_out</div>
+                                <div class="row px-2" style="font-size:14px" id="checkin_format" ></div>
+                                <div class="row px-2" style="font-size:14px" id="checkout_format"></div>
+                                <div class="row px-2 " style="font-size:14px; display: none " id="checkin_element" name="checkin_element"> </div>
+                                <div class="row px-2" style="font-size:14px; display: none" id="checkout_element" name="checkout_element"></div>
                             </div>
                             
                         </div> 
                         <div class="row mt-4 p-0">
-                            <div class="col-sm-2 text-center p-0" >
-                                <button type="button" class="btn btn-success" value="{{phong.id}}" id="add_cart" style=" width: 100%; height:50px;border-radius:12px;border:none; background-color: #96823D">
+                            <div class="col-sm-12 text-center p-0" >
+                                <button type="button"  class="btn btn-success" value="{{phong.id}}" id="add_cart" style=" width: 100%; height:50px; border:1px solid #FDF4E5 ;border-radius:12px; color:white; background-color: #ce3644">
                                     <i class="bi bi-cart"></i>
                                
                                 </button>
                             </div>
-                            <div class="col-sm-10 p-0">
-                                <button type="submit" class="btn btn-success" id="order_button" style=" width: 100%; height:50px; border:1px solid #FDF4E5 ;border-radius:12px; color:white; background-color: #ce3644"> Đặt phòng </button>
-                            </div>
+                            
                         </div>
-                        
+                   
                         <div class="row mt-2 text-center" style="font-size:12px">
                             <p>Bạn vẫn chưa bị trừ tiền</p>
                         </div>
@@ -226,18 +234,28 @@
 
 
 <script>
-
-   
-
+    document.getElementById("add_cart").addEventListener("click", function() {
+        var divContent1 = document.getElementById("checkin_format").innerText;
+    
+        if (!divContent1.trim()) {
+            alert("Vui lòng nhập giá trị cho trường Checkin-Check out.");
+        } 
+        var divContent2 = document.getElementById("checkout_format").innerText;
+    
+        
+         
+    });
     // kiểm tra xem nút add to cart có được click ko
     $(document).on('click', '#add_cart,#order_button', function(e){
         e.preventDefault();
         //lấy dữ liệu từ select
          //selectedOption = $('#add_cart').val();
+        var checkingmt7 = $('#checkin_format').text();
+        var checkoutgmt7 = $('#checkout_format').text();
         var checkin = new Date($('#checkin_element').text());
         var checkout = new Date($('#checkout_element').text());
-        var formattedCheckin = checkin.toISOString().split('T')[0];
-        var formattedCheckout = checkout.toISOString().split('T')[0];
+        var formattedCheckin = checkin.toISOString();
+        var formattedCheckout = checkout.toISOString();
         var lengthInDays = Math.round((checkout - checkin) / (1000 * 60 * 60 * 24));
         var price = {{phong.Gia4tieng}};
         var sumprice = price * lengthInDays;
@@ -249,6 +267,8 @@
                 phong_id: $('#add_cart').val(),
                 checkin: formattedCheckin,
                 checkout: formattedCheckout,
+                checkindisplay: checkingmt7,
+                checkoutdisplay: checkoutgmt7,
                 price: price,
                 lenday: lengthInDays,
                 sumprice: sumprice,
@@ -263,11 +283,13 @@
                 location.reload();
             },
             error: function(xhr, errmsg, err){
+                
 
             }
         });
 
     });
+
     
     $(document).ready(function() {
           $("[data+fancybox]").fancybox({
@@ -282,56 +304,62 @@
             {% endfor %}
         ];
     
-        var lastSelectedCheckout = null;
+        var lastSelectedCheckout;
         // Khởi tạo Flatpickr cho #check_in
     flatpickr("#check_in", {
-        enableTime: true,
-        utc: true,
         defaultDate: "today",
         dateFormat: "d-m-Y",
         minDate: "today",
+        time_24hr: true, // Sử dụng định dạng thời gian 24 giờ
+        locale: {
+            timezone: "browser" // Sử dụng múi giờ địa phương
+        },
         disable: disabledDates,
         onChange: function(selectedDates, dateStr, instance) {
+            
             var checkinDate = selectedDates[0]; // Lấy ngày nhập của #check_in
             var checkoutInput = document.getElementById("check_out");
-            var checkoutDate = new Date(checkoutInput.value.split('-').reverse().join('-')); // Định dạng ngược lại để tạo đối tượng Date
-
+            var checkoutDate = checkoutInput._flatpickr.selectedDates[0];  // Định dạng ngược lại để tạo đối tượng Date
             // Cập nhật minDate cho #check_out
+            console.log(checkinDate)
             checkoutInput._flatpickr.set('minDate', dateStr);
-
-            // Nếu ngày checkout hiện tại nhỏ hơn hoặc bằng ngày checkin
-            // Kiểm tra nếu ngày checkout hiện tại là ngày trước đó đã được chọn
-            if (lastSelectedCheckout && lastSelectedCheckout <= checkinDate)
-                // Giữ nguyên ngày checkout hiện tại
-                instance.setDate(lastSelectedCheckout);
-            
-
-            // Thực hiện Ajax call để cập nhật giá trị
-            sendAjaxUpdate(checkinDate, checkoutInput._flatpickr.selectedDates[0]);
+            sendAjaxUpdate(checkinDate, checkoutDate);
         }
     });
 
     // Khởi tạo Flatpickr cho #check_out
     flatpickr("#check_out", {
-        nableTime: true,
-        utc: true,
         dateFormat: "d-m-Y",
-        defaultDate: "tomorrow",
+        defaultDate: "",
         minDate: "today",
+        time_24hr: true, // Sử dụng định dạng thời gian 24 giờ
+        locale: {
+            timezone: "browser" // Sử dụng múi giờ địa phương
+        },
         disable: disabledDates,
         onChange: function(selectedDates, dateStr, instance) {
             var checkoutDate = selectedDates[0];
             var checkinInput = document.getElementById("check_in");
-            var checkinDate = new Date(checkinInput.value.split('-').reverse().join('-'));
-
-            // Nếu ngày checkout nhỏ hơn hoặc bằng ngày checkin
-           
+            var checkinDate = checkinInput._flatpickr.selectedDates[0]; 
+            
+            // Nếu ngày checkout nhỏ hơn hoặc bằng ngày check
 
             // Thực hiện Ajax call để cập nhật giá trị
             sendAjaxUpdate(checkinDate, checkoutDate);
         }
     });
-
+    function convertUTCtoGMT7(utcString) {
+        var utcDate = new Date(utcString);
+        var gmt7Offset = 7 * 60 * 60 * 1000; // Độ chênh lệch giữa GMT+7 và UTC trong milliseconds
+        var gmt7Date = new Date(utcDate.getTime() + gmt7Offset);
+    
+        // Định dạng ngày thành d-m-Y
+        var day = gmt7Date.getDate().toString().padStart(2, '0');
+        var month = (gmt7Date.getMonth() + 1).toString().padStart(2, '0'); // Lưu ý rằng tháng trong JavaScript là từ 0 đến 11
+        var year = gmt7Date.getFullYear().toString();
+        
+        return day + '-' + month + '-' + year;
+    }
     // Hàm gửi Ajax để cập nhật giá trị
     function sendAjaxUpdate(checkin, checkout) {
         var lengthInDays = Math.round((checkout - checkin) / (1000 * 60 * 60 * 24));
@@ -342,8 +370,8 @@
             type: 'POST',
             url: '{% url "PreviewUpdate" %}',
             data: {
-                checkin: checkin.toISOString().split('T')[0],
-                checkout: checkout.toISOString().split('T')[0],
+                checkin: formattedCheckin,
+                checkout: formattedCheckout,
                 lengthInDays: lengthInDays,
                 price: price,
                 csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -356,12 +384,16 @@
                 var len = json.len;
                 var checkin = json.checkin;
                 var checkout = json.checkout;
+                var Checkin_gmt7DateString=convertUTCtoGMT7(checkin)
+                var Checkout_gmt7DateString=convertUTCtoGMT7(checkout)
                 // Hiển thị dữ liệu trên template
                 $('#sum_element').text(sum + 'đ');
                 $('#sum_element1').text(sum + 'đ');
                 $('#len_element').text('{{ phong.Gia4tieng }} / ' + len + ' đêm');
-                $('#checkin_element').text(checkin);
-                $('#checkout_element').text(checkout);
+                $("#checkin_format").text(Checkin_gmt7DateString);
+                $("#checkout_format").text(Checkout_gmt7DateString);
+                document.querySelector("#checkin_element").innerText = checkin;
+                document.querySelector("#checkout_element").innerText = checkout;
 
             },
             error: function(xhr, errmsg, err) {

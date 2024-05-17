@@ -4,6 +4,7 @@ from .import views
 from .views import *
 urlpatterns =[
     path('home/',views.home, name='home'),
+    path('Home_Update_Search/',views.Home_Update_Search, name='Home_Update_Search'),
     path('getdate/', views.home, name='getdate'),
     path('search/', views.search, name='search'),
     path('filter', roomapiview.as_view() ),

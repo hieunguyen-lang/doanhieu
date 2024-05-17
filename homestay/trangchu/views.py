@@ -7,30 +7,50 @@ from django.contrib import messages
 from .models import *
 from .cart import Cart
 from datetime import timedelta, datetime
+import pytz
 from django.db.models import Q
 # api
 from rest_framework.response import Response
 from rest_framework.views import APIView
 import math
 from .serializer import *
-
-        
+# send mail
+from django.core.mail import send_mail
+from django.conf import settings
 # Create your views here.
+def convert_to_gmt7(utc_datetime):
+    # Xác định timezone cho UTC và GMT+7
+    utc_tz = pytz.timezone('UTC')
+    gmt7_tz = pytz.timezone('Asia/Ho_Chi_Minh')  # GMT+7
+    # Chuyển đổi thời gian từ UTC sang GMT+7
+    gmt7_datetime = utc_datetime.replace(tzinfo=utc_tz).astimezone(gmt7_tz)
+    return gmt7_datetime
 def home(request):
     
     if request.method == "POST":
         filtervalue = request.POST.get('addressfilter', None)
         pricesort = request.POST.get('pricesort', None)
-        checkin = request.POST.get('check_in', None)
-        checkout = request.POST.get('check_out', None)
-        if not checkin or not checkout:
+        checkin = request.POST.get('check_in_iso', None)
+        checkout = request.POST.get('check_out_iso', None)
+        if checkin:
+            checkin_format = checkin
+        
+        else:
+            checkin_format = None
+
+        if checkout:
+            
+            checkout_format = checkout
+            
+        else:
+            checkout = None
+        if not checkin_format or not checkout_format:
             # Nếu một trong hai trường không được nhập, hiển thị thông báo và không thực hiện gì cả
             roomfilter = Phong.objects.all()
             context = {'roomfilter': roomfilter}
             return render(request,'trangchu/home.html', context)
         else:
-            checkin_format = datetime.strptime(checkin, '%d-%m-%Y').strftime('%Y-%m-%d')
-            checkout_format = datetime.strptime(checkout, '%d-%m-%Y').strftime('%Y-%m-%d')
+     
             roomfilter = Phong.objects.all()
             if filtervalue =="Tất cả khu vực":
                 roomfilter = Phong.objects.all()
@@ -38,11 +58,11 @@ def home(request):
                 roomfilter = Phong.objects.filter(Diachi__icontains=filtervalue)
             if pricesort == 'Gia4tieng':
                 roomfilter = roomfilter.order_by('Gia4tieng')
-            elif pricesort == '-Gia4tieng':
+            if pricesort == '-Gia4tieng':
                 roomfilter = roomfilter.order_by('-Gia4tieng')
+                
             if checkin and checkout:
-                checkin_format = datetime.strptime(checkin, '%d-%m-%Y').strftime('%Y-%m-%d')
-                checkout_format = datetime.strptime(checkout, '%d-%m-%Y').strftime('%Y-%m-%d')
+               
                 conflicting_orders = Order_item.objects.filter(
                     Q(checkin__lte=checkin_format, checkout__gte=checkin_format) |
                     Q(checkin__lte=checkout_format, checkout__gte=checkout_format) |
@@ -51,6 +71,7 @@ def home(request):
 
                 # Loại bỏ các phòng đã được đặt khỏi danh sách tất cả các phòng
                 roomfilter = roomfilter.exclude(id__in=conflicting_orders)
+             
             context = {'roomfilter': roomfilter, 'filtervalue':filtervalue, 'checkin': checkin,'checkout': checkout}        
             return render(request,'trangchu/home.html', context)
     else:
@@ -106,8 +127,9 @@ def checkout(request, phong_id):
     # trả về select giá phòng theo ca đã chọn
     context = {'item_by_id': cart_items,'sum':sum}
     return render(request, 'trangchu/checkout.html', context)
+
 def billinginfo(request, id):
-    if request.POST:
+    if request.method == "POST":
         cart =Cart(request)
         cart_items =cart.get_objects_by_id(id)
         # lấy thông tin khách hàng
@@ -115,26 +137,38 @@ def billinginfo(request, id):
         customer_mail = request.POST.get('customermail')
         customer_phone = request.POST.get('customerphone')
         # lưu vào cơ sở dữ liệu
-        customer_info.objects.create(name=customer_name, email=customer_mail, number=customer_phone) #bảng thông tin người dùng
-        
-        order = Order.objects.create(full_name=customer_name, email=customer_mail, number=customer_phone)
-        order.save()
-        Order_id = order.pk
-    
-
         # Tạo các đối tượng thời gian với thông tin múi giờ
+        #email
         
         for item in cart_items:
             phong_id= item['phong_id']
             checkin = item['checkin']
             checkout = item['checkout']
             sumprice = item['sumprice']
-        
-        create_order_item = Order_item.objects.create(order_id=Order_id, phong_id=phong_id, checkin=checkin, checkout=checkout, price=sumprice)
-        create_order_item.save()
-        # trả về select giá phòng theo ca đã chọn
-        context = {'cart_items': cart_items,'sum':sum, 'name':customer_name, 'mail':customer_mail, 'phone': customer_phone}
-        return render(request, 'trangchu/billing_info.html', context)
+        checkin_formatted_str = checkin[:-1]
+        checkin_convert = datetime.fromisoformat(checkin_formatted_str)
+        checkout_formatted_str = checkout[:-1]
+        checkout_convert = datetime.fromisoformat(checkout_formatted_str)
+        email_from = settings.DEFAULT_FROM_EMAIL
+        message = f'Chi tiết đơn hàng:\n\nID: {phong_id}\nTên khách hàng: {customer_name}\nEmail: {customer_mail}\nSố điện thoại: {customer_phone}\nNgày nhận phòng: {checkin_convert}\nNgày check out: {checkout_convert}\nTổng tiền: {sumprice}đ'
+        send_mail(customer_name, message, email_from, [customer_mail])
+        room_avaiable  = Order_item.objects.filter(
+                    Q(checkin__lte=checkin, checkout__gte=checkin) |
+                    Q(checkin__lte=checkout, checkout__gte=checkout) |
+                    Q(checkin__gte=checkin, checkout__lte=checkout)
+                ).exists()
+        if room_avaiable:
+            customer_info.objects.create(name=customer_name, email=customer_mail, number=customer_phone) #bảng thông tin người dùng
+            order = Order.objects.create(full_name=customer_name, email=customer_mail, number=customer_phone)
+            order.save()
+            Order_id = order.pk
+            create_order_item = Order_item.objects.create(order_id=Order_id, phong_id=phong_id, checkin=checkin, checkout=checkout, price=sumprice)
+            create_order_item.save()
+            # trả về select giá phòng theo ca đã chọn
+            context = {'cart_items': cart_items,'sum':sum, 'name':customer_name, 'mail':customer_mail, 'phone': customer_phone}
+            return render(request, 'trangchu/billing_info.html', context)
+        else:
+         messages.success(request, "Từ trồi truy cập")
     else:
         messages.success(request, "Từ trồi truy cập")
         return redirect('home')       
@@ -148,11 +182,13 @@ def cart_add(request):
         phong = get_object_or_404(Phong,id=phong_id)
         checkin = request.POST.get('checkin')
         checkout = request.POST.get('checkout')
+        checkindisplay = request.POST.get('checkindisplay')
+        checkoutdisplay = request.POST.get('checkoutdisplay')
         price = request.POST.get('price')
         lenday = request.POST.get('lenday')
         sumprice = request.POST.get('sumprice')
         #save vao session
-        cart.add(phong=phong, checkin=checkin, checkout=checkout, price=price, lenday=lenday, sumprice=sumprice,)
+        cart.add(phong=phong, checkin=checkin, checkout=checkout, price=price, lenday=lenday, sumprice=sumprice, checkindisplay=checkindisplay,checkoutdisplay=checkoutdisplay)
         
         # return response
         #response = JsonResponse({'Tên phòng ': phong.Ten })
@@ -188,18 +224,21 @@ def get_dates_between(start_date, end_date):
         dates.append(current_date)
         current_date += timedelta(days=1)
     return dates
+
 def xemphong(request,id):
     dates=[]
     phong = get_object_or_404(Phong, id=id)
     order_item_by_phong= Order_item.objects.filter(phong=phong)
     for item in order_item_by_phong:
-        checkin = item.checkin
-        checkout = item.checkout
+        checkin_gmt7 = item.checkin
+        checkout_gmt7 = item.checkout
+        checkin = convert_to_gmt7(checkin_gmt7)
+        checkout = convert_to_gmt7(checkout_gmt7)
         dates_between = get_dates_between(checkin, checkout)
         dates.extend(dates_between)
     dates_str = [date.strftime('%d-%m-%Y') for date in dates]
     
-    context = {'phong':phong,'dates':dates_str}
+    context = {'phong':phong,'dates':dates_str,}
     return render(request,'trangchu/xemchitietphong.html', context)
 def blog(request):
     return render(request, 'trangchu/blog.html')
@@ -209,7 +248,16 @@ def PreviewUpdate(request):
         gia = int(request.POST.get('price'))
         checkin =  request.POST.get('checkin')
         checkout =  request.POST.get('checkout')
+        
         sum = len*gia
         response = JsonResponse({'sum': sum, 'len':len, 'checkin': checkin, 'checkout': checkout,})
+        return response
+def Home_Update_Search(request):
+    if request.POST.get('action') == 'post':
+
+        checkin =  request.POST.get('checkin')
+        checkout =  request.POST.get('checkout')
+
+        response = JsonResponse({'checkin': checkin, 'checkout': checkout,})
         return response
 

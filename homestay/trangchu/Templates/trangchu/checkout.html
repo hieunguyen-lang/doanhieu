@@ -4,22 +4,20 @@
     <title>Xác nhận và thanh toán </title>
 {%endblock title%}
 {% block maincontent %}
-    <div class="container row p-0 my-2 text-right">
-        <div class="col-1">
-            <span> Đặt </span>
-        </div>
-        <div class="col-2">
-            <span> Thanh toán </span>
-        </div>
-        <div class="col-3">
-            <span> Gửi phiếu xác nhận </span>
-        </div>
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+        {% endfor %}
     </div>
+{% endif %}
     {% for item in item_by_id %}
-        <div class="row p-0 px-4 px-lg-5 my-5" >  
-            <div class="col-md-6 text-left p-0 px-4 px-lg-5 "> 
-                <div class="row ">
-                    <a href="javascript:history.back()" class="p-0" style="color:black"><h2 class="p-0"><i class="bi bi-arrow-counterclockwise"></i> Xác nhận và thanh toán </h2></a>
+    <section class=" mx-xs-0 mx-md-3 mx-lg-5 color_theme" style=" border-top:2px solid #96823D; font-family: Mulish, sans-serif">
+        <div class="row  my-5 mx-md-5 mx-4 px-xs-0 text-center" >  
+            <div class="col-md-6 col-sm-12 text-left  mx-0 "> 
+                <div class="row px-3">
+                    <a href="javascript:history.back()" class="p-0 col-1" style="color:black"><h3 class="p-0"><i class="bi bi-arrow-counterclockwise"></i>  </h3> </a>
+                    <h3 class="p-0 col text-left">Xác nhận và thanh toán</h3>
                 </div>
                 <div class="row " style=" width: 100%; min-height:100px; border:1px solid #96823D ;border-radius:12px;  ">
                     <div class="col-md-8" >
@@ -44,7 +42,7 @@
                             
                             <div class="col-md-8" style="margin-bottom:24px">                              
                                     <div class=" mb-0 " style="font-weight: bold">Ngày </div>
-                                    <div class="mb-0 "> {{item.checkin}} - {{item.checkout}} </div>                               
+                                    <div class="mb-0 "> {{item.checkindisplay}} - {{item.checkoutdisplay}} </div>                               
                             </div> 
                             
                             <div class="col-md-4 p-0"> 
@@ -71,14 +69,14 @@
                     </div>
                     <div class="row" style=" margin-top: 30px">
                         <label class="row"> Họ và tên </label>    
-                        <input type="text" style="width:100%" name="customername" placeholder="Nguyễn Văn A"  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                        <input type="text" style="width:100%" name="customername" placeholder="Nguyễn Văn A"  aria-label="Sizing example input" required="" aria-describedby="inputGroup-sizing-default">
                     </div>
                     <div class="row"> 
                         <div class="col-md-6 p-1" style=" margin-top: 10px">
                             <div class="row p-0">
                                 <label > E-mail </label>    
                             </div>
-                            <input type="text" style="width:100%" name="customermail"  placeholder="abc@gmail.com" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                            <input type="text" style="width:100%" name="customermail"  placeholder="abc@gmail.com" aria-label="Sizing example input" required="" aria-describedby="inputGroup-sizing-default">
                         </div>
                         <div class="col-md-6 p-1 text-right" style=" margin-top: 10px">
                             <div class="row p-0 text-left">
@@ -96,7 +94,7 @@
                 </form>
             </div>
            
-            <div class="col-md-6 text-left p-0 px-md-4 px-lg-5"> 
+            <div class="col-md-6 col-sm-1 text-left mx-0 "> 
                 <div class="row " style="margin-bottom: 24px"> 
                     <div class="container " style=" width: 80%; min-height:500px; border:1px solid #96823D ;border-radius:12px; margin-top:46.4px;   ">
                         <div class="row p-0 my-5 px-4" style="border-bottom:1px solid #96823D">
@@ -138,6 +136,7 @@
             </div>
            
         </div>
+    </section>
     {% endfor %}
 {% endblock maincontent%}
 

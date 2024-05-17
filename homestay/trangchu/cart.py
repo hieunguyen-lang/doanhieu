@@ -9,17 +9,31 @@ class Cart():
             cart= self.session['session_key']={}
         #make
         self.cart = cart
-    def add(self, phong, checkin, checkout, price, lenday, sumprice):
+    def add(self, phong, checkin, checkout, price, lenday, sumprice, checkindisplay,checkoutdisplay):
         phong_id = str(phong.id)
         
         if phong_id in self.cart:
-            pass
+            Cart.cart_delete(self, phong_id)
+            if phong_id not in self.cart:
+                self.cart[phong_id] = {
+                'phong_id': phong.id,
+                'Ten': phong.Ten,
+                'checkin': checkin,
+                'checkout': checkout,
+                'checkindisplay': checkindisplay, 
+                'checkoutdisplay': checkoutdisplay, 
+                'price': price,
+                'lenday': lenday,
+                'sumprice': sumprice,                                       
+                                  }
         else:
             self.cart[phong_id] = {
                 'phong_id': phong.id,
                 'Ten': phong.Ten,
                 'checkin': checkin,
-                'checkout': checkout, 
+                'checkout': checkout,
+                'checkindisplay': checkindisplay, 
+                'checkoutdisplay': checkoutdisplay,  
                 'price': price,
                 'lenday': lenday,
                 'sumprice': sumprice,                                       
@@ -37,6 +51,8 @@ class Cart():
             phong = Phong.objects.get(id=phong_id)
             checkin = item_data.get('checkin')
             checkout = item_data.get('checkout')
+            checkindisplay =item_data.get('checkindisplay')
+            checkoutdisplay =item_data.get('checkoutdisplay')
             price = item_data.get('price')
             lenday = item_data.get('lenday')
             sumprice = item_data.get('sumprice')
@@ -51,6 +67,8 @@ class Cart():
                 },
                 'checkin': checkin,
                 'checkout': checkout,
+                'checkindisplay': checkindisplay, 
+                'checkoutdisplay': checkoutdisplay,
                 'price': price,
                 'lenday': lenday,
                 'sumprice': sumprice,
@@ -69,6 +87,8 @@ class Cart():
             phong_id = item_data.get('phong_id')
             checkin = item_data.get('checkin')
             checkout = item_data.get('checkout')
+            checkindisplay = item_data.get('checkindisplay')
+            checkoutdisplay = item_data.get('checkoutdisplay')
             price = item_data.get('price')
             lenday = item_data.get('lenday')
             sumprice =  item_data.get('sumprice')
@@ -77,6 +97,8 @@ class Cart():
                 'phong': phong,
                 'checkin': checkin,
                 'checkout': checkout,
+                'checkindisplay': checkindisplay,
+                'checkoutdisplay': checkoutdisplay,
                 'price': price,
                 'lenday': lenday,
                 'sumprice': sumprice,

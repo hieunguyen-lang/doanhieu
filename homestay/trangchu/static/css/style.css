@@ -84,3 +84,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     --bs-btn-active-border-color: rgba(229, 147, 33, 0.1);
     opacity:0.5;
 }
+@media (max-width: 500px) {
+    .hide-on-small-screen {
+        display: none;
+    }
+}
