@@ -5,7 +5,11 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.contrib import messages
 from .models import *
+#session cart
 from .cart import Cart
+#session mail_verify
+from .mail import Mail_Verify
+import random
 from datetime import timedelta, datetime
 import pytz
 from django.db.models import Q
@@ -122,53 +126,89 @@ def cart(request):
     context = {'cart_items': cart_items,'sum':sum}
     return render(request,'trangchu/cart.html', context)
 def checkout(request, phong_id):
+    
+    mail_verify = Mail_Verify(request)
+    # tạo code random
+   
+    # lấy giỏ hàng trong session
     cart =Cart(request)
+    # lấy giỏ hàng theo phong_id
     cart_items =cart.get_objects_by_id(phong_id)
     # trả về select giá phòng theo ca đã chọn
     context = {'item_by_id': cart_items,'sum':sum}
     return render(request, 'trangchu/checkout.html', context)
-
-def billinginfo(request, id):
+def verify(request, id):
+    mail_verify = Mail_Verify(request)
     if request.method == "POST":
-        cart =Cart(request)
-        cart_items =cart.get_objects_by_id(id)
-        # lấy thông tin khách hàng
         customer_name = request.POST.get('customername')
         customer_mail = request.POST.get('customermail')
         customer_phone = request.POST.get('customerphone')
-        # lưu vào cơ sở dữ liệu
-        # Tạo các đối tượng thời gian với thông tin múi giờ
-        #email
-        
-        for item in cart_items:
-            phong_id= item['phong_id']
-            checkin = item['checkin']
-            checkout = item['checkout']
-            sumprice = item['sumprice']
-        checkin_formatted_str = checkin[:-1]
-        checkin_convert = datetime.fromisoformat(checkin_formatted_str)
-        checkout_formatted_str = checkout[:-1]
-        checkout_convert = datetime.fromisoformat(checkout_formatted_str)
+         #lấy email khách hàng
+        Code = mail_verify.create_code()
+        mail_verify.save_code(Code=Code,CustomerName=customer_name, CustomerMail=customer_mail, CustomerPhone=customer_phone )
+        # Lấy data lưu trong session
+        StoredData = mail_verify.get_saved_code()
+        #Lấy code
+        code = StoredData.get('Code')
+        # gửi code về mail khách hàng mail
         email_from = settings.DEFAULT_FROM_EMAIL
-        message = f'Chi tiết đơn hàng:\n\nID: {phong_id}\nTên khách hàng: {customer_name}\nEmail: {customer_mail}\nSố điện thoại: {customer_phone}\nNgày nhận phòng: {checkin_convert}\nNgày check out: {checkout_convert}\nTổng tiền: {sumprice}đ'
-        send_mail(customer_name, message, email_from, [customer_mail])
-        room_avaiable  = Order_item.objects.filter(
-                    Q(checkin__lte=checkin, checkout__gte=checkin) |
-                    Q(checkin__lte=checkout, checkout__gte=checkout) |
-                    Q(checkin__gte=checkin, checkout__lte=checkout)
+        message = f'Lalendi Studio\nMã xác thực: {code}'
+        send_mail('Lalendi', message, email_from, [customer_mail])
+        context ={'phong_id':id}
+        return render(request, 'trangchu/verify.html',context )
+    else:
+        messages.success(request, "Từ trồi truy cập")
+        return redirect('home')  
+def billinginfo(request, id):
+    if request.method == "POST":
+        code_customer_input = request.POST.get('code_input')
+        mail_verify = Mail_Verify(request)
+        StoredData = mail_verify.get_saved_code()
+        customer_name = StoredData.get('CustomerName')
+        customer_mail = StoredData.get('CustomerMail')
+        customer_phone = StoredData.get('CustomerPhone')
+        code_stored = StoredData.get('Code')
+        print("Code from customer:", code_customer_input)
+        print("Stored data:", code_stored)
+        # In ra nội dung của session để kiểm tra
+        if  code_stored == code_customer_input:
+            # xoá session
+            mail_verify.delete_session()
+            cart =Cart(request)
+            cart_items =cart.get_objects_by_id(id)
+            # lấy thông tin khách hàng
+           
+            # lưu vào cơ sở dữ liệu
+            # Tạo các đối tượng thời gian với thông tin múi giờ
+            #email      
+            for item in cart_items:
+                phong_id= item['phong_id']
+                checkin = item['checkin']
+                checkout = item['checkout']
+                sumprice = item['sumprice']
+                
+            room_available = Order_item.objects.filter(
+                    phong_id=phong_id
+                ).filter(
+                    Q(checkin__lt=checkout) & Q(checkout__gt=checkin)
                 ).exists()
-        if room_avaiable:
-            customer_info.objects.create(name=customer_name, email=customer_mail, number=customer_phone) #bảng thông tin người dùng
-            order = Order.objects.create(full_name=customer_name, email=customer_mail, number=customer_phone)
-            order.save()
-            Order_id = order.pk
-            create_order_item = Order_item.objects.create(order_id=Order_id, phong_id=phong_id, checkin=checkin, checkout=checkout, price=sumprice)
-            create_order_item.save()
-            # trả về select giá phòng theo ca đã chọn
-            context = {'cart_items': cart_items,'sum':sum, 'name':customer_name, 'mail':customer_mail, 'phone': customer_phone}
-            return render(request, 'trangchu/billing_info.html', context)
+           
+            if not room_available:
+                customer_info.objects.create(name=customer_name, email=customer_mail, number=customer_phone) #bảng thông tin người dùng
+                order = Order.objects.create(full_name=customer_name, email=customer_mail, number=customer_phone)
+                order.save()
+                Order_id = order.pk
+                create_order_item = Order_item.objects.create(order_id=Order_id, phong_id=phong_id, checkin=checkin, checkout=checkout, price=sumprice)
+                create_order_item.save()
+                # trả về select giá phòng theo ca đã chọn
+                context = {'cart_items': cart_items,'sum':sum, 'name':customer_name, 'mail':customer_mail, 'phone': customer_phone}
+                return render(request, 'trangchu/billing_info.html', context)
+            else:
+                messages.error(request, "Phòng không còn trống trong khoảng thời gian đã đặt")
+                return redirect('cart')
         else:
-         messages.success(request, "Từ trồi truy cập")
+            messages.error(request, "Mã xác thực không hợp lệ.")
+            return redirect('verify', id=id)
     else:
         messages.success(request, "Từ trồi truy cập")
         return redirect('home')       

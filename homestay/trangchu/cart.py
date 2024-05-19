@@ -38,7 +38,7 @@ class Cart():
                 'lenday': lenday,
                 'sumprice': sumprice,                                       
                                   }
-            # Lưu selected_option vào session
+          
         self.session.modified = True
         #return cart length
     def get_objects_by_id(self, id):

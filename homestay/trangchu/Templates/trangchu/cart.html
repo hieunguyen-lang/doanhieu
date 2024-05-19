@@ -18,9 +18,20 @@
                   </li>
 {% endblock activenavbar%}
 {% block maincontent %}
+{% if messages %}
+<div class="alert alert-warning d-flex align-items-center" role="alert">
+    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+    <div class="message">
+        {% for message in messages %}
+            <p{% if message.tags %} class="{{ message.tags }} p-0"{% endif %}>{{ message }}</p>
+        {% endfor %}
+    </div>
+  </div>
+    </div>
+{% endif %}
 <!--- Include the above in your HEAD tag -->
 	
-		<div class="container padding-bottom-3x mb-1" style="font-family: Mulish, sans-serif" >
+		<div class="container padding-bottom-3x mb-1" style="font-family: Mulish, sans-serif; min-height:720px" >
 			{% if sum != 0 %}
 			<div class="table-responsive shopping-cart" >
 					<table class="table table-striped table-sm" >
@@ -94,6 +105,7 @@
 											<button id="deletebtn" data-index=" {{items.phong.id}} " class="btn btn-sm btn-outline-danger">Xoá phòng</button>
 										</td>
 										<td>
+											
 											<a class="btn btn-success"  data-index=" {{items.phong.id}}" target="_blank " value="{{items.phong.id}}" href="{% url "checkout" items.phong.id %}">Checkout</a>
 										</td>
 										
@@ -114,9 +126,7 @@
 							<div class="shopping-cart-footer">
 							<div class="column"><a class="btn btn-outline-secondary" href="/home"><i class="icon-arrow-left"></i>&nbsp;Quay lại chọn phòng </a></div>
 							<div class="column">
-								<a id="cart_update" class="btn btn-primary" href="#"  data-toast-position="topRight" data-toast-icon="icon-circle-check" data-toast-title="Your cart" >Update Cart</a>
-								
-							</div>
+						</div>
 				</div>
 			
 			</div>

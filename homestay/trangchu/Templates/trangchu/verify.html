@@ -1,0 +1,26 @@
+{%  extends 'trangchu/base.html' %}
+{% load static  %}
+{%block title %}
+    <title>Xác nhận email </title>
+{%endblock title%}
+{% block maincontent %}
+<section style="height:680px">
+  <div class="d-flex justify-content-center my-5">
+    <div class="">
+        <div class="row d-flex justify-content-center">
+            <h5 class="p-0" style="text-align:center">Nhập mã xác nhận để hoàn tất đặt phòng</h5>
+        </div>
+        <form method="POST" action="{% url 'billinginfo' phong_id %}">
+            {% csrf_token %}
+        <div class="row my-2 d-flex container justify-content-center">
+             <input style="width:300px; border: 1px solid black; border-radius: 24px; height:50px; font-size: 24px; text-align: center" name="code_input" required="" /> 
+            
+        </div> 
+        <div class="row my-5 d-flex container justify-content-center">
+            <button type="submit" class="p-0"style="width:150px; border:1px; border-radius:20px; height:40px; background-color:#ce3644; color:white">Đặt phòng</button>
+        </div>
+        </form>
+    </div>
+</div>
+</section>
+{% endblock maincontent %}
