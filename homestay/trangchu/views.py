@@ -26,8 +26,18 @@ def convert_to_gmt7(utc_datetime):
     # Xác định timezone cho UTC và GMT+7
     utc_tz = pytz.timezone('UTC')
     gmt7_tz = pytz.timezone('Asia/Ho_Chi_Minh')  # GMT+7
+    
+    # Kiểm tra xem utc_datetime có thông tin múi giờ hay không
+    if utc_datetime.tzinfo is None:
+        # Nếu không có, gán múi giờ UTC cho utc_datetime
+        utc_datetime = utc_tz.localize(utc_datetime)
+    else:
+        # Nếu đã có thông tin múi giờ, chuyển đổi nó sang UTC trước
+        utc_datetime = utc_datetime.astimezone(utc_tz)
+    
     # Chuyển đổi thời gian từ UTC sang GMT+7
-    gmt7_datetime = utc_datetime.replace(tzinfo=utc_tz).astimezone(gmt7_tz)
+    gmt7_datetime = utc_datetime.astimezone(gmt7_tz)
+    
     return gmt7_datetime
 def home(request):
     
@@ -140,6 +150,7 @@ def checkout(request, phong_id):
 def verify(request, id):
     mail_verify = Mail_Verify(request)
     if request.method == "POST":
+        
         customer_name = request.POST.get('customername')
         customer_mail = request.POST.get('customermail')
         customer_phone = request.POST.get('customerphone')
@@ -173,7 +184,7 @@ def billinginfo(request, id):
         # In ra nội dung của session để kiểm tra
         if  code_stored == code_customer_input:
             # xoá session
-            mail_verify.delete_session()
+            
             cart =Cart(request)
             cart_items =cart.get_objects_by_id(id)
             # lấy thông tin khách hàng
@@ -183,10 +194,12 @@ def billinginfo(request, id):
             #email      
             for item in cart_items:
                 phong_id= item['phong_id']
+                phong= item['phong']
                 checkin = item['checkin']
                 checkout = item['checkout']
                 sumprice = item['sumprice']
-                
+            idphong= phong['id']
+            tenphong= phong['Ten']   
             room_available = Order_item.objects.filter(
                     phong_id=phong_id
                 ).filter(
@@ -200,10 +213,16 @@ def billinginfo(request, id):
                 Order_id = order.pk
                 create_order_item = Order_item.objects.create(order_id=Order_id, phong_id=phong_id, checkin=checkin, checkout=checkout, price=sumprice)
                 create_order_item.save()
+                
+                email_from = settings.DEFAULT_FROM_EMAIL
+                message = f'Lalendi Studio\nThông tin phòng đặt\nMã phòng:{idphong}\nTên phòng:{tenphong}\nThời gian:{checkin}-{checkout}\nGiá tiền:{sumprice}\nMã đặt hàng:{Order_id}'
+                send_mail('Lalendi', message, email_from, [customer_mail])
+                mail_verify.delete_session()
                 # trả về select giá phòng theo ca đã chọn
                 context = {'cart_items': cart_items,'sum':sum, 'name':customer_name, 'mail':customer_mail, 'phone': customer_phone}
                 return render(request, 'trangchu/billing_info.html', context)
             else:
+                cart.cart_delete(phongid=phong_id)
                 messages.error(request, "Phòng không còn trống trong khoảng thời gian đã đặt")
                 return redirect('cart')
         else:
