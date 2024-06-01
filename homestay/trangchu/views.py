@@ -292,6 +292,8 @@ def PreviewUpdate(request):
         sum = len*gia
         response = JsonResponse({'sum': sum, 'len':len, 'checkin': checkin, 'checkout': checkout,})
         return response
+def about(request):
+    return render(request, 'trangchu/about.html')
 def Home_Update_Search(request):
     if request.POST.get('action') == 'post':
 

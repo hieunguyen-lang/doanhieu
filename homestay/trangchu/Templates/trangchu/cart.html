@@ -3,20 +3,49 @@
 {%block title %}
     <title>LalLALENDI - Giỏ Hàng </title>
 {%endblock title%}
-{% block activenavbar%}
-<li class="nav-item col-6 col-lg-auto"><a class="nav-link " aria-current="page" href="#">Trang chủ</a></li>
-                  <li class="nav-item col-6 col-lg-auto"><a class="nav-link" href="#!">About</a></li>
-                  <li class="nav-item col-6 col-lg-auto"><a class="nav-link " href="/blog" >Blog</a></li>
-                  <li class="nav-item col-6 col-lg-auto">
-                      <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<li><a class="dropdown-item" href="#!">Tất cả sản phẩm</a></li>
-						<li><hr class="dropdown-divider" /></li>
-						<li><a class="dropdown-item" href="#!">Toydi</a></li>
-						<li><a class="dropdown-item" href="#!">Rendi</a></li>
-					</ul>
-                  </li>
-{% endblock activenavbar%}
+{% block navbar%}
+<nav class="navbar navbar-expand-lg sticky-top navbar-dark" style="background-color: #ce3644; ">
+  <div class="container px-4 px-lg-5">
+   
+  
+	  <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"  data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"  ><i class="bi bi-search" ></i></button>
+	
+	  <a class="navbar-brand" href="/home">LALENDI STUDIO </a>
+	  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon " ></span></button>
+	 
+	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+		  <ul class="navbar-nav flex-row flex-wrap  bd-navbar-nav me-auto">
+			<li class="nav-item col-6 col-lg-auto"><a class="nav-link active"  aria-current="page" href="/home">Trang chủ</a></li>
+			<li class="nav-item col-6 col-lg-auto"><a class="nav-link active"  href="/about">Chúng tôi</a></li>
+			<li class="nav-item col-6 col-lg-auto"><a class="nav-link active"  href="/blog" >Blog</a></li>
+			<li class="nav-item col-6 col-lg-auto">
+				<a class="nav-link dropdown-toggle active" id="navbarDropdown"  href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+				<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+				  <li><a class="dropdown-item" href="#!">Tất cả sản phẩm</a></li>
+				  <li><hr class="dropdown-divider" /></li>
+				  <li><a class="dropdown-item" href="#!">Toydi</a></li>
+				  <li><a class="dropdown-item" href="#!">Rendi</a></li>
+			  </ul>
+			</li>
+		  </ul>
+		  <form class="d-flex"  >
+			  <a class="btn btn-outline-dark" style="color: white" type="submit" href="/cart">  
+				  <i class="bi-cart-fill me-1" style=" color: white"></i>
+					Giỏ hàng
+				  <span class="badge bg-dark text-white ms-1 rounded-pill"  id="cart_quantity">{{cart|length}}</span>
+			  </a>
+		  </form>
+	  </div>
+  </div>
+</nav> 
+{% endblock navbar %}
+{% block logo%}
+<div style=" z-index: 1;"> 
+  <a href="/home" style="padding:10px">
+  <img src="{% static "/images/logo.jpeg" %} " style=" width:50px; height:50px"/>
+  </a>
+<div>
+{% endblock logo %}
 {% block maincontent %}
 {% if messages %}
 <div class="alert alert-warning d-flex align-items-center" role="alert">
@@ -31,90 +60,90 @@
 {% endif %}
 <!--- Include the above in your HEAD tag -->
 	
-		<div class="container padding-bottom-3x mb-1" style="font-family: Mulish, sans-serif; min-height:720px" >
+		<div class="container " style="font-family: Mulish, sans-serif; min-height:730px" >
 			{% if sum != 0 %}
-			<div class="table-responsive shopping-cart" >
-					<table class="table table-striped table-sm" >
-						<thead >
-							<tr>
-								<th style="width:40%;"> Phòng </th>
-								<th class="text-center" style="width:30%;">Thời gian đặt</th>
-								<th class="text-center" style="width:10%;">Tổng ngày</th>
-								<th class="text-center" style="width:20%;"> Giá tiền</th>
-								<th class="text-center" style="width:10%;">Discount</th>
-								<th class="text-center"	style="width:10%;">
-								<th class="text-center"	style="width:10%;">
-								</th>
-							</tr>
-						</thead>
-					
-						<tbody>
-							
-							{% for items in cart_items %}
-							
-								<tr style="border-bottom:1px solid #96823D">
-										<td>
-											<div class="product-item">
-												<a class="product-thumb" href="{% url "xemphong" items.phong.id %}"><img src=" {{items.phong.HinhanhURL}} " alt="room"></a>
-												<div class="product-info">
-													<h4 class="product-title">
-														<a href="{% url "xemphong" items.phong.id %}">{{items.phong.Ten}}</a>
-													</h4>
-													<span>
-														{% if items.phong.Netflix  %}
-														<em>Netflix:</em> có
-														{% else %}
-														<em>Netflix:</em> không
-														{% endif %}
-													</span>
-													<span>
-														{% if items.phong.Bontam  %}
-														<em>Bồn tắm:</em> có
-														{% else %}
-														<em>Bồn tắm:</em> không
-														{% endif %}
-													</span>
-													<span>
-														{% if items.phong.Beprieng  %}
-														<em>Bếp riêng:</em> có
-														{% else %}
-														<em>Bếp riêng:</em> không
-														{% endif %}
-													</span>
-												</div>
-											</div>
-										</td>
-										
-										<td  >
-											<div class="text-center">
-												<span>{{items.checkindisplay}} - {{items.checkoutdisplay}}</span>
-											</div>
-										</td>
-										<td  >
-											<div class="text-center">
-												<span>{{items.lenday}} ngày </span>
-											</div>
-										</td>
-										<td class="text-center text-lg text-medium"> {{items.sumprice}}đ </td>
-								
-										
-										<td class="text-center text-lg text-medium">$18.00
+			<div class="table-responsive shopping-cart p-0" >
+				
+				<div class="row align-items-center" style="border-bottom: 1px solid black;">
+					<div class="col-3  " style="">
+						<h5 class=" p-0"style="font-weight: 500">Phòng</h5>
+					</div>
+					<div class="col-2 p-0 px-1 text-center" style="">
+						<h5 style="font-weight: 500">Thời gian đặt</h5>
+					</div>
+					<div class="col-2 p-0 px-1 text-center" style="">
+						<h5 style="font-weight: 500">Tổng ngày</h5>
+					</div>
+					<div class="col-1 p-0 px-1 text-center" style="">
+						<h5 style="font-weight: 500">Tổng tiền</h5>
+					</div>
+					<div class="col-4 p-0 px-1 text-center" style="">
 
-										</td>
-										<td class="text-center">
-											<button id="deletebtn" data-index=" {{items.phong.id}} " class="btn btn-sm btn-outline-danger">Xoá phòng</button>
-										</td>
-										<td>
-											
-											<a class="btn btn-success"  data-index=" {{items.phong.id}}" target="_blank " value="{{items.phong.id}}" href="{% url "checkout" items.phong.id %}">Checkout</a>
-										</td>
-										
-								</tr>
-								
-								{% endfor %}
-						</tbody>
-						
-				</table>
+					</div>
+
+				</div>
+				{% for items in cart_items %}
+				<div class="row align-items-center py-2" style="border-bottom: 1px solid black;">
+					<div class="col-3 ">
+						<div class="product-item">
+							<a class="product-thumb" href="{% url "xemphong" items.phong.id %}"><img src=" {{items.phong.HinhanhURL}} " alt="room"></a>
+							<div class="product-info">
+								<h4 class="product-title">
+									<a href="{% url "xemphong" items.phong.id %}">{{items.phong.Ten}}</a>
+								</h4>
+								<span>
+									{% if items.phong.Netflix  %}
+									<em>Netflix:</em> có
+									{% else %}
+									<em>Netflix:</em> không
+									{% endif %}
+								</span>
+								<span>
+									{% if items.phong.Bontam  %}
+									<em>Bồn tắm:</em> có
+									{% else %}
+									<em>Bồn tắm:</em> không
+									{% endif %}
+								</span>
+								<span>
+									{% if items.phong.Beprieng  %}
+									<em>Bếp riêng:</em> có
+									{% else %}
+									<em>Bếp riêng:</em> không
+									{% endif %}
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-2 p-0 px-1">
+						<div class="text-center">
+							<span>{{items.checkindisplay}} - {{items.checkoutdisplay}}</span>
+						</div>
+					</div>
+					<div class="col-2 p-0 px-1">
+						<div class="text-center">
+							<span>{{items.lenday}} ngày </span>
+						</div>
+					</div>
+					<div class="col-1 p-0 px-1">
+						{{items.sumprice}}đ
+					</div>
+					<div class="col-4 p-0 px-5">
+						<div class="row p-0">
+							<div class="col-5 p-0">
+								<a class="btn btn-success"  href="{% url "xemphong" items.phong.id %}">Cập nhật</a>
+							</div>
+							<div class="col-5 p-0">
+								<a class="btn btn-success"  data-index=" {{items.phong.id}}" target="_blank " value="{{items.phong.id}}" href="{% url "checkout" items.phong.id %}">Đặt phòng</a>
+							</div>
+							<div class="col-2 p-0 text-align-center">
+								<a id="deletebtn" data-index=" {{items.phong.id}} " class="p-0"><i class="bi bi-x" style="font-size: 28px; color: gray"></i></a>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+				
 				<div class="shopping-cart-footer">
 					<div class="column">
 							

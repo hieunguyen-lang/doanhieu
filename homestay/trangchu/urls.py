@@ -18,5 +18,6 @@ urlpatterns =[
     path('delete/', views.cart_delete, name = "cart_delete" ),
     path('preview/<int:id>', views.xemphong, name="xemphong"),
     path('previewupdate/', views.PreviewUpdate, name="PreviewUpdate"),
-    path('blog/', views.blog)
+    path('blog/', views.blog),
+    path('about/', views.about,name="about")
 ]
