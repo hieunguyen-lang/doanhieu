@@ -122,7 +122,7 @@ class roomapiview(APIView):
 class roomid(APIView):
     def get(self, request):
         id = request.GET.get('id')
-        if id:
+        if id
             rooms = Phong.objects.filter(id=id) 
 
         serializer  =RoomidSerializer(rooms, many=True)
